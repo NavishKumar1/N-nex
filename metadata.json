@@ -1,0 +1,8 @@
+{
+  "name": "Context.Engine",
+  "description": "Ultra-minimalist codebase context builder for LLMs. Process local folders or GitHub repositories into structured Markdown.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
