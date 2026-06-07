@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap, Shield, Activity, Filter, Wand2, Database, Lock, Code2, MoveRight } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap, Shield, Activity, Filter, Wand2, Database, Lock, Code2, MoveRight, Menu, X } from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 
 function HowItWorksSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -105,6 +105,7 @@ import { FeaturesSection } from './FeaturesSection';
 export default function LandingPage({ onEnter }: { onEnter: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -127,15 +128,15 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
       
       {/* Floating Pill Navbar */}
       <div className="fixed z-50 flex justify-center left-0 right-0 px-4 md:px-6 top-4 sm:top-6 pointer-events-none">
-        <nav className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-slate-800/80 w-full max-w-[1200px] h-16 sm:h-20 px-4 sm:px-8">
+        <nav className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-slate-800/80 w-full max-w-[1200px] h-16 sm:h-20 px-4 sm:px-8 relative">
           <div className="flex items-center h-full gap-2 sm:gap-6 md:gap-10">
             <img 
               src="/N-nex.png" 
               alt="Logo" 
-              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-8 sm:h-12 shrink-0"
+              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-10 sm:h-16 shrink-0"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             />
-            <div className="hidden sm:flex items-center gap-1 md:gap-2">
+            <div className="hidden md:flex items-center gap-1">
               <button 
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
@@ -161,14 +162,62 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             </div>
           </div>
           
-          <button
-            onClick={onEnter}
-            className="group px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] shrink-0"
-          >
-            <span className="text-[12px] sm:text-[14px] font-semibold font-sans tracking-tight whitespace-nowrap">
-              Workspace
-            </span>
-          </button>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button
+              onClick={onEnter}
+              className="group px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] shrink-0"
+            >
+              <span className="text-[12px] sm:text-[14px] font-semibold font-sans tracking-tight whitespace-nowrap">
+                Workspace
+              </span>
+            </button>
+            <button 
+              className="md:hidden p-2 text-slate-300 hover:text-white bg-slate-800/50 rounded-full transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="absolute top-[calc(100%+12px)] left-0 right-0 bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-2 sm:p-4 flex flex-col gap-1 z-50 md:hidden pointer-events-auto"
+              >
+                <button 
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
+                >
+                  Home
+                </button>
+                <button 
+                  onClick={() => {
+                    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
+                >
+                  How it works
+                </button>
+                <button 
+                  onClick={() => {
+                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
+                >
+                  Features
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
       </div>
 
