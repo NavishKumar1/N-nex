@@ -1052,10 +1052,11 @@ export default function App() {
           </div>
           <button 
             onClick={handleForceResync}
-            className="px-3 py-1.5 border border-red-955/30 bg-red-950/5 text-red-500 hover:bg-red-500 hover:text-black hover:border-red-400 font-black text-[10px] tracking-widest uppercase transition-all duration-150 rounded-none ml-2"
+            className="px-2 sm:px-3 py-1.5 border border-red-955/30 bg-red-950/5 text-red-500 hover:bg-red-500 hover:text-black hover:border-red-400 font-black text-[10px] tracking-widest uppercase transition-all duration-150 rounded-none ml-2"
             title="Wipe cached arrays and reset context"
           >
-            [ // FORCE RESYNC ENGINE ]
+            <span className="hidden sm:inline">[ // FORCE RESYNC ENGINE ]</span>
+            <span className="sm:hidden">[ // RESYNC ]</span>
           </button>
           <button 
             onClick={() => setShowSettings(!showSettings)}
@@ -1404,35 +1405,35 @@ export default function App() {
                     <div 
                       key={log.id} 
                       onClick={() => restoreFromHistoryNode(log.repo)}
-                      className="p-4 flex items-center justify-between text-xs hover:bg-zinc-950/60 transition-all duration-150 cursor-pointer group"
+                      className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs hover:bg-zinc-950/60 transition-all duration-150 cursor-pointer group gap-3 sm:gap-0"
                     >
-                      <div className="space-y-1 font-mono text-left">
-                        <div className="text-white font-bold tracking-wider uppercase text-[11px] group-hover:text-amber-400 transition-colors">
+                      <div className="space-y-1 font-mono text-left w-full sm:w-auto">
+                        <div className="text-white font-bold tracking-wider uppercase text-[11px] group-hover:text-amber-400 transition-colors truncate max-w-[280px] sm:max-w-none">
                           {log.repo}
                         </div>
                         <div className="text-[9px] text-zinc-500 flex flex-wrap items-center gap-x-3 gap-y-1">
                           <span>TIMESTAMP: {log.timestamp}</span>
-                          <span>•</span>
+                          <span className="hidden sm:inline">•</span>
                           <span>COMPONENTS: {log.fileCount} ENTRIES</span>
-                          <span>•</span>
+                          <span className="hidden sm:inline">•</span>
                           <span>CALCULATED: {log.tokens.toLocaleString()} TOKENS</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
                         {!isLocal && (
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               restoreFromHistoryNode(log.repo);
                             }}
-                            className="border border-zinc-805 text-zinc-400 hover:border-white hover:text-white px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-150 bg-zinc-950"
+                            className="flex-1 sm:flex-initial border border-zinc-805 text-zinc-400 hover:border-white hover:text-white px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-150 bg-zinc-950 text-center"
                           >
                             Stage URL
                           </button>
                         )}
                         <button 
                           onClick={(e) => deleteHistoryEntry(log.id, e)}
-                          className="p-1.5 border border-zinc-900 text-zinc-600 hover:text-red-400 hover:border-red-950 transition-all duration-150 bg-zinc-950"
+                          className="flex-none p-1.5 border border-zinc-900 text-zinc-600 hover:text-red-400 hover:border-red-950 transition-all duration-150 bg-zinc-950"
                           title="Delete telemetry garbage block"
                         >
                           <Trash2 size={12} />
