@@ -964,14 +964,14 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         <div className="flex items-center gap-4">
           <button
             onClick={onBackToLanding}
-            className="w-8 h-8 flex items-center justify-center hover:bg-slate-800/80 rounded-md transition-colors group"
+            className="flex items-center justify-center hover:bg-slate-800/80 rounded-md transition-colors group p-2"
             title="Return to Interface"
           >
-            <img src="/N-nex.png" alt="N-nex" className="w-5 h-5 opacity-80 group-hover:opacity-100 object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)]" />
+            <img src="/N-nex.png" alt="N-nex" className="h-10 sm:h-12 cursor-pointer opacity-90 group-hover:opacity-100 object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)]" />
           </button>
           <div className="flex items-center gap-3 border-l border-slate-800/80 pl-4">
             <div className="w-1.5 h-1.5 bg-[#38bdf8] rounded-full animate-pulse shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
-            <span className="text-white font-bold tracking-[0.25em] text-xs uppercase font-sans">N-NEX <span className="text-[#38bdf8]">Workspace</span></span>
+            <span className="text-white font-bold tracking-widest text-xs uppercase font-sans">Workspace</span>
           </div>
         </div>
         <div className="flex items-center gap-4">

@@ -181,21 +181,6 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             >
               FAQ
             </button>
-            <span className="w-px h-4 bg-slate-700 mx-1"></span>
-            <button 
-              onClick={() => window.open('https://github.com', '_blank')}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors flex items-center gap-1.5"
-            >
-              <Github className="w-4 h-4" />
-              GitHub
-            </button>
-            <button 
-              onClick={() => window.open('#', '_blank')}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors flex items-center gap-1.5"
-            >
-              <FileText className="w-4 h-4" />
-              Docs
-            </button>
           </div>
           
           <div className="flex items-center gap-3 justify-end sm:w-auto xl:w-48">
@@ -272,12 +257,12 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                   </button>
                   <button 
                     onClick={() => {
-                      window.open('https://github.com', '_blank');
+                      window.open('#', '_blank');
                       setIsMobileMenuOpen(false);
                     }}
                     className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center gap-2"
                   >
-                    <Github className="w-4 h-4" /> GitHub
+                    <FileText className="w-4 h-4" /> Docs
                   </button>
                 </div>
               </motion.div>
@@ -312,10 +297,10 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                Start building
              </button>
              <button
-                className="bg-transparent border border-slate-700/80 text-white px-8 py-3.5 sm:px-10 sm:py-4 rounded-md font-sans font-semibold text-sm hover:bg-slate-800/50 hover:border-slate-500 transition-colors w-full sm:w-auto"
-                onClick={onEnter}
+                className="bg-transparent border border-slate-700/80 text-white px-8 py-3.5 sm:px-10 sm:py-4 rounded-md font-sans font-semibold text-sm hover:bg-slate-800/50 hover:border-slate-500 transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
+                onClick={() => window.open('#', '_blank')}
              >
-               Get a demo
+               <FileText className="w-4 h-4" /> Docs
              </button>
            </div>
          </motion.div>
