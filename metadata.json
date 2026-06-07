@@ -1,5 +1,5 @@
 {
-  "name": "Context.Engine",
+  "name": "N-nex",
   "description": "Ultra-minimalist codebase context builder for LLMs. Process local folders or GitHub repositories into structured Markdown.",
   "requestFramePermissions": [],
   "majorCapabilities": [

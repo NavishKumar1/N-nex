@@ -74,8 +74,8 @@ const DEFAULT_IGNORE_DIRECTORIES = [
 ];
 
 const DEFAULT_FETCH_LIMIT = 150;
-const STORAGE_KEY = 'context_engine_filters_v3';
-const HISTORY_STORAGE_KEY = 'context_engine_history_v3';
+const STORAGE_KEY = 'n_nex_filters_v3';
+const HISTORY_STORAGE_KEY = 'n_nex_history_v3';
 
 const PROMPT_PRESETS = {
   NONE: { 
@@ -96,7 +96,7 @@ const PROMPT_PRESETS = {
   }
 };
 
-export default function App() {
+function ContextEngineApp({ onBackToLanding }: { onBackToLanding: () => void }) {
   // --- UI/UX States ---
   const [githubUrl, setGithubUrl] = useState('');
   const [branch, setBranch] = useState('');
@@ -894,7 +894,7 @@ export default function App() {
           } else if (actionType === 'download_json') {
             const jsonStructure = {
               meta: {
-                app: "Context.Engine",
+                app: "N-nex",
                 preset: selectedPreset,
                 presetDirective: PROMPT_PRESETS[selectedPreset].text,
                 layersCompacted: activeLayers,
@@ -960,7 +960,7 @@ export default function App() {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    setStatus('SYSTEM ARCHITECTURE PURGED: Active memory cached arrays wiped and context engine re-initiated.');
+    setStatus('SYSTEM ARCHITECTURE PURGED: Active memory cached arrays wiped and n-nex re-initiated.');
   };
 
   const handleApplyHistoryRepo = (savedRepoUrl: string) => {
@@ -1042,9 +1042,18 @@ export default function App() {
       
       {/* Stark Void Navigation Header */}
       <nav className="border-b border-zinc-900 bg-[#0B0B0C] h-14 shrink-0 flex items-center justify-between px-6 z-10">
-        <div className="flex items-center gap-3">
-          <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-          <span className="text-white font-bold tracking-[0.25em] text-xs uppercase">Context.Engine</span>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onBackToLanding}
+            className="w-7 h-7 flex items-center justify-center hover:bg-zinc-900 rounded transition-colors group"
+            title="Return to Interface"
+          >
+            <img src="/N-nex.png" alt="N-nex" className="w-5 h-5 opacity-80 group-hover:opacity-100 object-contain" />
+          </button>
+          <div className="flex items-center gap-3 border-l border-zinc-900 pl-4">
+            <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+            <span className="text-white font-bold tracking-[0.25em] text-xs uppercase font-sans">N-NEX</span>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:block px-2.5 py-1 border border-zinc-900 text-[10px] text-zinc-500 tracking-wider">
@@ -1812,13 +1821,13 @@ export default function App() {
               {/* Complete Legal Texts with low-opacity monospace theme */}
               <div className="text-zinc-400 font-mono text-xs space-y-6 leading-relaxed">
                 <p>
-                  At <strong className="text-zinc-200">Context.Engine</strong> (referred to below as "the Platform", "we", "us", or "our"), data privacy is not a feature or a policy setting—it is the foundational core of our application architecture. This document outlines the technical framework of our software and states why our system is structurally engineered to guarantee your absolute privacy, anonymity, and legal safety now and in the future.
+                  At <strong className="text-zinc-200">N-nex</strong> (referred to below as "the Platform", "we", "us", or "our"), data privacy is not a feature or a policy setting—it is the foundational core of our application architecture. This document outlines the technical framework of our software and states why our system is structurally engineered to guarantee your absolute privacy, anonymity, and legal safety now and in the future.
                 </p>
 
                 <div className="space-y-2 border-t border-zinc-900/50 pt-4">
                   <h3 className="text-zinc-200 font-bold uppercase tracking-wider text-[11px]">1. CORE ARCHITECTURAL PARADIGM: ZERO-SERVER ENVIRONMENT</h3>
                   <p>
-                    Context.Engine operates exclusively as a single-page client-side web application. Our software runs entirely inside your device’s sandbox browser environment.
+                    N-nex operates exclusively as a single-page client-side web application. Our software runs entirely inside your device’s sandbox browser environment.
                   </p>
                   <ul className="list-disc list-inside pl-2 space-y-1.5 text-zinc-400">
                     <li><strong className="text-zinc-350">No Cloud Infrastructure:</strong> We do not own, lease, or operate external web servers, application servers, cloud databases, or analytics log repositories.</li>
@@ -1890,7 +1899,7 @@ export default function App() {
                 <div className="space-y-2 border-t border-zinc-900/50 pt-4">
                   <h3 className="text-zinc-200 font-bold uppercase tracking-wider text-[11px]">4. GLOBAL REGULATORY COMPLIANCE &amp; HARDWARE PROTECTION</h3>
                   <p>
-                    Because Context.Engine operates entirely inside your local client browser sandbox, it inherently provides top-tier compliance metrics with stringent global data privacy regimes:
+                    Because N-nex operates entirely inside your local client browser sandbox, it inherently provides top-tier compliance metrics with stringent global data privacy regimes:
                   </p>
                   <ul className="list-disc list-inside pl-2 space-y-1.5 text-zinc-400">
                     <li><strong className="text-zinc-355">GDPR &amp; CCPA/CPRA Compliance:</strong> We do not collect, monetize, sell, or rent your intellectual property, personal consumer identifiers, or application data. Your source code never hits our server boundaries. You retain 100% data erasure rights since you control your own local device storage.</li>
@@ -1908,7 +1917,7 @@ export default function App() {
         <footer className="border-t border-zinc-900 mt-12 pt-6 pb-2 text-[10px] font-mono text-zinc-600 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-zinc-700 rounded-full animate-pulse" />
-            <span>CONTEXT.ENGINE // ZERO-SERVER LOCAL CLIENT SECURED</span>
+            <span>N-NEX // ZERO-SERVER LOCAL CLIENT SECURED</span>
           </div>
           <div className="flex items-center gap-4">
             <button 
@@ -1927,4 +1936,181 @@ export default function App() {
       <div className="fixed inset-0 -z-10 pointer-events-none opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(#fff 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
     </div>
   );
+}
+
+function LandingPage({ onEnter }: { onEnter: () => void }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-[150vh] bg-[#0B0B0C] text-white flex flex-col font-mono relative overflow-x-hidden selection:bg-white selection:text-black">
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0" style={{ backgroundImage: 'radial-gradient(#fff 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
+      
+      {/* Floating Pill Navbar */}
+      <motion.div
+        className="fixed z-50 flex justify-center left-0 right-0 px-4 md:px-0 pointer-events-none"
+        initial={false}
+        animate={{ 
+          top: scrolled ? "1rem" : "2rem",
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        <motion.nav
+          className="flex items-center justify-between bg-zinc-900/90 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-zinc-800"
+          initial={false}
+          animate={{
+            width: scrolled ? "90%" : "95%",
+            maxWidth: "1200px",
+            height: scrolled ? 80 : 110,
+            paddingLeft: scrolled ? "1.5rem" : "3rem",
+            paddingRight: scrolled ? "1rem" : "1.5rem"
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <div className="flex items-center h-full gap-4 md:gap-10">
+            <motion.img 
+              src="/N-nex.png" 
+              alt="Logo" 
+              className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer"
+              initial={false}
+              animate={{ height: scrolled ? 56 : 86 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+            <div className="hidden sm:flex items-center gap-2">
+              <button 
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="bg-zinc-800 text-white md:bg-white md:text-zinc-900 px-6 md:px-8 py-2 md:py-3 rounded-full font-sans font-semibold text-[13px] md:text-[15px] hover:bg-zinc-700 md:hover:bg-zinc-200 transition-colors shadow-sm"
+              >
+                Home
+              </button>
+            </div>
+          </div>
+          
+          <button
+            onClick={onEnter}
+            className="group px-6 sm:px-10 py-3 sm:py-4 rounded-full bg-white text-zinc-900 hover:bg-zinc-200 transition-all duration-300 flex items-center justify-center gap-2 shadow-md shrink-0"
+          >
+            <span className="text-[13px] sm:text-[15px] font-bold font-sans tracking-tight">
+              Workspace
+            </span>
+          </button>
+        </motion.nav>
+      </motion.div>
+
+      {/* Hero Content */}
+      <div className="flex-1 flex flex-col md:flex-row items-center justify-center pt-32 md:pt-48 pb-24 md:pb-32 z-10 px-6 max-w-7xl mx-auto w-full gap-12 md:gap-8">
+        
+        {/* Left Side: Content */}
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex flex-col items-start text-left space-y-8 w-full md:w-1/2 mt-12 md:mt-0"
+        >
+          <div className="space-y-6 md:space-y-8 w-full">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-sans font-black tracking-tight text-white leading-[1.1] drop-shadow-sm">
+              Build context <br className="hidden sm:block" />at lightspeed.
+            </h1>
+            <p className="text-sm md:text-lg text-zinc-400 font-sans max-w-lg leading-relaxed">
+              N-nex is a high-velocity, memory-accelerated repository compiler. We process local folders or GitHub repositories into structured Markdown with zero cloud servers.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-[9px] sm:text-[11px] text-zinc-500 tracking-widest uppercase font-bold pt-4 md:pt-8 font-mono">
+              <span className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                Zero Servers
+              </span>
+              <span className="w-1.5 h-1.5 bg-zinc-700 rounded-full" />
+              <span>Browser Isolation</span>
+              <span className="w-1.5 h-1.5 bg-zinc-700 rounded-full" />
+              <span>Local Engine</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Right Side: Visual Flow */}
+        <motion.div 
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="w-full md:w-1/2 flex items-center justify-center relative md:justify-end pr-0 md:pr-4"
+        >
+          <div className="relative w-full max-w-[320px] sm:max-w-[400px] aspect-[4/3] flex items-center justify-center mt-8 md:mt-0">
+            {/* SVG Base Track connecting the nodes */}
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none" 
+              viewBox="0 0 400 300"
+            >
+              <path 
+                d="M 60,60 C 160,60 130,178 198,178 C 266,178 280,192 348,192" 
+                fill="none" 
+                stroke="#27272a" 
+                strokeWidth="2" 
+                strokeDasharray="6 6" 
+              />
+              <path 
+                d="M 60,60 C 160,60 130,178 198,178 C 266,178 280,192 348,192" 
+                fill="none" 
+                stroke="#ffffff" 
+                strokeWidth="2" 
+                strokeDasharray="6 6" 
+                opacity="0.3"
+                style={{ animation: 'dash 30s linear infinite' }}
+              />
+            </svg>
+            
+            {/* GitHub / Fetch Node */}
+            <div className="absolute top-[20px] left-[20px] flex flex-col items-center gap-3">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center shadow-2xl relative z-10 hover:scale-105 transition-transform duration-300">
+                <Github size={28} className="text-white sm:w-8 sm:h-8" />
+              </div>
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-500 font-mono font-bold">1. Fetch</span>
+            </div>
+
+            {/* List / Processing Node */}
+            <div className="absolute top-[130px] left-[150px] flex flex-col items-center gap-3 scale-90 sm:scale-100">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#0B0B0C] border border-zinc-500/50 flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.05)] relative z-10 hover:border-white transition-colors duration-500">
+                 <Layers size={32} className="text-white sm:w-9 sm:h-9" />
+              </div>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-widest text-white font-mono font-bold drop-shadow-md">2. Process & List</span>
+            </div>
+
+            {/* Download / Export Node */}
+            <div className="absolute top-[160px] right-[20px] flex flex-col items-center gap-3">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center shadow-xl relative z-10 hover:scale-105 transition-transform duration-300">
+                <Download size={20} className="text-white sm:w-6 sm:h-6" />
+              </div>
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-500 font-mono font-bold">3. Export</span>
+            </div>
+            
+          </div>
+        </motion.div>
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="fixed bottom-6 sm:bottom-8 left-0 right-0 text-center text-[8px] sm:text-[9px] text-zinc-600 tracking-widest uppercase pointer-events-none z-10"
+      >
+        V1.2.0 // VOID.ARCHITECTS
+      </motion.div>
+    </div>
+  );
+}
+
+export default function App() {
+  const [showLanding, setShowLanding] = useState(true);
+  
+  if (showLanding) {
+    return <LandingPage onEnter={() => setShowLanding(false)} />;
+  }
+  
+  return <ContextEngineApp onBackToLanding={() => setShowLanding(true)} />;
 }
