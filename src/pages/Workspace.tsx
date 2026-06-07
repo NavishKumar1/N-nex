@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { QuickStartTour } from '../components/QuickStartTour';
 import { 
   FolderSearch, Github, Settings, Copy, Check, Trash2, Filter, ArrowRight, Activity, Code,
   AlertCircle, GitBranch, X, FileCode, Terminal, Sparkles, Layers, Clock, LayoutGrid, Download,
@@ -957,7 +958,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
   return (
     <div className="min-h-screen bg-[#0B0B0C] text-zinc-400 font-mono flex flex-col antialiased selection:bg-white selection:text-black">
-      
+      <QuickStartTour />
       {/* Stark Void Navigation Header */}
       <nav className="border-b border-zinc-900 bg-[#0B0B0C] h-14 shrink-0 flex items-center justify-between px-6 z-10">
         <div className="flex items-center gap-4">
@@ -1168,6 +1169,36 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               </div>
             </div>
 
+            {/* LOCAL FILE UPLOAD ENTRANCE */}
+            <div id="tour-step-1-local" className="border border-zinc-900 p-8 bg-zinc-950/40 w-full space-y-4">
+              <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
+                <div className="space-y-1">
+                  <h3 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                    <FolderSearch size={14} className="text-white" />
+                    Secure Local Ingestion
+                  </h3>
+                  <p className="text-[11px] text-zinc-500 leading-relaxed">
+                    Direct local directory access runs completely in your browser memory block. Zero external server uploads.
+                  </p>
+                </div>
+                <button
+                  onClick={handleFolderSelect}
+                  className="bg-zinc-800 hover:bg-zinc-700 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-all"
+                >
+                  Select Directory
+                </button>
+              </div>
+              <input
+                type="file"
+                // @ts-ignore
+                webkitdirectory=""
+                directory=""
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleHTML5FolderSelect}
+              />
+            </div>
+
             {/* CRITICAL FIX: CLEANED UP FULL-WIDTH WORKSPACE PIPELINE INPUT */}
             <div className="border border-zinc-900 p-8 bg-zinc-950/40 w-full space-y-4">
               <div className="mb-2">
@@ -1187,6 +1218,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       Repository Destination URL
                     </label>
                     <input 
+                      id="tour-step-2-github"
                       type="text"
                       placeholder="github.com/username/repository"
                       value={githubUrl}
@@ -1226,6 +1258,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
                   <div className="flex gap-3 flex-1 sm:flex-initial">
                     <button 
+                      id="tour-step-3-compile"
                       onClick={() => executeGithubStreaming(false)} 
                       disabled={isLoading || !githubUrl} 
                       className="flex-1 sm:flex-none border border-white bg-white text-black hover:bg-transparent hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-all disabled:opacity-20"

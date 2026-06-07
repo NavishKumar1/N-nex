@@ -103,6 +103,7 @@ function HowItWorksSection() {
 import { FeaturesSection } from './FeaturesSection';
 import { ComparisonSection } from './ComparisonSection';
 import { FAQSection } from './FAQSection';
+import { ShowcaseSection } from './ShowcaseSection';
 
 export default function LandingPage({ onEnter }: { onEnter: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -423,6 +424,9 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
 
       {/* Features Grid Section */}
       <FeaturesSection />
+
+      {/* Output Showcase Section */}
+      <ShowcaseSection />
 
       {/* Top Swoosh Divider (Purple) - Valley shape */}
       <motion.div 
