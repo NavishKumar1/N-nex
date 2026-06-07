@@ -1940,13 +1940,21 @@ function ContextEngineApp({ onBackToLanding }: { onBackToLanding: () => void }) 
 
 function LandingPage({ onEnter }: { onEnter: () => void }) {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -1966,11 +1974,11 @@ function LandingPage({ onEnter }: { onEnter: () => void }) {
           className="flex items-center justify-between bg-zinc-900/90 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-zinc-800"
           initial={false}
           animate={{
-            width: scrolled ? "90%" : "95%",
+            width: scrolled ? (isMobile ? "95%" : "90%") : (isMobile ? "100%" : "95%"),
             maxWidth: "1200px",
-            height: scrolled ? 80 : 110,
-            paddingLeft: scrolled ? "1.5rem" : "3rem",
-            paddingRight: scrolled ? "1rem" : "1.5rem"
+            height: scrolled ? (isMobile ? 64 : 80) : (isMobile ? 80 : 110),
+            paddingLeft: scrolled ? (isMobile ? "1.25rem" : "1.5rem") : (isMobile ? "1.5rem" : "3rem"),
+            paddingRight: scrolled ? (isMobile ? "1rem" : "1rem") : (isMobile ? "1.25rem" : "1.5rem")
           }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
@@ -1980,7 +1988,7 @@ function LandingPage({ onEnter }: { onEnter: () => void }) {
               alt="Logo" 
               className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer"
               initial={false}
-              animate={{ height: scrolled ? 56 : 86 }}
+              animate={{ height: scrolled ? (isMobile ? 36 : 56) : (isMobile ? 48 : 86) }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <div className="hidden sm:flex items-center gap-2">
@@ -1995,9 +2003,9 @@ function LandingPage({ onEnter }: { onEnter: () => void }) {
           
           <button
             onClick={onEnter}
-            className="group px-6 sm:px-10 py-3 sm:py-4 rounded-full bg-white text-zinc-900 hover:bg-zinc-200 transition-all duration-300 flex items-center justify-center gap-2 shadow-md shrink-0"
+            className="group px-5 sm:px-10 py-2.5 sm:py-4 rounded-full bg-white text-zinc-900 hover:bg-zinc-200 transition-all duration-300 flex items-center justify-center gap-2 shadow-md shrink-0"
           >
-            <span className="text-[13px] sm:text-[15px] font-bold font-sans tracking-tight">
+            <span className="text-[12px] sm:text-[15px] font-bold font-sans tracking-tight">
               Workspace
             </span>
           </button>
@@ -2005,21 +2013,22 @@ function LandingPage({ onEnter }: { onEnter: () => void }) {
       </motion.div>
 
       {/* Hero Content */}
-      <div className="flex-1 flex flex-col md:flex-row items-center justify-center pt-32 md:pt-48 pb-24 md:pb-32 z-10 px-6 max-w-7xl mx-auto w-full gap-12 md:gap-8">
+      <div className="flex-1 flex flex-col lg:flex-row items-center justify-between pt-28 md:pt-48 pb-20 md:pb-32 z-10 px-4 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[100vw] mx-auto w-full gap-12 lg:gap-12">
         
         {/* Left Side: Content */}
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col items-start text-left space-y-8 w-full md:w-1/2 mt-12 md:mt-0"
+          className="flex flex-col items-start text-left space-y-8 w-full lg:w-[45%] xl:w-[40%] mt-8 md:mt-0"
         >
           <div className="space-y-6 md:space-y-8 w-full">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-sans font-black tracking-tight text-white leading-[1.1] drop-shadow-sm">
-              Build context <br className="hidden sm:block" />at lightspeed.
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] xl:text-[6rem] font-sans font-black tracking-tighter text-white leading-[1.05] drop-shadow-sm">
+              Inject codebase <br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 to-zinc-500">context into AI.</span>
             </h1>
-            <p className="text-sm md:text-lg text-zinc-400 font-sans max-w-lg leading-relaxed">
-              N-nex is a high-velocity, memory-accelerated repository compiler. We process local folders or GitHub repositories into structured Markdown with zero cloud servers.
+            <p className="text-base md:text-lg lg:text-xl text-zinc-400 font-sans max-w-2xl leading-relaxed">
+              N-nex is an ultra-fast, local-first repository extraction engine. We transform complex Github repos and local directories into perfectly structured Markdown tokens—all without a single cloud server.
             </p>
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-[9px] sm:text-[11px] text-zinc-500 tracking-widest uppercase font-bold pt-4 md:pt-8 font-mono">
               <span className="flex items-center gap-2">
@@ -2039,54 +2048,78 @@ function LandingPage({ onEnter }: { onEnter: () => void }) {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="w-full md:w-1/2 flex items-center justify-center relative md:justify-end pr-0 md:pr-4"
+          className="w-full lg:w-[55%] xl:w-[60%] flex items-center justify-center relative mt-16 md:mt-0"
         >
-          <div className="relative w-full max-w-[320px] sm:max-w-[400px] aspect-[4/3] flex items-center justify-center mt-8 md:mt-0">
+          <div className="relative w-full max-w-[600px] aspect-[6/5] flex items-center justify-center">
             {/* SVG Base Track connecting the nodes */}
             <svg 
               className="absolute inset-0 w-full h-full pointer-events-none" 
-              viewBox="0 0 400 300"
+              viewBox="0 0 600 500"
             >
               <path 
-                d="M 60,60 C 160,60 130,178 198,178 C 266,178 280,192 348,192" 
+                d="M 60,75 C 150,75 150,250 240,250 C 315,250 315,100 390,100 C 450,100 450,325 510,325" 
                 fill="none" 
                 stroke="#27272a" 
                 strokeWidth="2" 
                 strokeDasharray="6 6" 
               />
               <path 
-                d="M 60,60 C 160,60 130,178 198,178 C 266,178 280,192 348,192" 
+                d="M 60,75 C 150,75 150,250 240,250 C 315,250 315,100 390,100 C 450,100 450,325 510,325" 
                 fill="none" 
                 stroke="#ffffff" 
-                strokeWidth="2" 
-                strokeDasharray="6 6" 
+                strokeWidth="3" 
+                strokeDasharray="8 8" 
                 opacity="0.3"
                 style={{ animation: 'dash 30s linear infinite' }}
               />
             </svg>
             
-            {/* GitHub / Fetch Node */}
-            <div className="absolute top-[20px] left-[20px] flex flex-col items-center gap-3">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center shadow-2xl relative z-10 hover:scale-105 transition-transform duration-300">
-                <Github size={28} className="text-white sm:w-8 sm:h-8" />
-              </div>
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-500 font-mono font-bold">1. Fetch</span>
+            {/* Node 1: Fetch Source (Blue) */}
+            <div className="absolute z-10" style={{ left: '10%', top: '15%', transform: 'translate(-50%, -50%)' }}>
+              <motion.div
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-zinc-950/80 backdrop-blur-md border border-blue-500/30 flex items-center justify-center shadow-2xl relative cursor-pointer"
+                animate={{ boxShadow: ['0 0 20px rgba(59,130,246,0.15)', '0 0 50px rgba(59,130,246,0.5)', '0 0 20px rgba(59,130,246,0.15)'] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <Github className="text-blue-400 w-5 h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 relative z-20" />
+              </motion.div>
+              <span className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] sm:text-[9px] lg:text-xs uppercase tracking-widest text-blue-400/80 font-mono font-bold drop-shadow-md">1. Source</span>
             </div>
 
-            {/* List / Processing Node */}
-            <div className="absolute top-[130px] left-[150px] flex flex-col items-center gap-3 scale-90 sm:scale-100">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#0B0B0C] border border-zinc-500/50 flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.05)] relative z-10 hover:border-white transition-colors duration-500">
-                 <Layers size={32} className="text-white sm:w-9 sm:h-9" />
-              </div>
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-widest text-white font-mono font-bold drop-shadow-md">2. Process & List</span>
+            {/* Node 2: Parse AST (Purple) */}
+            <div className="absolute z-10" style={{ left: '40%', top: '50%', transform: 'translate(-50%, -50%)' }}>
+              <motion.div
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-[#0B0B0C]/80 backdrop-blur-md border border-purple-500/40 flex items-center justify-center shadow-2xl relative cursor-pointer"
+                animate={{ boxShadow: ['0 0 20px rgba(168,85,247,0.15)', '0 0 60px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.15)'] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
+              >
+                 <FileCode className="text-purple-400 w-5 h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 relative z-20" />
+              </motion.div>
+              <span className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] sm:text-[9px] lg:text-xs uppercase tracking-widest text-purple-400/80 font-mono font-bold drop-shadow-md">2. Parse</span>
             </div>
 
-            {/* Download / Export Node */}
-            <div className="absolute top-[160px] right-[20px] flex flex-col items-center gap-3">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center shadow-xl relative z-10 hover:scale-105 transition-transform duration-300">
-                <Download size={20} className="text-white sm:w-6 sm:h-6" />
-              </div>
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-500 font-mono font-bold">3. Export</span>
+            {/* Node 3: String Compression & Layers (Pink) */}
+            <div className="absolute z-10" style={{ left: '65%', top: '20%', transform: 'translate(-50%, -50%)' }}>
+              <motion.div
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-zinc-950/80 backdrop-blur-md border border-pink-500/30 flex items-center justify-center shadow-2xl relative cursor-pointer"
+                animate={{ boxShadow: ['0 0 20px rgba(236,72,153,0.15)', '0 0 50px rgba(236,72,153,0.5)', '0 0 20px rgba(236,72,153,0.15)'] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
+              >
+                <Layers className="text-pink-400 w-5 h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 relative z-20" />
+              </motion.div>
+              <span className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] sm:text-[9px] lg:text-xs uppercase tracking-widest text-pink-400/80 font-mono font-bold drop-shadow-md">3. Layer</span>
+            </div>
+
+            {/* Node 4: AI Ready Output (Green) */}
+            <div className="absolute z-10" style={{ left: '85%', top: '65%', transform: 'translate(-50%, -50%)' }}>
+              <motion.div
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-zinc-950/80 backdrop-blur-md border border-green-500/40 flex items-center justify-center shadow-2xl relative cursor-pointer"
+                animate={{ boxShadow: ['0 0 20px rgba(34,197,94,0.15)', '0 0 60px rgba(34,197,94,0.6)', '0 0 20px rgba(34,197,94,0.15)'] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 2.1 }}
+              >
+                <Sparkles className="text-green-400 w-5 h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 relative z-20" />
+              </motion.div>
+              <span className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] sm:text-[9px] lg:text-xs uppercase tracking-widest text-green-400/80 font-mono font-bold drop-shadow-md">4. Output</span>
             </div>
             
           </div>
