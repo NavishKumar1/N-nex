@@ -145,7 +145,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
           <div className="hidden lg:flex items-center gap-1 xl:gap-2">
             <button 
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
             >
               Home
             </button>
@@ -153,7 +153,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
               onClick={() => {
                 document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
             >
               How it works
             </button>
@@ -161,23 +161,15 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
               onClick={() => {
                 document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
             >
               Features
             </button>
             <button 
               onClick={() => {
-                document.getElementById('output')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
-            >
-              Output
-            </button>
-            <button 
-              onClick={() => {
                 document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
             >
               Use Cases
             </button>
@@ -185,23 +177,38 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
               onClick={() => {
                 document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
             >
               FAQ
             </button>
+            <span className="w-px h-4 bg-slate-700 mx-1"></span>
+            <button 
+              onClick={() => window.open('https://github.com', '_blank')}
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors flex items-center gap-1.5"
+            >
+              <Github className="w-4 h-4" />
+              GitHub
+            </button>
+            <button 
+              onClick={() => window.open('#', '_blank')}
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors flex items-center gap-1.5"
+            >
+              <FileText className="w-4 h-4" />
+              Docs
+            </button>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-4 sm:w-48 justify-end">
+          <div className="flex items-center gap-3 justify-end sm:w-auto xl:w-48">
             <button
               onClick={onEnter}
-              className="group px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] shrink-0"
+              className="group px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#38bdf8] text-slate-950 hover:bg-sky-400 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(56,189,248,0.2)] shrink-0"
             >
-              <span className="text-[12px] sm:text-[14px] font-semibold font-sans tracking-tight whitespace-nowrap">
+              <span className="text-[13px] sm:text-[14px] font-bold font-sans tracking-tight whitespace-nowrap">
                 Workspace
               </span>
             </button>
             <button 
-              className="md:hidden p-2 text-slate-300 hover:text-white bg-slate-800/50 rounded-full transition-colors"
+              className="lg:hidden p-2 text-slate-300 hover:text-white bg-slate-800/50 rounded-full transition-colors border border-slate-700"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -215,62 +222,64 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="absolute top-[calc(100%+12px)] left-0 right-0 bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-2 sm:p-4 flex flex-col gap-1 z-50 md:hidden pointer-events-auto"
+                className="absolute top-[calc(100%+8px)] left-0 right-0 bg-slate-900 border border-slate-700/80 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden p-3 flex flex-col gap-1 z-50 lg:hidden pointer-events-auto"
               >
-                <button 
-                  onClick={() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
-                >
-                  Home
-                </button>
-                <button 
-                  onClick={() => {
-                    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
-                >
-                  How it works
-                </button>
-                <button 
-                  onClick={() => {
-                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
-                >
-                  Features
-                </button>
-                <button 
-                  onClick={() => {
-                    document.getElementById('output')?.scrollIntoView({ behavior: 'smooth' });
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
-                >
-                  Output
-                </button>
-                <button 
-                  onClick={() => {
-                    document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
-                >
-                  Use Cases
-                </button>
-                <button 
-                  onClick={() => {
-                    document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
-                >
-                  FAQ
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button 
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
+                  >
+                    Home
+                  </button>
+                  <button 
+                    onClick={() => {
+                      document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
+                  >
+                    How it works
+                  </button>
+                  <button 
+                    onClick={() => {
+                      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
+                  >
+                    Features
+                  </button>
+                  <button 
+                    onClick={() => {
+                      document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
+                  >
+                    Use Cases
+                  </button>
+                  <button 
+                    onClick={() => {
+                      document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
+                  >
+                    FAQ
+                  </button>
+                  <button 
+                    onClick={() => {
+                      window.open('https://github.com', '_blank');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Github className="w-4 h-4" /> GitHub
+                  </button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

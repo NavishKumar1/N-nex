@@ -61,57 +61,57 @@ export function QuickStartTour() {
       steps={steps}
       styles={{
         options: {
-          arrowColor: '#0B0B0C',
-          backgroundColor: '#0B0B0C',
-          textColor: '#e4e4e7',
-          primaryColor: '#ffffff', // Stark white like N-nex primary buttons
-          overlayColor: 'rgba(0, 0, 0, 0.85)',
+          arrowColor: '#0f172a', // slate-900
+          backgroundColor: '#0f172a', 
+          textColor: '#f8fafc', // slate-50
+          primaryColor: '#38bdf8', // sky-400
+          overlayColor: 'rgba(2, 6, 23, 0.85)', // slate-950 with opacity
         },
         tooltip: {
-          borderRadius: '0px', // N-nex uses harsh corners often
+          borderRadius: '12px',
           padding: '24px',
-          border: '1px solid #18181b', // zinc-900
+          border: '1px solid #1e293b', // slate-800
         },
         tooltipContainer: {
           textAlign: 'left' as const,
         },
         tooltipTitle: {
-          fontSize: '14px',
-          fontWeight: '900',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
+          fontSize: '15px',
+          fontWeight: '700',
+          textTransform: 'none',
+          letterSpacing: '0',
           marginBottom: '8px',
-          fontFamily: 'monospace',
+          fontFamily: 'Space Grotesk, sans-serif',
           color: '#ffffff',
         },
         tooltipContent: {
-          fontSize: '12px',
+          fontSize: '13px',
           lineHeight: '1.6',
-          fontFamily: 'monospace',
-          color: '#a1a1aa'
+          fontFamily: 'Inter, sans-serif',
+          color: '#94a3b8' // slate-400
         },
         buttonNext: {
-          borderRadius: '0px',
-          fontSize: '11px',
-          fontWeight: 'bold',
+          borderRadius: '6px',
+          fontSize: '12px',
+          fontWeight: '600',
           padding: '8px 16px',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-          backgroundColor: '#ffffff',
-          color: '#000000',
+          textTransform: 'none',
+          letterSpacing: '0',
+          backgroundColor: '#38bdf8', // sky-400
+          color: '#020617', // slate-950
         },
         buttonBack: {
           marginRight: '12px',
-          color: '#71717a',
-          fontSize: '11px',
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
+          color: '#94a3b8',
+          fontSize: '12px',
+          fontWeight: '500',
+          textTransform: 'none',
         },
         buttonSkip: {
-          color: '#ef4444', // red-500 equivalent if you look at their reset
-          fontSize: '11px',
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
+          color: '#94a3b8',
+          fontSize: '12px',
+          fontWeight: '500',
+          textTransform: 'none',
         }
       }}
     />

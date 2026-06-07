@@ -957,38 +957,40 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   }, [modelsBudgets]);
 
   return (
-    <div className="min-h-screen bg-[#0B0B0C] text-zinc-400 font-mono flex flex-col antialiased selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#020617] text-slate-300 font-sans flex flex-col antialiased selection:bg-[#38bdf8]/30 selection:text-white">
       <QuickStartTour />
       {/* Stark Void Navigation Header */}
-      <nav className="border-b border-zinc-900 bg-[#0B0B0C] h-14 shrink-0 flex items-center justify-between px-6 z-10">
+      <nav className="border-b border-slate-800/80 bg-[#020617] h-16 shrink-0 flex items-center justify-between px-6 z-10 sticky top-0 shadow-sm">
         <div className="flex items-center gap-4">
           <button
             onClick={onBackToLanding}
-            className="w-7 h-7 flex items-center justify-center hover:bg-zinc-900 rounded transition-colors group"
+            className="w-8 h-8 flex items-center justify-center hover:bg-slate-800/80 rounded-md transition-colors group"
             title="Return to Interface"
           >
-            <img src="/N-nex.png" alt="N-nex" className="w-5 h-5 opacity-80 group-hover:opacity-100 object-contain" />
+            <img src="/N-nex.png" alt="N-nex" className="w-5 h-5 opacity-80 group-hover:opacity-100 object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)]" />
           </button>
-          <div className="flex items-center gap-3 border-l border-zinc-900 pl-4">
-            <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-            <span className="text-white font-bold tracking-[0.25em] text-xs uppercase font-sans">N-NEX</span>
+          <div className="flex items-center gap-3 border-l border-slate-800/80 pl-4">
+            <div className="w-1.5 h-1.5 bg-[#38bdf8] rounded-full animate-pulse shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
+            <span className="text-white font-bold tracking-[0.25em] text-xs uppercase font-sans">N-NEX <span className="text-[#38bdf8]">Workspace</span></span>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="hidden sm:block px-2.5 py-1 border border-zinc-900 text-[10px] text-zinc-500 tracking-wider">
-            V1.1.0 // MULTI-LAYER COMPILER
+          <div className="hidden sm:flex px-3 py-1.5 border border-slate-800/80 text-[10px] text-slate-400 tracking-wider rounded-lg font-mono items-center shadow-inner bg-slate-900/50">
+            <Sparkles className="w-3 h-3 text-[#c084fc] mr-1.5" />
+            V1.1.0 COMPILER
           </div>
           <button 
             onClick={handleForceResync}
-            className="px-2 sm:px-3 py-1.5 border border-red-955/30 bg-red-950/5 text-red-500 hover:bg-red-500 hover:text-black hover:border-red-400 font-black text-[10px] tracking-widest uppercase transition-all duration-150 rounded-none ml-2"
+            className="px-3 sm:px-4 py-1.5 border border-rose-900/40 bg-rose-950/20 text-rose-400 hover:bg-rose-500 hover:text-white hover:border-rose-400 font-bold text-[10px] tracking-widest uppercase transition-all duration-200 rounded-md ml-2 flex items-center shadow-sm"
             title="Wipe cached arrays and reset context"
           >
-            <span className="hidden sm:inline">[ // FORCE RESYNC ENGINE ]</span>
-            <span className="sm:hidden">[ // RESYNC ]</span>
+            <RefreshCw className="w-3 h-3 mr-2" />
+            <span className="hidden sm:inline">FORCE RESYNC</span>
+            <span className="sm:hidden">RESYNC</span>
           </button>
           <button 
             onClick={() => setShowSettings(!showSettings)}
-            className={`p-1.5 border border-zinc-900 text-zinc-500 hover:text-white hover:border-zinc-700 transition-all ${showSettings ? 'bg-zinc-900 text-white' : ''}`}
+            className={`p-1.5 sm:p-2 border rounded-md transition-all duration-200 shadow-sm ${showSettings ? 'bg-[#38bdf8] text-slate-950 border-[#38bdf8]' : 'border-slate-800/80 text-slate-400 hover:text-white hover:border-slate-600 bg-slate-950'}`}
             title="Configure Ignored Extensions & Filters"
           >
             <Settings size={14} />
@@ -996,8 +998,8 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         </div>
       </nav>
 
-      {/* Chrome Style Tab Navigation Bar */}
-      <div className="bg-zinc-950 border-b border-zinc-900 flex items-end h-10 px-4 min-w-0 select-none overflow-x-auto shrink-0 scrollbar-none">
+      {/* Modern SaaS Tab Navigation Bar */}
+      <div className="bg-[#020617] border-b border-slate-800/80 flex items-center h-14 px-6 min-w-0 select-none overflow-x-auto shrink-0 scrollbar-none gap-2">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -1009,23 +1011,20 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   setIsPreviewVisible(false); // safety reset rendering loops
                 }
               }}
-              className={`flex items-center h-9 px-4 text-[10px] font-bold tracking-wider uppercase cursor-pointer transition-colors relative h-full ${
+              className={`flex items-center h-9 px-4 text-xs font-medium tracking-wide cursor-pointer transition-all rounded-md border ${
                 isActive 
-                  ? 'bg-[#0B0B0C] text-white border-t-2 border-t-white border-x border-x-zinc-900' 
-                  : 'bg-zinc-950 text-zinc-500 hover:text-zinc-300'
+                  ? 'bg-slate-800 text-white border-slate-700 shadow-sm' 
+                  : 'bg-transparent text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/50'
               }`}
             >
               <span>{tab.label}</span>
               {tab.closeable && (
                 <button 
                   onClick={(e) => handleCloseTab(tab.id, e)}
-                  className="ml-3 p-0.5 rounded-none hover:bg-zinc-900 hover:text-white transition-colors animate-fadeIn"
+                  className="ml-2 p-0.5 rounded-full hover:bg-slate-700 hover:text-white transition-colors animate-fadeIn"
                 >
-                  <X size={10} />
+                  <X size={12} />
                 </button>
-              )}
-              {isActive && (
-                <div className="absolute -bottom-px left-0 right-0 h-[1px] bg-[#0B0B0C]" />
               )}
             </div>
           );
@@ -1042,13 +1041,13 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border border-zinc-900 bg-zinc-950/20"
+              className="overflow-hidden border border-slate-800 bg-slate-900/50 shadow-lg rounded-xl backdrop-blur-sm"
             >
-              <div className="p-6 space-y-6 text-xs">
-                <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
-                  <span className="text-white tracking-widest uppercase font-bold flex items-center gap-2">
-                    <Filter size={12} />
-                    Configuration Controls // Direct Metric Filter Re-Computation
+              <div className="p-6 space-y-6 text-sm">
+                <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+                  <span className="text-white font-semibold flex items-center gap-2">
+                    <Filter size={14} className="text-[#38bdf8]" />
+                    Configuration Controls // Metric Filter
                   </span>
                   <button 
                     onClick={() => setFilters({
@@ -1056,7 +1055,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       ignoreDirectories: DEFAULT_IGNORE_DIRECTORIES,
                       fetchLimit: DEFAULT_FETCH_LIMIT
                     })}
-                    className="text-[10px] text-zinc-500 hover:text-white underline underline-offset-4 font-bold uppercase transition-all"
+                    className="text-xs text-slate-400 hover:text-[#38bdf8] font-medium transition-colors"
                   >
                     Reset Defaults
                   </button>
@@ -1064,9 +1063,9 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Limits and customized parameters input fields */}
-                  <div className="space-y-4">
+                  <div className="space-y-5">
                     <div className="space-y-2">
-                      <label className="text-[10px] text-zinc-500 uppercase font-black tracking-wider">GitHub Fetch Crawler Limit</label>
+                      <label className="text-xs text-slate-400 font-medium">GitHub Fetch Limit</label>
                       <div className="flex items-center gap-4">
                         <input 
                           type="number"
@@ -1077,14 +1076,14 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                             ...prev, 
                             fetchLimit: Math.max(1, Math.min(500, parseInt(e.target.value) || 1)) 
                           }))}
-                          className="bg-zinc-950 border border-zinc-900 px-3 py-1.5 w-24 text-white font-mono focus:outline-none focus:border-zinc-500 rounded-none text-xs"
+                          className="bg-slate-950 border border-slate-800/80 px-3 py-2 w-24 text-white font-mono focus:outline-none focus:border-[#38bdf8] rounded-md text-xs shadow-inner"
                         />
-                        <span className="text-[10px] text-zinc-600">Clamp limit for raw file fetches (1 - 500)</span>
+                        <span className="text-xs text-slate-500">Max file fetches (1-500)</span>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] text-zinc-500 uppercase font-black tracking-wider">Ignore File Extension</label>
+                      <label className="text-xs text-slate-400 font-medium">Ignore File Extension</label>
                       <div className="flex gap-2">
                         <input 
                           type="text"
@@ -1092,11 +1091,11 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                           onChange={(e) => setCustomExt(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && handleAddFilter()}
                           placeholder=".env, .yaml, .config"
-                          className="bg-zinc-950 border border-zinc-900 px-3 py-1.5 text-white placeholder:text-zinc-850 font-mono focus:outline-none focus:border-zinc-500 text-xs w-full rounded-none"
+                          className="bg-slate-950 border border-slate-800/80 px-3 py-2 text-white placeholder:text-slate-600 font-mono focus:outline-none focus:border-[#38bdf8] text-xs w-full rounded-md shadow-inner"
                         />
                         <button 
                           onClick={handleAddFilter}
-                          className="px-4 border border-zinc-900 text-white hover:bg-neutral-900 font-bold uppercase transition-all h-8"
+                          className="px-4 border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:text-white text-slate-300 font-medium transition-all rounded-md h-[34px] flex items-center text-xs"
                         >
                           Add
                         </button>
@@ -1106,14 +1105,14 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
                   {/* Active extensions ignores status array maps */}
                   <div className="space-y-3">
-                    <label className="text-[10px] text-zinc-500 uppercase font-black tracking-wider block">Ignored Extension Rules ({filters.ignoreExtensions.length})</label>
-                    <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto border border-zinc-900 p-2 bg-zinc-950/20 scrollbar-none">
+                    <label className="text-xs text-slate-400 font-medium block">Ignored Extension Rules <span className="text-slate-500 font-normal">({filters.ignoreExtensions.length})</span></label>
+                    <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto border border-slate-800/80 p-3 bg-slate-950/20 rounded-md scrollbar-none">
                       {filters.ignoreExtensions.map(ext => (
-                        <div key={ext} className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-900 px-2 py-0.5 text-[10px] text-zinc-400 group">
-                          <span>{ext}</span>
+                        <div key={ext} className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-2 py-1 text-xs text-slate-300 group rounded-md shadow-sm">
+                          <span className="font-mono">{ext}</span>
                           <button 
                             onClick={() => handleRemoveFilter(ext)}
-                            className="text-zinc-500 hover:text-red-400 font-bold transition-colors ml-1"
+                            className="text-slate-500 hover:text-red-400 transition-colors ml-1 focus:outline-none leading-none mt-[1px]"
                           >
                             ×
                           </button>
@@ -1123,11 +1122,11 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   </div>
                 </div>
 
-                <div className="space-y-2 bg-[#0B0B0C] p-4 border border-zinc-900">
-                  <div className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">Standard Directories Shielded Globally</div>
-                  <div className="flex flex-wrap gap-2 text-[10px] text-zinc-650">
+                <div className="space-y-3 bg-[#020617] p-5 border border-slate-800/80 rounded-lg">
+                  <div className="text-xs text-slate-400 font-medium">Standard Directories Shielded Globally</div>
+                  <div className="flex flex-wrap gap-2 text-xs text-slate-500 font-mono">
                     {filters.ignoreDirectories.map(dir => (
-                      <span key={dir} className="bg-zinc-950 border border-zinc-900/50 px-2 py-0.5">{dir}/</span>
+                      <span key={dir} className="bg-slate-950 border border-slate-800/80 px-2 py-1 rounded-md shadow-sm">{dir}/</span>
                     ))}
                   </div>
                 </div>
@@ -1141,12 +1140,12 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           <div className="space-y-6">
             
             {/* Directives preset selection row (High-Contrast styling) */}
-            <div className="border border-zinc-900 p-6 bg-zinc-950/40 space-y-4">
+            <div className="border border-slate-800 bg-slate-900/50 p-6 rounded-xl shadow-sm space-y-4">
               <div className="flex items-center gap-2">
-                <Sparkles size={12} className="text-zinc-500" />
-                <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-black block">SYSTEM PRESET DIRECTIVE (PREPENDED IN COMPILATION)</span>
+                <Sparkles size={14} className="text-[#38bdf8]" />
+                <span className="text-xs text-slate-300 font-semibold tracking-wide block">System Preset Directive</span>
               </div>
-              <div className="flex flex-wrap gap-2 text-xs">
+              <div className="flex flex-wrap gap-2 text-sm font-sans">
                 {Object.keys(PROMPT_PRESETS).map((key) => {
                   const isSelected = selectedPreset === key;
                   return (
@@ -1156,10 +1155,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                         setSelectedPreset(key as keyof typeof PROMPT_PRESETS);
                         setIsPreviewVisible(false); // force visual repack safely
                       }}
-                      className={`px-4 py-2 font-black transition-all border tracking-widest uppercase text-[10px] rounded-none ${
+                      className={`px-4 py-2 font-medium transition-all border rounded-lg shadow-sm ${
                         isSelected 
-                          ? 'border-white text-black bg-white' 
-                          : 'border-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300 bg-zinc-950'
+                          ? 'border-[#38bdf8] text-slate-950 bg-[#38bdf8]' 
+                          : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 bg-slate-800/50'
                       }`}
                     >
                       {PROMPT_PRESETS[key as keyof typeof PROMPT_PRESETS].label}
@@ -1170,20 +1169,20 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             </div>
 
             {/* LOCAL FILE UPLOAD ENTRANCE */}
-            <div id="tour-step-1-local" className="border border-zinc-900 p-8 bg-zinc-950/40 w-full space-y-4">
-              <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
-                <div className="space-y-1">
-                  <h3 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
-                    <FolderSearch size={14} className="text-white" />
+            <div id="tour-step-1-local" className="border border-slate-800 p-8 rounded-xl bg-slate-900/50 w-full space-y-4 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-4 gap-4">
+                <div className="space-y-1.5">
+                  <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                    <FolderSearch size={16} className="text-[#c084fc]" />
                     Secure Local Ingestion
                   </h3>
-                  <p className="text-[11px] text-zinc-500 leading-relaxed">
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     Direct local directory access runs completely in your browser memory block. Zero external server uploads.
                   </p>
                 </div>
                 <button
                   onClick={handleFolderSelect}
-                  className="bg-zinc-800 hover:bg-zinc-700 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-all"
+                  className="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2.5 text-xs font-semibold transition-all rounded-lg shadow-sm border border-slate-700 whitespace-nowrap"
                 >
                   Select Directory
                 </button>
@@ -1200,21 +1199,21 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             </div>
 
             {/* CRITICAL FIX: CLEANED UP FULL-WIDTH WORKSPACE PIPELINE INPUT */}
-            <div className="border border-zinc-900 p-8 bg-zinc-950/40 w-full space-y-4">
+            <div className="border border-slate-800 p-8 rounded-xl bg-slate-900/50 w-full space-y-5 shadow-sm">
               <div className="mb-2">
-                <h3 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
-                  <Github size={14} className="text-white" />
-                  ⛓️ Remote Git Workspace Pipeline
+                <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Github size={16} className="text-[#38bdf8]" />
+                  Remote Git Workspace Pipeline
                 </h3>
-                <p className="text-[11px] text-zinc-500 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
                   Fetch, extract, and layer public tree directories dynamically from endpoint mirrors using non-blocking continuous concurrency paths.
                 </p>
               </div>
               
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1.5 block">
+                    <label className="text-xs text-slate-300 font-medium mb-2 block">
                       Repository Destination URL
                     </label>
                     <input 
@@ -1224,12 +1223,12 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       value={githubUrl}
                       onChange={(e) => setGithubUrl(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && executeGithubStreaming(false)}
-                      className="w-full bg-[#0B0B0C] border border-zinc-900 px-4 py-3 text-xs focus:outline-none focus:border-zinc-600 text-zinc-300 font-mono"
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-300 font-mono transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1.5 block">
-                      🔍 Global Extension Filter
+                    <label className="text-xs text-slate-300 font-medium mb-2 block">
+                      Global Extension Filter <span className="text-slate-500 font-normal">(Optional)</span>
                     </label>
                     <input 
                       type="text" 
@@ -1239,20 +1238,20 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                         setGlobalExtensionFilter(e.target.value);
                         setStatus(`Compiling dynamic pattern filter: "${e.target.value}"`);
                       }}
-                      className="w-full bg-[#0B0B0C] border border-zinc-900 px-4 py-3 text-xs focus:outline-none focus:border-zinc-600 text-zinc-400 font-mono"
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-400 font-mono transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-zinc-900/40 mt-2">
-                  <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-900 px-3 py-2.5">
-                    <GitBranch size={11} className="text-zinc-500" />
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800/80 mt-2">
+                  <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 shadow-inner">
+                    <GitBranch size={14} className="text-slate-500" />
                     <input 
                       type="text"
                       placeholder="branch (optional)"
                       value={branch}
                       onChange={(e) => setBranch(e.target.value)}
-                      className="bg-transparent text-[11px] text-zinc-300 font-mono focus:outline-none focus:text-white placeholder:text-zinc-800 w-28"
+                      className="bg-transparent text-sm text-slate-300 font-mono focus:outline-none focus:text-white placeholder:text-slate-600 w-32"
                     />
                   </div>
 
@@ -1261,16 +1260,16 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       id="tour-step-3-compile"
                       onClick={() => executeGithubStreaming(false)} 
                       disabled={isLoading || !githubUrl} 
-                      className="flex-1 sm:flex-none border border-white bg-white text-black hover:bg-transparent hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-all disabled:opacity-20"
+                      className="flex-1 sm:flex-none border border-[#38bdf8] bg-[#38bdf8] text-slate-950 hover:bg-sky-400 px-5 py-2.5 text-xs font-semibold transition-all rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Overwrite Clean Matrix
+                      Overwrite Layer Matrix
                     </button>
                     <button 
                       onClick={() => executeGithubStreaming(true)} 
                       disabled={isLoading || !githubUrl || loadedFiles.length === 0} 
-                      className="flex-1 sm:flex-none border border-zinc-800 text-zinc-500 hover:border-white hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-all disabled:opacity-20 bg-zinc-950/60"
+                      className="flex-1 sm:flex-none border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white px-5 py-2.5 text-xs font-semibold transition-all rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-slate-900"
                     >
-                      + Append Active Layer
+                      + Append Layer
                     </button>
                   </div>
                 </div>
@@ -1279,10 +1278,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* If files are loaded, display active streams layer blocks to provide absolute clarity */}
             {loadedFiles.length > 0 && (
-              <div className="border border-zinc-900 bg-zinc-950/40 p-5 space-y-3 animate-fadeIn">
-                <div className="flex items-center justify-between text-[10px] text-zinc-550 border-b border-zinc-900 pb-2">
-                  <span className="uppercase tracking-widest font-black flex items-center gap-1.5">
-                    <Layers size={11} />
+              <div className="border border-slate-700 bg-slate-800/30 p-5 rounded-xl space-y-4 animate-fadeIn shadow-inner">
+                <div className="flex items-center justify-between text-xs text-slate-300 border-b border-slate-700/80 pb-3">
+                  <span className="font-semibold flex items-center gap-2">
+                    <Layers size={14} className="text-[#c084fc]" />
                     Active Compiling Ingress Layers ({activeLayers.length})
                   </span>
                   <button 
@@ -1290,17 +1289,17 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       setLoadedFiles([]);
                       setStatus('Active layers purged safely from state context.');
                     }}
-                    className="text-red-400 hover:text-red-350 tracking-widest font-bold uppercase hover:underline underline-offset-4"
+                    className="text-red-400 hover:text-red-300 font-medium transition-colors text-xs"
                   >
                     Clear All
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {activeLayers.map((layer, i) => (
-                    <div key={i} className="bg-zinc-950 border border-zinc-800 px-3 py-1 text-xs text-white flex items-center gap-2">
-                      <span className="font-bold text-zinc-500">[{i + 1}]</span>
-                      <span>{layer}</span>
-                      <span className="text-[10px] text-zinc-600">({loadedFiles.filter(f => f.source === layer).length} files)</span>
+                    <div key={i} className="bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-lg text-xs text-white flex items-center gap-2 shadow-sm">
+                      <span className="font-semibold text-slate-500">[{i + 1}]</span>
+                      <span className="font-mono">{layer}</span>
+                      <span className="text-xs text-slate-500">({loadedFiles.filter(f => f.source === layer).length} files)</span>
                     </div>
                   ))}
                 </div>
@@ -1309,26 +1308,29 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* Error alerts notification banner (stark design look) */}
             {error && (
-              <div className="border border-red-950/40 bg-red-950/5 p-4 flex gap-3 text-red-400 text-xs">
-                <AlertCircle size={14} className="shrink-0 mt-0.5 animate-bounce" />
+              <div className="border border-red-500/30 bg-red-500/10 p-4 rounded-xl flex gap-3 text-red-200 text-sm shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+                <AlertCircle size={16} className="shrink-0 mt-0.5 text-red-400 animate-pulse" />
                 <div className="space-y-1">
-                  <span className="font-bold uppercase tracking-widest text-[9px] block">Pipeline Process Exception:</span>
-                  <p className="leading-relaxed font-mono text-[10px]">{error}</p>
+                  <span className="font-bold tracking-wide text-xs block text-red-300">Pipeline Process Exception:</span>
+                  <p className="leading-relaxed font-mono text-xs">{error}</p>
                 </div>
               </div>
             )}
 
             {/* Terminal Live Output logs window */}
-            <div className="border border-zinc-900 bg-zinc-950/20 p-4 space-y-2">
-              <div className="flex items-center justify-between border-b border-zinc-900 pb-2">
-                <span className="text-zinc-600 text-[9px] uppercase tracking-widest font-black flex items-center gap-2">
-                  <Terminal size={10} />
-                  Terminal Monitoring Console
+            <div className="border border-slate-700 bg-[#020617] p-5 rounded-xl space-y-3 shadow-inner">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <span className="text-slate-400 text-xs font-semibold flex items-center gap-2">
+                  <Terminal size={14} className="text-slate-500" />
+                  Terminal Console
                 </span>
-                <span className="text-zinc-600 text-[9px]">IDLE // ENGINE.SYS</span>
+                <span className="text-slate-500 text-[10px] font-mono flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-green-500/80 rounded-full animate-pulse" />
+                  IDLE // ENGINE
+                </span>
               </div>
-              <p className="text-zinc-350 font-mono text-[10px] leading-relaxed">
-                &gt; {status}
+              <p className="text-[#38bdf8] font-mono text-xs leading-relaxed font-medium">
+                <span className="text-slate-500 mr-2">&gt;</span>{status}
               </p>
             </div>
 
@@ -1338,15 +1340,15 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         {/* History Archive Panel with garbage deletion mechanism using target unique IDs */}
         {activeTab === 'history' && (
           <div className="space-y-4 animate-fadeIn">
-            <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
-              <span className="text-zinc-405 text-xs font-black uppercase tracking-widest flex items-center gap-2">
-                <Clock size={12} />
-                Historical Local Storage Arrays
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span className="text-white text-sm font-semibold flex items-center gap-2">
+                <Clock size={16} className="text-[#c084fc]" />
+                Recent Workspace Archives
               </span>
               {history.length > 0 && (
                 <button 
                   onClick={clearHistoryArchive}
-                  className="text-[9px] text-zinc-500 hover:text-white underline underline-offset-4 uppercase font-bold"
+                  className="text-xs text-slate-400 hover:text-white font-medium transition-colors"
                 >
                   Clear Archive
                 </button>
@@ -1354,49 +1356,51 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             </div>
 
             {history.length === 0 ? (
-              <p className="text-[10px] text-zinc-600 py-12 border border-dashed border-zinc-900 text-center uppercase tracking-widest leading-relaxed">
-                No telemetry transaction logs staged in client records workspace.
-              </p>
+              <div className="py-16 flex flex-col items-center justify-center border border-dashed border-slate-700 rounded-xl bg-slate-900/30 text-center">
+                <FolderSync className="w-8 h-8 text-slate-600 mb-3" />
+                <p className="text-sm text-slate-400 font-medium">No history archives available</p>
+                <p className="text-xs text-slate-500 mt-1">Saved structures will appear here for quick access</p>
+              </div>
             ) : (
-              <div className="border border-zinc-900 divide-y divide-zinc-900 bg-zinc-950/10">
+              <div className="border border-slate-800 divide-y divide-slate-800 bg-slate-900/50 rounded-xl overflow-hidden shadow-sm">
                 {history.map((log) => {
                   const isLocal = log.repo.toLowerCase().includes('local');
                   return (
                     <div 
                       key={log.id} 
                       onClick={() => restoreFromHistoryNode(log.repo)}
-                      className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs hover:bg-zinc-950/60 transition-all duration-150 cursor-pointer group gap-3 sm:gap-0"
+                      className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between hover:bg-slate-800/80 transition-all duration-200 cursor-pointer group gap-4 sm:gap-0"
                     >
-                      <div className="space-y-1 font-mono text-left w-full sm:w-auto">
-                        <div className="text-white font-bold tracking-wider uppercase text-[11px] group-hover:text-amber-400 transition-colors truncate max-w-[280px] sm:max-w-none">
+                      <div className="space-y-1.5 text-left w-full sm:w-auto">
+                        <div className="text-slate-200 font-semibold text-sm group-hover:text-[#38bdf8] transition-colors truncate max-w-[280px] sm:max-w-[400px]">
                           {log.repo}
                         </div>
-                        <div className="text-[9px] text-zinc-500 flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <span>TIMESTAMP: {log.timestamp}</span>
-                          <span className="hidden sm:inline">•</span>
-                          <span>COMPONENTS: {log.fileCount} ENTRIES</span>
-                          <span className="hidden sm:inline">•</span>
-                          <span>CALCULATED: {log.tokens.toLocaleString()} TOKENS</span>
+                        <div className="text-[11px] font-mono text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1">
+                          <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" /> {log.timestamp}</span>
+                          <span className="hidden sm:inline text-slate-600">•</span>
+                          <span className="flex items-center gap-1.5"><FileCode className="w-3 h-3" /> {log.fileCount} files</span>
+                          <span className="hidden sm:inline text-slate-600">•</span>
+                          <span className="flex items-center gap-1.5"><Code2 className="w-3 h-3" /> {log.tokens.toLocaleString()} tokens</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                      <div className="flex items-center gap-3 w-full sm:w-auto">
                         {!isLocal && (
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               restoreFromHistoryNode(log.repo);
                             }}
-                            className="flex-1 sm:flex-initial border border-zinc-805 text-zinc-400 hover:border-white hover:text-white px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-150 bg-zinc-950 text-center"
+                            className="flex-1 sm:flex-initial border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white px-4 py-2 text-xs font-medium transition-all duration-200 bg-slate-800 rounded-lg text-center"
                           >
-                            Stage URL
+                            Stage Source
                           </button>
                         )}
                         <button 
                           onClick={(e) => deleteHistoryEntry(log.id, e)}
-                          className="flex-none p-1.5 border border-zinc-900 text-zinc-600 hover:text-red-400 hover:border-red-950 transition-all duration-150 bg-zinc-950"
-                          title="Delete telemetry garbage block"
+                          className="flex-none p-2 border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-200 bg-slate-800 rounded-lg"
+                          title="Delete history entry"
                         >
-                          <Trash2 size={12} />
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </div>
@@ -1412,44 +1416,44 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           <div className="space-y-6 animate-fadeIn">
             
             {/* Context metrics board */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-px bg-zinc-900 border border-zinc-900">
-              <div className="bg-[#0B0B0C] p-5">
-                <div className="text-[9px] text-zinc-500 uppercase font-bold tracking-widest mb-1 flex items-center gap-1.5">
-                  <FolderSearch size={10} />
-                  COMPACTED FILES
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
+                <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
+                  <FolderSearch size={14} className="text-[#38bdf8]" />
+                  Compacted Files
                 </div>
-                <div className="text-lg text-white font-medium">{fileCount}</div>
+                <div className="text-2xl text-white font-bold">{fileCount}</div>
               </div>
-              <div className="bg-[#0B0B0C] p-5">
-                <div className="text-[9px] text-zinc-500 uppercase font-bold tracking-widest mb-1 flex items-center gap-1.5">
-                  <Code size={10} />
-                  CHARACTERS
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
+                <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
+                  <Code size={14} className="text-[#c084fc]" />
+                  Characters
                 </div>
-                <div className="text-lg text-white font-medium">{estimatedChars.toLocaleString()}</div>
+                <div className="text-2xl text-white font-bold">{estimatedChars.toLocaleString()}</div>
               </div>
-              <div className="bg-[#0B0B0C] p-5">
-                <div className="text-[9px] text-zinc-500 uppercase font-bold tracking-widest mb-1 flex items-center gap-1.5">
-                  <Activity size={10} />
-                  ESTIMATED TOKENS
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
+                <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
+                  <Activity size={14} className="text-[#e879f9]" />
+                  Estimated Tokens
                 </div>
-                <div className="text-lg text-white font-medium">{estimatedTokens.toLocaleString()}</div>
+                <div className="text-2xl text-white font-bold">{estimatedTokens.toLocaleString()}</div>
               </div>
               
-              <div className="bg-[#0B0B0C] p-4 flex flex-col justify-between gap-3">
-                <div className="space-y-1 text-left">
-                  <span className="text-[9px] text-zinc-500 uppercase font-black tracking-widest block font-mono">
-                    PROMPT WRAPPER
+              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between gap-4">
+                <div className="space-y-2 text-left">
+                  <span className="text-xs text-slate-400 font-semibold tracking-wide block">
+                    Prompt Wrapper
                   </span>
-                  <div className="grid grid-cols-2 gap-1 bg-zinc-950 p-0.5 border border-zinc-900">
+                  <div className="flex gap-2 bg-slate-950 p-1 rounded-lg border border-slate-800">
                     <button
                       onClick={() => {
                         setPromptWrapper('SYSTEM');
                         setStatus('Prompt formatting selector modified: [ SYSTEM ONLY ] active.');
                       }}
-                      className={`py-1 text-[9px] font-black uppercase tracking-wider text-center transition-all duration-150 rounded-none ${
+                      className={`flex-1 py-1.5 text-xs font-semibold tracking-wide text-center transition-all duration-200 rounded-md ${
                         promptWrapper === 'SYSTEM'
-                          ? 'bg-white text-black font-black'
-                          : 'text-zinc-500 hover:text-zinc-300'
+                          ? 'bg-slate-800 text-white shadow-sm'
+                          : 'text-slate-500 hover:text-slate-300 transparent'
                       }`}
                     >
                       SYS ONLY
@@ -1459,10 +1463,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                         setPromptWrapper('CHAT');
                         setStatus('Prompt formatting selector modified: [ CHAT SHELL ] active.');
                       }}
-                      className={`py-1 text-[9px] font-black uppercase tracking-wider text-center transition-all duration-150 rounded-none ${
+                      className={`flex-1 py-1.5 text-xs font-semibold tracking-wide text-center transition-all duration-200 rounded-md ${
                         promptWrapper === 'CHAT'
-                          ? 'bg-white text-black font-black font-black'
-                          : 'text-zinc-500 hover:text-zinc-300'
+                          ? 'bg-slate-800 text-white shadow-sm'
+                          : 'text-slate-500 hover:text-slate-300 transparent'
                       }`}
                     >
                       CHAT SHELL
@@ -1473,25 +1477,25 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                 {exceedsAllModels ? (
                   <button 
                     disabled={true}
-                    className="w-full h-10 border border-red-950 bg-red-950/15 text-red-500 font-black text-[9px] leading-tight uppercase flex items-center justify-center p-2 rounded-none cursor-not-allowed animate-pulse"
+                    className="w-full h-10 border border-red-900/50 bg-red-500/10 text-red-500 font-bold text-xs uppercase flex items-center justify-center p-2 rounded-lg cursor-not-allowed animate-pulse shadow-sm"
                     title="Estimated token context size exceeds all supported model budget thresholds. Please trim files in the layer checklist below."
                   >
-                    [ EXCEEDS ACCUMULATED BUDGET // TRIM CORE ASSETS ]
+                    Exceeds Budget (Trim Files)
                   </button>
                 ) : (
                   <button 
                     onClick={copyToClipboard}
                     disabled={fileCount === 0}
-                    className="w-full h-10 border border-zinc-800 hover:border-white transition-all text-white font-black text-xs uppercase flex items-center justify-center gap-2 bg-zinc-950 disabled:opacity-30 disabled:pointer-events-none rounded-none"
+                    className="w-full h-10 border border-[#38bdf8] hover:bg-[#38bdf8] text-[#38bdf8] hover:text-slate-950 transition-all font-bold text-xs flex items-center justify-center gap-2 bg-[#38bdf8]/10 disabled:opacity-30 disabled:pointer-events-none rounded-lg shadow-sm"
                   >
                     {copied ? (
                       <>
-                        <Check size={12} className="text-green-400" />
+                        <Check size={14} className="text-inherit" />
                         COPIED
                       </>
                     ) : (
                       <>
-                        <Copy size={11} />
+                        <Copy size={13} />
                         EXPORT MATRIX
                       </>
                     )}
@@ -1502,27 +1506,26 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* CORE LAYERS & ACTIVE FILE PRUNING TREE */}
             {loadedFiles.length > 0 && (
-              <div className="border border-zinc-900 bg-zinc-950/30 p-6 space-y-4 text-left">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-3 gap-2">
-                  <div className="flex items-center gap-2">
-                    <Layers size={12} className="text-zinc-400 animate-pulse" />
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-black block">
-                      CORE LAYERS & ACTIVE FILE PRUNING TREE
+              <div className="border border-slate-800 bg-slate-900/50 rounded-xl p-6 space-y-5 shadow-sm text-left">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-700/50 pb-4 gap-3">
+                  <div className="flex items-center gap-2 font-sans">
+                    <Layers size={16} className="text-[#38bdf8]" />
+                    <span className="text-sm text-white font-semibold">
+                      Core Layers & Active File Tree
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-[9px] font-mono select-none">
-                    <span className="text-zinc-650">STATE CONTROL:</span>
+                  <div className="flex items-center gap-3 text-xs font-mono select-none bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
                     <button 
                       onClick={() => {
                         setLoadedFiles(prev => prev.map(f => ({ ...f, enabled: true })));
                         setUncheckedFiles(new Set());
                         setStatus('Pruning checklist reset: All files enrolled back, recalculating tokens.');
                       }}
-                      className="text-zinc-500 hover:text-white transition-colors uppercase font-bold min-h-[30px]"
+                      className="text-slate-400 hover:text-white transition-colors font-semibold"
                     >
-                      [ CHECK ALL ]
+                      CHECK ALL
                     </button>
-                    <span className="text-zinc-850">|</span>
+                    <span className="text-slate-700">|</span>
                     <button 
                       onClick={() => {
                         setLoadedFiles(prev => prev.map(f => ({ ...f, enabled: false })));
@@ -1530,9 +1533,9 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                         setUncheckedFiles(new Set(allKeys));
                         setStatus('Pruning checklist modified: All files unchecked from the active memory context loop.');
                       }}
-                      className="text-zinc-500 hover:text-red-400 transition-colors uppercase font-bold min-h-[30px]"
+                      className="text-slate-400 hover:text-red-400 transition-colors font-semibold"
                     >
-                      [ UNCHECK ALL ]
+                      UNCHECK ALL
                     </button>
                   </div>
                 </div>
@@ -1544,27 +1547,27 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     placeholder="Search tree list by name or directory paths..."
                     value={pruningSearch}
                     onChange={(e) => setPruningSearch(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-900 px-4 h-11 text-xs text-zinc-300 placeholder:text-zinc-800 font-mono focus:outline-none focus:border-zinc-700 rounded-none"
+                    className="w-full bg-slate-950 border border-slate-700 px-4 h-[42px] text-sm text-slate-300 placeholder:text-slate-500 focus:outline-none focus:border-[#38bdf8] rounded-lg shadow-inner transition-colors"
                   />
                   {pruningSearch && (
                     <button 
                       onClick={() => setPruningSearch('')}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] text-zinc-600 hover:text-white font-mono"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-white font-medium p-1 bg-slate-800 rounded-md"
                     >
-                      [ RESET ]
+                      Reset
                     </button>
                   )}
                 </div>
 
-                <div className="max-h-[320px] overflow-y-auto divide-y divide-zinc-900/40 border border-zinc-900 bg-[#0B0B0C] px-4 py-1 font-mono text-[10px] scrollbar-none">
+                <div className="max-h-[320px] overflow-y-auto divide-y divide-slate-800/40 border border-slate-800 bg-slate-950 rounded-lg shadow-inner px-2 py-1 scrollbar-none font-sans">
                   {paginatedChecklistFiles.map((file) => {
                     const fileKey = `${file.source}:${file.path}`;
                     const isChecked = file.enabled !== false && !uncheckedFiles.has(fileKey);
                     const fileTokens = file.tokens || 0;
                     
                     return (
-                      <div key={fileKey} className="py-3 flex items-center justify-between hover:bg-zinc-950/80 transition-all duration-155 min-h-[44px] gap-4">
-                        <label className="flex items-center gap-3 cursor-pointer select-none max-w-[80%] w-full min-h-[44px]">
+                      <div key={fileKey} className="px-3 py-2.5 flex items-center justify-between hover:bg-slate-800/40 transition-all duration-150 min-h-[44px] gap-4 rounded-md my-1">
+                        <label className="flex items-center gap-3 cursor-pointer select-none max-w-[80%] w-full">
                           <input 
                             type="checkbox"
                             checked={isChecked}
@@ -1587,26 +1590,26 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                             }}
                             className="sr-only"
                           />
-                          <div className={`w-3.5 h-3.5 border transition-all duration-150 flex items-center justify-center rounded-none shrink-0 ${
+                          <div className={`w-4 h-4 border transition-all duration-150 flex items-center justify-center rounded-[4px] shrink-0 ${
                             isChecked 
-                              ? 'border-white bg-white text-black' 
-                              : 'border-zinc-800 bg-transparent hover:border-zinc-600'
+                              ? 'border-[#38bdf8] bg-[#38bdf8] text-slate-950' 
+                              : 'border-slate-600 bg-transparent hover:border-slate-400'
                           }`}>
-                            {isChecked && <Check size={10} strokeWidth={3} />}
+                            {isChecked && <Check size={12} strokeWidth={3} />}
                           </div>
                           <div className="flex flex-col text-left truncate ml-1 max-w-full">
-                            <span className={`truncate leading-snug font-medium text-[11px] select-all ${isChecked ? 'text-zinc-200 font-bold' : 'text-zinc-650 line-through'}`}>
+                            <span className={`truncate leading-snug font-medium text-sm select-all ${isChecked ? 'text-slate-200' : 'text-slate-500 line-through'}`}>
                               {file.path}
                             </span>
-                            <span className="text-[8px] text-zinc-600 tracking-wider font-mono">
-                              LAYER // {file.source.toUpperCase()}
+                            <span className="text-[10px] text-slate-500 font-mono mt-0.5">
+                              LAYER // {file.source}
                             </span>
                           </div>
                         </label>
-                        <span className={`text-[9px] font-mono px-2 py-0.5 border select-none shrink-0 ${
+                        <span className={`text-xs font-mono px-2 py-1 border select-none shrink-0 rounded-md ${
                           isChecked 
-                            ? 'text-zinc-400 bg-zinc-950 border-zinc-900' 
-                            : 'text-zinc-700 bg-transparent border-transparent'
+                            ? 'text-slate-300 bg-slate-800 border-slate-700' 
+                            : 'text-slate-600 bg-transparent border-transparent'
                         }`}>
                           {fileTokens.toLocaleString()} tokens
                         </span>
@@ -1614,35 +1617,37 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     );
                   })}
                   {paginatedChecklistFiles.length === 0 && (
-                    <div className="py-8 text-center text-zinc-700 uppercase tracking-widest text-[9px]">
+                    <div className="py-8 text-center text-slate-500 font-medium text-xs">
                       No matched files in active search filter views.
                     </div>
                   )}
                 </div>
 
                 {/* Highly structured pagination buttons row in physical space */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t border-zinc-900 pt-3 text-[10px] gap-2 select-none font-mono">
-                  <div className="text-zinc-650 uppercase">
-                    Showing {checklistFilteredFiles.length === 0 ? 0 : (pruningPage - 1) * 25 + 1}-{Math.min(checklistFilteredFiles.length, pruningPage * 25)} of {checklistFilteredFiles.length} matched files
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-2 text-xs gap-3 select-none font-sans text-slate-400">
+                  <div className="font-medium">
+                    Showing <span className="text-white">{checklistFilteredFiles.length === 0 ? 0 : (pruningPage - 1) * 25 + 1}-{Math.min(checklistFilteredFiles.length, pruningPage * 25)}</span> of <span className="text-white">{checklistFilteredFiles.length}</span> matched files
                   </div>
                   
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-2">
                     <button
                       onClick={() => setPruningPage(p => Math.max(1, p - 1))}
                       disabled={pruningPage === 1}
-                      className="px-2.5 py-1.5 min-h-[30px] border border-zinc-900 hover:border-white disabled:pointer-events-none disabled:opacity-20 text-white font-bold tracking-wider cursor-pointer"
+                      className="px-3 py-1.5 min-h-[30px] border border-slate-700 hover:bg-slate-800 rounded-md disabled:pointer-events-none disabled:opacity-30 text-white font-medium transition-colors"
                     >
-                      [ PREV ]
+                      Prev
                     </button>
-                    <span className="text-zinc-500 font-bold font-mono px-1">
-                      PAGE {String(pruningPage).padStart(2, '0')} / {String(totalPruningPages).padStart(2, '0')}
+                    <span className="text-slate-400 font-medium px-2 flex gap-1">
+                      <span>Page {pruningPage}</span>
+                      <span className="text-slate-600">/</span>
+                      <span>{totalPruningPages === 0 ? 1 : totalPruningPages}</span>
                     </span>
                     <button
                       onClick={() => setPruningPage(p => Math.min(totalPruningPages, p + 1))}
-                      disabled={pruningPage === totalPruningPages}
-                      className="px-2.5 py-1.5 min-h-[30px] border border-zinc-900 hover:border-white disabled:pointer-events-none disabled:opacity-20 text-white font-bold tracking-wider cursor-pointer"
+                      disabled={pruningPage === totalPruningPages || totalPruningPages === 0}
+                      className="px-3 py-1.5 min-h-[30px] border border-slate-700 hover:bg-slate-800 rounded-md disabled:pointer-events-none disabled:opacity-30 text-white font-medium transition-colors"
                     >
-                      [ NEXT ]
+                      Next
                     </button>
                   </div>
                 </div>
@@ -1652,22 +1657,22 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* Programmatic Disk streams downloader bindings row */}
             {fileCount > 0 && (
-              <div className="border border-zinc-900 bg-zinc-950/30 p-4 flex flex-wrap items-center justify-between gap-4">
+              <div className="border border-slate-800/80 bg-slate-950/30 p-4 flex flex-wrap items-center justify-between gap-4">
                 <div className="space-y-1 font-mono text-left">
                   <span className="text-white font-bold text-xs uppercase block">Programmatic Saved Documents</span>
-                  <p className="text-[10px] text-zinc-600">Save your compiled multi-layer engine matrix directly to high bandwidth disk streams as Markdown or custom JSON configurations.</p>
+                  <p className="text-[10px] text-slate-500">Save your compiled multi-layer engine matrix directly to high bandwidth disk streams as Markdown or custom JSON configurations.</p>
                 </div>
                 <div className="flex gap-2">
                   <button 
                     onClick={handleDownloadMarkdown}
-                    className="h-10 border border-zinc-800 hover:border-white hover:bg-neutral-900 text-white text-[10px] px-4 font-black uppercase tracking-wider transition-all flex items-center gap-2 bg-zinc-950 rounded-none duration-150"
+                    className="h-10 border border-slate-800 hover:border-white hover:bg-neutral-900 text-white text-[10px] px-4 font-black uppercase tracking-wider transition-all flex items-center gap-2 bg-slate-950 rounded-none duration-150"
                   >
                     <Download size={12} />
                     Download .md file
                   </button>
                   <button 
                     onClick={handleDownloadJSON}
-                    className="h-10 border border-zinc-805 hover:border-white hover:bg-neutral-900 text-white text-[10px] px-4 font-black uppercase tracking-wider transition-all flex items-center gap-2 bg-zinc-950 rounded-none duration-150"
+                    className="h-10 border border-zinc-805 hover:border-white hover:bg-neutral-900 text-white text-[10px] px-4 font-black uppercase tracking-wider transition-all flex items-center gap-2 bg-slate-950 rounded-none duration-150"
                   >
                     <Download size={12} />
                     Download .json package
@@ -1677,30 +1682,30 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             )}
 
             {/* VISUAL MODEL TOKEN ALLOCATION GAUGES (PROGRESS GRAPH) */}
-            <div className="border border-zinc-900 p-6 bg-zinc-950/40 space-y-5 text-left">
-              <div className="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-black block animate-pulse">VISUAL TRACKING PROGRESS GRAPH // MODEL TOKENS ALLOCATIONS</span>
-                <span className="text-[10px] text-zinc-650 font-mono">ESTIMATED TOKEN COUNT: {estimatedTokens.toLocaleString()}</span>
+            <div className="border border-slate-800/80 p-6 bg-slate-950/40 space-y-5 text-left">
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
+                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black block animate-pulse">VISUAL TRACKING PROGRESS GRAPH // MODEL TOKENS ALLOCATIONS</span>
+                <span className="text-[10px] text-slate-500 font-mono">ESTIMATED TOKEN COUNT: {estimatedTokens.toLocaleString()}</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {modelsBudgets.map((model) => (
-                  <div key={model.name} className="bg-[#0B0B0C] border border-zinc-900 p-4 space-y-2.5 hover:border-zinc-700 transition-all duration-150">
+                  <div key={model.name} className="bg-[#020617] border border-slate-800/80 p-4 space-y-2.5 hover:border-slate-600 transition-all duration-150">
                     <div className="flex justify-between items-center text-[10px]">
                       <span className={`font-bold ${model.isExceeded ? 'text-red-400 animate-pulse' : 'text-white'}`}>{model.name}</span>
-                      <span className={model.isExceeded ? 'text-red-400 font-bold' : 'text-zinc-500'}>
-                        {estimatedTokens.toLocaleString()} / <span className="text-zinc-650 font-black">{model.max.toLocaleString()} max</span>
+                      <span className={model.isExceeded ? 'text-red-400 font-bold' : 'text-slate-400'}>
+                        {estimatedTokens.toLocaleString()} / <span className="text-slate-500 font-black">{model.max.toLocaleString()} max</span>
                       </span>
                     </div>
                     {/* Visual Tracking bar progress graph gauges */}
-                    <div className="w-full h-1.5 bg-zinc-950 border border-zinc-901 rounded-none overflow-hidden relative">
+                    <div className="w-full h-1.5 bg-slate-950 border border-zinc-901 rounded-none overflow-hidden relative">
                       <div 
                         className={`h-full transition-all duration-550 ${model.isExceeded ? 'bg-red-500' : model.color}`} 
                         style={{ width: `${model.percentage}%` }}
                       />
                     </div>
                     <div className="flex items-center justify-between text-[9px] font-mono select-none">
-                      <span className="text-zinc-650">BUDGET USAGE</span>
-                      <span className={model.isExceeded ? 'text-red-500 font-bold animate-[pulse_1s_infinite]' : 'text-zinc-400'}>
+                      <span className="text-slate-500">BUDGET USAGE</span>
+                      <span className={model.isExceeded ? 'text-red-500 font-bold animate-[pulse_1s_infinite]' : 'text-slate-400'}>
                         {model.isExceeded ? `EXCEEDED (${model.percentage}% USED) ⚠️` : `${model.percentage}% USED`}
                       </span>
                     </div>
@@ -1711,15 +1716,15 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* Performance protecting layer */}
             {!isPreviewVisible ? (
-              <div className="border border-zinc-900 bg-[#0B0B0C] p-12 text-center space-y-6 flex flex-col items-center justify-center">
-                <div className="w-10 h-10 border border-zinc-900 flex items-center justify-center text-zinc-600 rounded-none bg-zinc-950">
+              <div className="border border-slate-800/80 bg-[#020617] p-12 text-center space-y-6 flex flex-col items-center justify-center">
+                <div className="w-10 h-10 border border-slate-800/80 flex items-center justify-center text-slate-500 rounded-none bg-slate-950">
                   <FileCode size={18} />
                 </div>
                 <div className="space-y-2">
                   <p className="text-white text-xs uppercase tracking-widest font-black leading-relaxed">
                     Visual Render Thread Protected
                   </p>
-                  <p className="text-[10px] text-zinc-600 max-w-sm mx-auto leading-relaxed font-mono">
+                  <p className="text-[10px] text-slate-500 max-w-sm mx-auto leading-relaxed font-mono">
                     Compacted raw matrices held safely in background cache memories. Rendering extensive blocks inside browser page DOMs triggers CPU rendering spikes.
                   </p>
                 </div>
@@ -1732,12 +1737,12 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                 </button>
               </div>
             ) : (
-              <div className="border border-zinc-900 bg-zinc-950 p-6 space-y-6">
-                <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
-                  <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold font-mono">ACTIVE DIRECTIVES STREAM</span>
+              <div className="border border-slate-800/80 bg-slate-950 p-6 space-y-6">
+                <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold font-mono">ACTIVE DIRECTIVES STREAM</span>
                   <button 
                     onClick={() => setIsPreviewVisible(false)}
-                    className="text-[10px] text-zinc-500 hover:text-white underline underline-offset-4 uppercase font-bold"
+                    className="text-[10px] text-slate-400 hover:text-white underline underline-offset-4 uppercase font-bold"
                   >
                     Shield Visual Render
                   </button>
@@ -1745,7 +1750,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                 <textarea 
                   readOnly
                   value={renderedText}
-                  className="w-full h-[450px] p-4 bg-[#0B0B0C] border border-zinc-900 text-[10px] text-zinc-350 font-mono resize-none focus:outline-none leading-relaxed select-all"
+                  className="w-full h-[450px] p-4 bg-[#020617] border border-slate-800/80 text-[10px] text-slate-300 font-mono resize-none focus:outline-none leading-relaxed select-all"
                 />
               </div>
             )}
@@ -1756,107 +1761,107 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         {/* Legal & Privacy Policy Panel */}
         {activeTab === 'legal' && (
           <div className="space-y-6 animate-fadeIn text-left max-w-3xl mx-auto leading-relaxed">
-            <div className="border border-zinc-900 bg-zinc-950/40 p-8 space-y-6">
+            <div className="border border-slate-800/80 bg-slate-950/40 p-8 space-y-6">
               
               {/* Header block with metadata */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-900 pb-5 gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-5 gap-2">
                 <div>
                   <h1 className="text-white font-black tracking-[0.2em] text-sm uppercase">PRIVACY POLICY &amp; LEGAL DISCLOSURES</h1>
-                  <p className="text-[10px] text-zinc-500 font-mono mt-1 uppercase">Last System Update: May 2026 // Active Sandbox Assurance</p>
+                  <p className="text-[10px] text-slate-400 font-mono mt-1 uppercase">Last System Update: May 2026 // Active Sandbox Assurance</p>
                 </div>
-                <div className="px-3 py-1 border border-zinc-900 text-[9px] text-zinc-500 tracking-wider font-mono shrink-0 uppercase">
+                <div className="px-3 py-1 border border-slate-800/80 text-[9px] text-slate-400 tracking-wider font-mono shrink-0 uppercase">
                   ZERO-SERVER SANDBOX ASSURED
                 </div>
               </div>
 
               {/* Complete Legal Texts with low-opacity monospace theme */}
-              <div className="text-zinc-400 font-mono text-xs space-y-6 leading-relaxed">
+              <div className="text-slate-400 font-mono text-xs space-y-6 leading-relaxed">
                 <p>
-                  At <strong className="text-zinc-200">N-nex</strong> (referred to below as "the Platform", "we", "us", or "our"), data privacy is not a feature or a policy setting—it is the foundational core of our application architecture. This document outlines the technical framework of our software and states why our system is structurally engineered to guarantee your absolute privacy, anonymity, and legal safety now and in the future.
+                  At <strong className="text-slate-200">N-nex</strong> (referred to below as "the Platform", "we", "us", or "our"), data privacy is not a feature or a policy setting—it is the foundational core of our application architecture. This document outlines the technical framework of our software and states why our system is structurally engineered to guarantee your absolute privacy, anonymity, and legal safety now and in the future.
                 </p>
 
-                <div className="space-y-2 border-t border-zinc-900/50 pt-4">
-                  <h3 className="text-zinc-200 font-bold uppercase tracking-wider text-[11px]">1. CORE ARCHITECTURAL PARADIGM: ZERO-SERVER ENVIRONMENT</h3>
+                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
+                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">1. CORE ARCHITECTURAL PARADIGM: ZERO-SERVER ENVIRONMENT</h3>
                   <p>
                     N-nex operates exclusively as a single-page client-side web application. Our software runs entirely inside your device’s sandbox browser environment.
                   </p>
-                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-zinc-400">
-                    <li><strong className="text-zinc-350">No Cloud Infrastructure:</strong> We do not own, lease, or operate external web servers, application servers, cloud databases, or analytics log repositories.</li>
-                    <li><strong className="text-zinc-350">No Identity Profiles:</strong> There are no user registration frameworks, login prompts, OAuth authentications, or tracking cookies implemented on this platform.</li>
-                    <li><strong className="text-zinc-350">No Corporate Visibility:</strong> It is physically and technically impossible for us to collect, view, monitor, intercept, or copy your source code, file trees, or system prompts.</li>
+                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-slate-400">
+                    <li><strong className="text-slate-300">No Cloud Infrastructure:</strong> We do not own, lease, or operate external web servers, application servers, cloud databases, or analytics log repositories.</li>
+                    <li><strong className="text-slate-300">No Identity Profiles:</strong> There are no user registration frameworks, login prompts, OAuth authentications, or tracking cookies implemented on this platform.</li>
+                    <li><strong className="text-slate-300">No Corporate Visibility:</strong> It is physically and technically impossible for us to collect, view, monitor, intercept, or copy your source code, file trees, or system prompts.</li>
                   </ul>
                 </div>
 
-                <div className="space-y-2 border-t border-zinc-900/50 pt-4">
-                  <h3 className="text-zinc-200 font-bold uppercase tracking-wider text-[11px]">2. IN-BROWSER LOCAL MEMORY &amp; DATA RETENTION PROCESSING</h3>
+                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
+                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">2. IN-BROWSER LOCAL MEMORY &amp; DATA RETENTION PROCESSING</h3>
                   <p>
                     While data never moves to an external server hosted by us, the Platform harnesses native browser APIs to execute real-time workflow processes:
                   </p>
-                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-zinc-400">
+                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-slate-400">
                     <li>
-                      <strong className="text-zinc-350">Source Code Matrix Data:</strong> When you stream a remote git repository, the code text files are parsed directly into temporary browser RAM via local variables (<code className="text-zinc-305 bg-zinc-950 px-1 border border-zinc-900">useRef</code> memory buffers). This text stream is strictly used to compile your markdown prompt clipboard modules. Live token usage values are dynamically generated in active memory using localized, precise byte-pair telemetry limits.
+                      <strong className="text-slate-300">Source Code Matrix Data:</strong> When you stream a remote git repository, the code text files are parsed directly into temporary browser RAM via local variables (<code className="text-zinc-305 bg-slate-950 px-1 border border-slate-800/80">useRef</code> memory buffers). This text stream is strictly used to compile your markdown prompt clipboard modules. Live token usage values are dynamically generated in active memory using localized, precise byte-pair telemetry limits.
                     </li>
                     <li>
-                      <strong className="text-zinc-350">State Preservation (LocalStorage Archive):</strong> To optimize developer workflow, the History Archive dashboard relies strictly on browser <code className="text-zinc-305 bg-zinc-950 px-1 border border-zinc-900">localStorage</code> to preserve structural metadata across interface reloads.
+                      <strong className="text-slate-300">State Preservation (LocalStorage Archive):</strong> To optimize developer workflow, the History Archive dashboard relies strictly on browser <code className="text-zinc-305 bg-slate-950 px-1 border border-slate-800/80">localStorage</code> to preserve structural metadata across interface reloads.
                     </li>
                   </ul>
                   <div className="pl-4 space-y-1 text-[11px]">
-                    <p className="text-zinc-500 font-bold uppercase tracking-widest text-[9px] mt-1">// STORED METRICS &amp; RETENTION SECURITY</p>
+                    <p className="text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-1">// STORED METRICS &amp; RETENTION SECURITY</p>
                     <ul className="list-disc list-inside pl-2 space-y-1 text-zinc-450">
-                      <li><strong className="text-zinc-350">Stored Metrics:</strong> The data saved on your machine is limited to: Repository Identities, Component Target Links, Compiled Token Estimates, and Event Timestamps.</li>
-                      <li><strong className="text-zinc-350">Absolute User Sovereignty:</strong> This log is kept entirely on your physical device. You can selectively delete individual records via line-item trash icons, or use the <code className="text-zinc-355 bg-zinc-950 px-1 border border-zinc-900">[ CLEAR ARCHIVE ]</code> button to wipe all trace metrics instantly.</li>
+                      <li><strong className="text-slate-300">Stored Metrics:</strong> The data saved on your machine is limited to: Repository Identities, Component Target Links, Compiled Token Estimates, and Event Timestamps.</li>
+                      <li><strong className="text-slate-300">Absolute User Sovereignty:</strong> This log is kept entirely on your physical device. You can selectively delete individual records via line-item trash icons, or use the <code className="text-zinc-355 bg-slate-950 px-1 border border-slate-800/80">[ CLEAR ARCHIVE ]</code> button to wipe all trace metrics instantly.</li>
                     </ul>
                   </div>
                 </div>
 
-                <div className="space-y-2 border-t border-zinc-900/50 pt-4">
-                  <h3 className="text-zinc-200 font-bold uppercase tracking-wider text-[11px]">3. EXPLICIT THIRD-PARTY SERVICE INTERACTIONS</h3>
+                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
+                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">3. EXPLICIT THIRD-PARTY SERVICE INTERACTIONS</h3>
                   <p>
                     To seamlessly compile, stream, and render design assets without forcing you to set up database endpoints or proxy keys, the platform initiates direct client-to-server calls to two external global networks. Your browser interacts directly with their independent content servers under the following parameters:
                   </p>
 
                   <div className="pl-3 space-y-4">
                     <div className="space-y-1">
-                      <h4 className="text-zinc-300 font-bold text-[10px] uppercase">A. THE GITHUB DEVELOPMENT NETWORK &amp; SLIDING CONCURRENCY</h4>
-                      <p className="text-zinc-400">
+                      <h4 className="text-slate-300 font-bold text-[10px] uppercase">A. THE GITHUB DEVELOPMENT NETWORK &amp; SLIDING CONCURRENCY</h4>
+                      <p className="text-slate-400">
                         When mapping or appending a remote project link, your browser directly calls GitHub’s open public API endpoints to parse metadata and stream raw assets.
                       </p>
-                      <ul className="list-disc list-inside pl-2 text-[11px] text-zinc-400 space-y-1">
-                        <li><strong className="text-zinc-355">API Tree Requests:</strong> Fetched through <code className="text-zinc-300">api.github.com</code> to isolate public folder hierarchies.</li>
-                        <li><strong className="text-zinc-355">Continuous Sliding-Window Concurrency:</strong> Individual source code structures are pulled sequentially from <code className="text-zinc-300">raw.githubusercontent.com</code>. To maximize data bandwidth efficiency, your browser initializes an isolated sliding-window pool of up to 25 parallel file network lines simultaneously. These connection loops are run entirely client-side on your network hardware.</li>
+                      <ul className="list-disc list-inside pl-2 text-[11px] text-slate-400 space-y-1">
+                        <li><strong className="text-zinc-355">API Tree Requests:</strong> Fetched through <code className="text-slate-300">api.github.com</code> to isolate public folder hierarchies.</li>
+                        <li><strong className="text-zinc-355">Continuous Sliding-Window Concurrency:</strong> Individual source code structures are pulled sequentially from <code className="text-slate-300">raw.githubusercontent.com</code>. To maximize data bandwidth efficiency, your browser initializes an isolated sliding-window pool of up to 25 parallel file network lines simultaneously. These connection loops are run entirely client-side on your network hardware.</li>
                       </ul>
                       <div className="flex gap-3 text-[10px] mt-2">
-                        <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-white underline">[ GitHub General Privacy Statement ]</a>
-                        <a href="https://docs.github.com/rest" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-white underline">[ GitHub REST API Terms of Use ]</a>
+                        <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-white underline">[ GitHub General Privacy Statement ]</a>
+                        <a href="https://docs.github.com/rest" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-white underline">[ GitHub REST API Terms of Use ]</a>
                       </div>
                     </div>
 
-                    <div className="space-y-1 border-t border-zinc-900/30 pt-3">
-                      <h4 className="text-zinc-300 font-bold text-[10px] uppercase">B. THE GOOGLE FONTS REGISTRY</h4>
-                      <p className="text-zinc-400">
+                    <div className="space-y-1 border-t border-slate-800/80/30 pt-3">
+                      <h4 className="text-slate-300 font-bold text-[10px] uppercase">B. THE GOOGLE FONTS REGISTRY</h4>
+                      <p className="text-slate-400">
                         To preserve our sharp, high-contrast monochrome design style, our interface links to the Google Fonts directory to fetch specialized monospace typefaces.
                       </p>
-                      <ul className="list-disc list-inside pl-2 text-[11px] text-zinc-400 space-y-1">
+                      <ul className="list-disc list-inside pl-2 text-[11px] text-slate-400 space-y-1">
                         <li><strong className="text-zinc-355">Font Asset Requests:</strong> When initializing the system frame, your browser calls Google’s deployment networks to load the typography package.</li>
                         <li><strong className="text-zinc-355">IP Address Transmission:</strong> During this brief connection, Google's networks naturally log your public IP address to successfully deliver the font components to your browser. Google states that this optimization log is separate from other tracking services and is never cross-referenced to compile user profiles.</li>
                       </ul>
                       <div className="mt-2">
-                        <a href="https://fonts.googleblog.com/2022/11/your-privacy-and-google-fonts.html" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-white underline text-[10px]">[ Google Fonts Privacy Documentation ]</a>
+                        <a href="https://fonts.googleblog.com/2022/11/your-privacy-and-google-fonts.html" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-white underline text-[10px]">[ Google Fonts Privacy Documentation ]</a>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-2 border-t border-zinc-900/50 pt-4">
-                  <h3 className="text-zinc-200 font-bold uppercase tracking-wider text-[11px]">4. GLOBAL REGULATORY COMPLIANCE &amp; HARDWARE PROTECTION</h3>
+                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
+                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">4. GLOBAL REGULATORY COMPLIANCE &amp; HARDWARE PROTECTION</h3>
                   <p>
                     Because N-nex operates entirely inside your local client browser sandbox, it inherently provides top-tier compliance metrics with stringent global data privacy regimes:
                   </p>
-                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-zinc-400">
+                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-slate-400">
                     <li><strong className="text-zinc-355">GDPR &amp; CCPA/CPRA Compliance:</strong> We do not collect, monetize, sell, or rent your intellectual property, personal consumer identifiers, or application data. Your source code never hits our server boundaries. You retain 100% data erasure rights since you control your own local device storage.</li>
                     <li><strong className="text-zinc-355">Absolute Shield Against AI Model Scraping:</strong> Because your codebase arrays are processed inside isolated browser memory loops and never pass through a middleman server, it is physically impossible for our platform or unauthorized data crawlers to scrape your private code repositories to train public AI models.</li>
-                    <li><strong className="text-zinc-355">Hardware-Accelerated Thread Safety:</strong> Large repositories are safely structured within hidden background client variables (<code className="text-zinc-305 bg-zinc-950 px-1 border border-zinc-900">useRef</code> memory arrays) rather than being continually injected into the visible page layout DOM. This configuration shields your data structures from unauthorized browser extensions and prevents operating system memory overhead spikes.</li>
-                    <li><strong className="text-zinc-355">System Resync Kill-Switch:</strong> Triggering the <code className="text-zinc-355 bg-zinc-950 px-1 border border-[#1b1b1c]">// FORCE RESYNC ENGINE</code> action immediately resets the application UI and purges all residual context vectors from your browser's active RAM cache in a single frame.</li>
+                    <li><strong className="text-zinc-355">Hardware-Accelerated Thread Safety:</strong> Large repositories are safely structured within hidden background client variables (<code className="text-zinc-305 bg-slate-950 px-1 border border-slate-800/80">useRef</code> memory arrays) rather than being continually injected into the visible page layout DOM. This configuration shields your data structures from unauthorized browser extensions and prevents operating system memory overhead spikes.</li>
+                    <li><strong className="text-zinc-355">System Resync Kill-Switch:</strong> Triggering the <code className="text-zinc-355 bg-slate-950 px-1 border border-[#1b1b1c]">// FORCE RESYNC ENGINE</code> action immediately resets the application UI and purges all residual context vectors from your browser's active RAM cache in a single frame.</li>
                   </ul>
                 </div>
               </div>
@@ -1865,9 +1870,9 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         )}
 
         {/* Minimalist Industrial Footer */}
-        <footer className="border-t border-zinc-900 mt-12 pt-6 pb-2 text-[10px] font-mono text-zinc-600 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
+        <footer className="border-t border-slate-800/80 mt-12 pt-6 pb-2 text-[10px] font-mono text-slate-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-zinc-700 rounded-full animate-pulse" />
+            <span className="w-1.5 h-1.5 bg-slate-600 rounded-full animate-pulse" />
             <span>N-NEX // ZERO-SERVER LOCAL CLIENT SECURED</span>
           </div>
           <div className="flex items-center gap-4">
