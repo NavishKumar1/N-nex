@@ -424,6 +424,60 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
       {/* Features Grid Section */}
       <FeaturesSection />
 
+      {/* Top Swoosh Divider (Purple) - Valley shape */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1 }}
+        className="w-full w-screen max-w-[100vw] overflow-hidden z-0 relative mt-8 sm:mt-16 -mb-8 sm:-mb-12 h-[100px] sm:h-[180px] lg:h-[220px] flex justify-center pointer-events-none"
+      >
+        <svg viewBox="0 0 1440 160" className="w-[150%] sm:w-full h-full min-w-[1000px]" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="fade-top-purple" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="20%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask id="fill-mask-top-purple">
+              <rect x="0" y="0" width="1440" height="160" fill="url(#fade-top-purple)" />
+            </mask>
+            <linearGradient id="swoosh-gradient-top-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#020617" stopOpacity="0" />
+              <stop offset="20%" stopColor="#c084fc" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="#e879f9" stopOpacity="1" />
+              <stop offset="80%" stopColor="#c084fc" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#020617" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="swoosh-fill-top-purple" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stopColor="#c084fc" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#c084fc" stopOpacity="0" />
+            </linearGradient>
+            <filter id="swoosh-glow-top-purple" x="-20%" y="-20%" width="140%" height="140%">
+               <feGaussianBlur stdDeviation="6" result="blur" />
+               <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path 
+            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20" 
+            fill="none" 
+            stroke="url(#swoosh-gradient-top-purple)" 
+            strokeWidth="2.5"
+            filter="url(#swoosh-glow-top-purple)"
+          />
+          <path 
+            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20" 
+            fill="none" 
+            stroke="rgba(255,255,255,0.8)" 
+            strokeWidth="1.5"
+          />
+          <path 
+            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20 L 1440,0 L 0,0 Z" 
+            fill="url(#swoosh-fill-top-purple)"
+            mask="url(#fill-mask-top-purple)"
+          />
+        </svg>
+      </motion.div>
+
       {/* Comparison ROI Section */}
       <ComparisonSection />
 
@@ -440,12 +494,12 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
       >
         <svg viewBox="0 0 1440 160" className="w-[150%] sm:w-full h-full min-w-[1000px]" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="fade-top" x1="0%" y1="100%" x2="0%" y2="0%">
+            <linearGradient id="fade-bottom-final" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="20%" stopColor="white" stopOpacity="1" />
               <stop offset="100%" stopColor="white" stopOpacity="0" />
             </linearGradient>
-            <mask id="fill-mask-top">
-              <rect x="0" y="0" width="1440" height="160" fill="url(#fade-top)" />
+            <mask id="fill-mask-bottom-final">
+              <rect x="0" y="0" width="1440" height="160" fill="url(#fade-bottom-final)" />
             </mask>
             <linearGradient id="swoosh-gradient-bottom" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#020617" stopOpacity="0" />
@@ -454,7 +508,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
               <stop offset="80%" stopColor="#c084fc" stopOpacity="0.8" />
               <stop offset="100%" stopColor="#020617" stopOpacity="0" />
             </linearGradient>
-            <linearGradient id="swoosh-fill-bottom" x1="0%" y1="100%" x2="0%" y2="0%">
+            <linearGradient id="swoosh-fill-bottom" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#c084fc" stopOpacity="0.15" />
               <stop offset="100%" stopColor="#c084fc" stopOpacity="0" />
             </linearGradient>
@@ -464,22 +518,22 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             </filter>
           </defs>
           <path 
-            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20" 
+            d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140" 
             fill="none" 
             stroke="url(#swoosh-gradient-bottom)" 
             strokeWidth="2.5"
             filter="url(#swoosh-glow-bottom)"
           />
           <path 
-            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20" 
+            d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140" 
             fill="none" 
             stroke="rgba(255,255,255,0.8)" 
             strokeWidth="1.5"
           />
           <path 
-            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20 L 1440,0 L 0,0 Z" 
+            d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140 L 1440,160 L 0,160 Z" 
             fill="url(#swoosh-fill-bottom)"
-            mask="url(#fill-mask-top)"
+            mask="url(#fill-mask-bottom-final)"
           />
         </svg>
       </motion.div>
