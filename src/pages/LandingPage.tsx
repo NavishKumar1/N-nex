@@ -126,34 +126,14 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] z-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1.5px)', backgroundSize: '40px 40px' }} />
       
       {/* Floating Pill Navbar */}
-      <motion.div
-        className="fixed z-50 flex justify-center left-0 right-0 px-4 md:px-0 pointer-events-none"
-        initial={false}
-        animate={{ 
-          top: scrolled ? "1rem" : "2rem",
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-      >
-        <motion.nav
-          className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-slate-800/80"
-          initial={false}
-          animate={{
-            width: scrolled ? (isMobile ? "95%" : "90%") : (isMobile ? "100%" : "95%"),
-            maxWidth: "1200px",
-            height: scrolled ? (isMobile ? 64 : 80) : (isMobile ? 80 : 110),
-            paddingLeft: scrolled ? (isMobile ? "1.25rem" : "1.5rem") : (isMobile ? "1.5rem" : "3rem"),
-            paddingRight: scrolled ? (isMobile ? "1rem" : "1rem") : (isMobile ? "1.25rem" : "1.5rem")
-          }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-        >
-          <div className="flex items-center h-full gap-4 md:gap-10">
-            <motion.img 
+      <div className="fixed z-50 flex justify-center left-0 right-0 px-4 md:px-6 top-4 sm:top-6 pointer-events-none">
+        <nav className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-slate-800/80 w-full max-w-[1200px] h-16 sm:h-20 px-4 sm:px-8">
+          <div className="flex items-center h-full gap-2 sm:gap-6 md:gap-10">
+            <img 
               src="/N-nex.png" 
               alt="Logo" 
-              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer"
-              initial={false}
-              animate={{ height: scrolled ? (isMobile ? 36 : 56) : (isMobile ? 48 : 86) }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-8 sm:h-12 shrink-0"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             />
             <div className="hidden sm:flex items-center gap-1 md:gap-2">
               <button 
@@ -166,7 +146,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                 onClick={() => {
                   document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
+                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors whitespace-nowrap"
               >
                 How it works
               </button>
@@ -185,12 +165,12 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             onClick={onEnter}
             className="group px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] shrink-0"
           >
-            <span className="text-[12px] sm:text-[14px] font-semibold font-sans tracking-tight">
+            <span className="text-[12px] sm:text-[14px] font-semibold font-sans tracking-tight whitespace-nowrap">
               Workspace
             </span>
           </button>
-        </motion.nav>
-      </motion.div>
+        </nav>
+      </div>
 
       {/* Hero Content Re-mapped to Demo Image Style */}
       <div className="flex-1 flex flex-col items-center justify-center pt-32 sm:pt-48 pb-20 z-10 px-6 max-w-7xl mx-auto w-full">
