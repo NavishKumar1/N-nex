@@ -371,10 +371,17 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 1 }}
-        className="w-full w-screen max-w-full overflow-hidden z-10 relative mt-8 mb-16 sm:mt-16 sm:mb-24 h-[60px] sm:h-[120px] lg:h-[160px] flex justify-center"
+        className="w-full w-screen max-w-full overflow-hidden z-10 relative mt-4 sm:mt-8 -mb-4 sm:-mb-6 h-[60px] sm:h-[120px] lg:h-[160px] flex justify-center"
       >
         <svg viewBox="0 0 1440 160" className="w-[150%] sm:w-full h-full min-w-[1000px]" preserveAspectRatio="none">
           <defs>
+            <linearGradient id="fade-bottom" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="60%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask id="fill-mask-bottom">
+              <rect x="0" y="0" width="1440" height="160" fill="url(#fade-bottom)" />
+            </mask>
             <linearGradient id="swoosh-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#020617" stopOpacity="0" />
               <stop offset="20%" stopColor="#0284c7" stopOpacity="0.4" />
@@ -404,12 +411,87 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140 L 1440,160 L 0,160 Z" 
             fill="url(#swoosh-gradient)"
             opacity="0.1" 
+            mask="url(#fill-mask-bottom)"
           />
         </svg>
       </motion.div>
 
       {/* Features Grid Section */}
       <FeaturesSection />
+
+      {/* Bottom Swoosh Divider */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1 }}
+        className="w-full w-screen max-w-full overflow-hidden z-10 relative mt-10 sm:mt-16 -mb-4 sm:-mb-8 h-[60px] sm:h-[120px] lg:h-[160px] flex justify-center"
+      >
+        <svg viewBox="0 0 1440 160" className="w-[150%] sm:w-full h-full min-w-[1000px]" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="fade-top" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="60%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask id="fill-mask-top">
+              <rect x="0" y="0" width="1440" height="160" fill="url(#fade-top)" />
+            </mask>
+            <linearGradient id="swoosh-gradient-bottom" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#020617" stopOpacity="0" />
+              <stop offset="20%" stopColor="#c084fc" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#e879f9" stopOpacity="1" />
+              <stop offset="80%" stopColor="#c084fc" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#020617" stopOpacity="0" />
+            </linearGradient>
+            <filter id="swoosh-glow-bottom" x="-20%" y="-20%" width="140%" height="140%">
+               <feGaussianBlur stdDeviation="5" result="blur" />
+               <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path 
+            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20" 
+            fill="none" 
+            stroke="url(#swoosh-gradient-bottom)" 
+            strokeWidth="3"
+            filter="url(#swoosh-glow-bottom)"
+          />
+          <path 
+            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20" 
+            fill="none" 
+            stroke="rgba(255,255,255,0.6)" 
+            strokeWidth="1"
+          />
+          <path 
+            d="M 0,20 C 250,20 350,140 550,140 L 890,140 C 1090,140 1190,20 1440,20 L 1440,0 L 0,0 Z" 
+            fill="url(#swoosh-gradient-bottom)"
+            opacity="0.1" 
+            mask="url(#fill-mask-top)"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Ready to Extract Section CTA */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="w-full max-w-4xl mx-auto px-6 pt-4 pb-12 sm:pt-12 sm:pb-24 flex flex-col justify-center items-center z-10 relative opacity-90 text-center mb-8"
+      >
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-medium text-white tracking-tight mb-8">
+          Ready to supercharge <br className="hidden sm:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e879f9] to-[#c084fc] drop-shadow-[0_0_15px_rgba(232,121,249,0.3)]">your AI context?</span>
+        </h2>
+        <button
+          onClick={onEnter}
+          className="group px-8 sm:px-10 py-3 sm:py-4 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.25)] hover:-translate-y-1"
+        >
+          <span className="text-sm sm:text-lg font-bold font-sans tracking-tight">
+            Launch Workspace
+          </span>
+          <MoveRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" />
+        </button>
+      </motion.div>
 
       {/* Footer */}
       <footer className="w-full mt-auto relative z-10 overflow-hidden pt-20 pb-12 px-6 border-t border-slate-800/50 flex justify-center">
