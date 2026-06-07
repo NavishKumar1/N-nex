@@ -5,19 +5,19 @@ import { ChevronDown, MessageSquare } from 'lucide-react';
 const faqs = [
   {
     question: "Is my code really private? Does it leave my machine?",
-    answer: "Yes, absolute zero-cloud. N-nex uses modern browser APIs (like the File System Access API) to read your local files directly in the browser sandbox. Not a single line of your code is uploaded to our servers. All extraction and formatting happens locally on your machine CPU."
+    answer: "Yes, absolute zero-cloud. Workspace uses modern browser architectures to fetch public GitHub repositories directly into your client session. Not a single line of your code is persistently stored on our servers. All extraction and formatting happens ephemerally in your browser memory."
   },
   {
     question: "Which file types are ignored?",
-    answer: "By default, N-nex ignores massive dependencies (node_modules, vendor directories), hidden repository data (.git, .svn), built artifacts (dist, build, .next), and binary assets (images, audio, videos, compiled executables). We only extract meaningful text-based source code."
+    answer: "By default, Workspace ignores massive dependencies (node_modules, vendor directories), hidden repository data (.git, .svn), built artifacts (dist, build, .next), and binary assets (images, audio, videos, compiled executables). We only extract meaningful text-based source code."
   },
   {
     question: "How do you count tokens?",
-    answer: "We use a BPE (Byte-Pair Encoding) algorithm running entirely locally. Our token counting metrics map directly to the cl100k_base encodings, which accurately reflect the token consumption for major models like GPT-4, GPT-4o, and Claude 3.5 Sonnet."
+    answer: "We use a BPE (Byte-Pair Encoding) algorithm running entirely in-browser. Our token counting metrics map directly to the cl100k_base encodings, which accurately reflect the token consumption for major models like GPT-4, GPT-4o, and Claude 3.5 Sonnet."
   },
   {
     question: "Can I customize the extraction format?",
-    answer: "Yes. N-nex provides options to strip comments, remove whitespace, and structure the output into clean XML tags or raw markdown, giving you full control over how you want to present the context to your LLMs."
+    answer: "Yes. Workspace provides options to structure the output into clean XML tags or raw markdown, giving you full control over how you want to present the context to your LLMs."
   }
 ];
 

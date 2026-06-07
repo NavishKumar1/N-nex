@@ -34,7 +34,7 @@ export function ComparisonSection() {
               <span className="text-slate-400 font-semibold tracking-tight text-sm sm:text-base">Manual Copying</span>
             </div>
             <div className="col-span-1 p-6 md:p-8 bg-[#c084fc]/5 flex flex-col items-center justify-center text-center relative border-b-2 border-[#c084fc]">
-              <span className="text-white font-bold tracking-tight text-lg sm:text-xl drop-shadow-[0_0_10px_rgba(192,132,252,0.3)]">N-nex Engine</span>
+              <span className="text-white font-bold tracking-tight text-lg sm:text-xl drop-shadow-[0_0_10px_rgba(192,132,252,0.3)]">Workspace Engine</span>
             </div>
           </div>
 

@@ -35,8 +35,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   const [activeTab, setActiveTab] = useState('engine');
   const [tabs, setTabs] = useState<TabItem[]>([
     { id: 'engine', label: 'Core Workspace', closeable: false },
-    { id: 'history', label: 'History Archive', closeable: false },
-    { id: 'legal', label: 'Legal & Privacy Policy', closeable: false }
+    { id: 'history', label: 'History Archive', closeable: false }
   ]);
 
   // Loaded primary source files structured cleanly in React State for re-computations
@@ -813,7 +812,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           } else if (actionType === 'download_json') {
             const jsonStructure = {
               meta: {
-                app: "N-nex",
+                app: "Workspace",
                 preset: selectedPreset,
                 presetDirective: PROMPT_PRESETS[selectedPreset].text,
                 layersCompacted: activeLayers,
@@ -867,6 +866,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     compileWithWorker('copy');
   };
 
+  const downloadAsTextFile = () => {
+    compileWithWorker('download_md');
+  };
+
   const handleForceResync = () => {
     setLoadedFiles([]);
     setUncheckedFiles(new Set());
@@ -879,7 +882,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    setStatus('SYSTEM ARCHITECTURE PURGED: Active memory cached arrays wiped and n-nex re-initiated.');
+    setStatus('SYSTEM ARCHITECTURE PURGED: Active memory cached arrays wiped and workspace re-initiated.');
   };
 
   const handleApplyHistoryRepo = (savedRepoUrl: string) => {
@@ -960,21 +963,21 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans flex flex-col antialiased selection:bg-[#38bdf8]/30 selection:text-white">
       <QuickStartTour />
       {/* Stark Void Navigation Header */}
-      <nav className="border-b border-slate-800/80 bg-[#020617] h-16 shrink-0 flex items-center justify-between px-6 z-10 sticky top-0 shadow-sm">
-        <div className="flex items-center gap-4">
+      <nav className="border-b border-slate-800/80 bg-[#020617] h-20 sm:h-24 shrink-0 flex items-center justify-between px-3 sm:px-6 z-10 sticky top-0 shadow-sm">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={onBackToLanding}
-            className="flex items-center justify-center hover:bg-slate-800/80 rounded-md transition-colors group p-2"
+            className="flex items-center justify-center hover:bg-slate-800/80 rounded-md transition-colors group p-1 sm:p-2"
             title="Return to Interface"
           >
-            <img src="/N-nex.png" alt="N-nex" className="h-10 sm:h-12 cursor-pointer opacity-90 group-hover:opacity-100 object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)]" />
+            <img src="/N-nex.png" alt="N-nex" className="h-16 sm:h-20 cursor-pointer opacity-90 group-hover:opacity-100 object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)]" />
           </button>
-          <div className="flex items-center gap-3 border-l border-slate-800/80 pl-4">
+          <div className="flex items-center gap-2 sm:gap-3 border-l border-slate-800/80 pl-2 sm:pl-4">
             <div className="w-1.5 h-1.5 bg-[#38bdf8] rounded-full animate-pulse shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
-            <span className="text-white font-bold tracking-widest text-xs uppercase font-sans">Workspace</span>
+            <span className="text-white font-bold tracking-widest text-[10px] sm:text-xs uppercase font-sans">Workspace</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <div className="hidden sm:flex px-3 py-1.5 border border-slate-800/80 text-[10px] text-slate-400 tracking-wider rounded-lg font-mono items-center shadow-inner bg-slate-900/50">
             <Sparkles className="w-3 h-3 text-[#c084fc] mr-1.5" />
             V1.1.0 COMPILER
@@ -999,7 +1002,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       </nav>
 
       {/* Modern SaaS Tab Navigation Bar */}
-      <div className="bg-[#020617] border-b border-slate-800/80 flex items-center h-14 px-6 min-w-0 select-none overflow-x-auto shrink-0 scrollbar-none gap-2">
+      <div className="bg-[#020617] border-b border-slate-800/80 flex items-center h-14 px-3 sm:px-6 min-w-0 select-none overflow-x-auto shrink-0 scrollbar-none gap-2">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -1011,7 +1014,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   setIsPreviewVisible(false); // safety reset rendering loops
                 }
               }}
-              className={`flex items-center h-9 px-4 text-xs font-medium tracking-wide cursor-pointer transition-all rounded-md border ${
+              className={`flex items-center h-9 px-4 text-xs font-medium tracking-wide cursor-pointer transition-all rounded-md border whitespace-nowrap ${
                 isActive 
                   ? 'bg-slate-800 text-white border-slate-700 shadow-sm' 
                   : 'bg-transparent text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/50'
@@ -1032,7 +1035,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       </div>
 
       {/* Main Container Viewport */}
-      <div className="flex-1 overflow-auto max-w-5xl w-full mx-auto px-6 py-8 space-y-6">
+      <div className="flex-1 overflow-auto max-w-5xl w-full mx-auto px-3 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-6">
         
         {/* Exclusion Filters Drawer Screen */}
         <AnimatePresence>
@@ -1166,36 +1169,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   );
                 })}
               </div>
-            </div>
-
-            {/* LOCAL FILE UPLOAD ENTRANCE */}
-            <div id="tour-step-1-local" className="border border-slate-800 p-8 rounded-xl bg-slate-900/50 w-full space-y-4 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-4 gap-4">
-                <div className="space-y-1.5">
-                  <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                    <FolderSearch size={16} className="text-[#c084fc]" />
-                    Secure Local Ingestion
-                  </h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Direct local directory access runs completely in your browser memory block. Zero external server uploads.
-                  </p>
-                </div>
-                <button
-                  onClick={handleFolderSelect}
-                  className="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2.5 text-xs font-semibold transition-all rounded-lg shadow-sm border border-slate-700 whitespace-nowrap"
-                >
-                  Select Directory
-                </button>
-              </div>
-              <input
-                type="file"
-                // @ts-ignore
-                webkitdirectory=""
-                directory=""
-                ref={fileInputRef}
-                className="hidden"
-                onChange={handleHTML5FolderSelect}
-              />
             </div>
 
             {/* CRITICAL FIX: CLEANED UP FULL-WIDTH WORKSPACE PIPELINE INPUT */}
@@ -1657,25 +1630,25 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* Programmatic Disk streams downloader bindings row */}
             {fileCount > 0 && (
-              <div className="border border-slate-800/80 bg-slate-950/30 p-4 flex flex-wrap items-center justify-between gap-4">
-                <div className="space-y-1 font-mono text-left">
-                  <span className="text-white font-bold text-xs uppercase block">Programmatic Saved Documents</span>
-                  <p className="text-[10px] text-slate-500">Save your compiled multi-layer engine matrix directly to high bandwidth disk streams as Markdown or custom JSON configurations.</p>
+              <div className="border border-slate-800 bg-slate-900/50 p-6 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+                <div className="space-y-1.5 font-sans text-left">
+                  <span className="text-white font-semibold text-sm block">Programmatic Saved Documents</span>
+                  <p className="text-xs text-slate-400">Save your compiled multi-layer engine matrix directly to high bandwidth disk streams as Markdown or custom JSON configurations.</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-3 w-full md:w-auto">
                   <button 
                     onClick={handleDownloadMarkdown}
-                    className="h-10 border border-slate-800 hover:border-white hover:bg-neutral-900 text-white text-[10px] px-4 font-black uppercase tracking-wider transition-all flex items-center gap-2 bg-slate-950 rounded-none duration-150"
+                    className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
                   >
-                    <Download size={12} />
-                    Download .md file
+                    <Download size={14} />
+                    Download .md
                   </button>
                   <button 
                     onClick={handleDownloadJSON}
-                    className="h-10 border border-zinc-805 hover:border-white hover:bg-neutral-900 text-white text-[10px] px-4 font-black uppercase tracking-wider transition-all flex items-center gap-2 bg-slate-950 rounded-none duration-150"
+                    className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
                   >
-                    <Download size={12} />
-                    Download .json package
+                    <Download size={14} />
+                    Download .json
                   </button>
                 </div>
               </div>
@@ -1758,130 +1731,13 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           </div>
         )}
 
-        {/* Legal & Privacy Policy Panel */}
-        {activeTab === 'legal' && (
-          <div className="space-y-6 animate-fadeIn text-left max-w-3xl mx-auto leading-relaxed">
-            <div className="border border-slate-800/80 bg-slate-950/40 p-8 space-y-6">
-              
-              {/* Header block with metadata */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-5 gap-2">
-                <div>
-                  <h1 className="text-white font-black tracking-[0.2em] text-sm uppercase">PRIVACY POLICY &amp; LEGAL DISCLOSURES</h1>
-                  <p className="text-[10px] text-slate-400 font-mono mt-1 uppercase">Last System Update: May 2026 // Active Sandbox Assurance</p>
-                </div>
-                <div className="px-3 py-1 border border-slate-800/80 text-[9px] text-slate-400 tracking-wider font-mono shrink-0 uppercase">
-                  ZERO-SERVER SANDBOX ASSURED
-                </div>
-              </div>
-
-              {/* Complete Legal Texts with low-opacity monospace theme */}
-              <div className="text-slate-400 font-mono text-xs space-y-6 leading-relaxed">
-                <p>
-                  At <strong className="text-slate-200">N-nex</strong> (referred to below as "the Platform", "we", "us", or "our"), data privacy is not a feature or a policy setting—it is the foundational core of our application architecture. This document outlines the technical framework of our software and states why our system is structurally engineered to guarantee your absolute privacy, anonymity, and legal safety now and in the future.
-                </p>
-
-                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
-                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">1. CORE ARCHITECTURAL PARADIGM: ZERO-SERVER ENVIRONMENT</h3>
-                  <p>
-                    N-nex operates exclusively as a single-page client-side web application. Our software runs entirely inside your device’s sandbox browser environment.
-                  </p>
-                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-slate-400">
-                    <li><strong className="text-slate-300">No Cloud Infrastructure:</strong> We do not own, lease, or operate external web servers, application servers, cloud databases, or analytics log repositories.</li>
-                    <li><strong className="text-slate-300">No Identity Profiles:</strong> There are no user registration frameworks, login prompts, OAuth authentications, or tracking cookies implemented on this platform.</li>
-                    <li><strong className="text-slate-300">No Corporate Visibility:</strong> It is physically and technically impossible for us to collect, view, monitor, intercept, or copy your source code, file trees, or system prompts.</li>
-                  </ul>
-                </div>
-
-                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
-                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">2. IN-BROWSER LOCAL MEMORY &amp; DATA RETENTION PROCESSING</h3>
-                  <p>
-                    While data never moves to an external server hosted by us, the Platform harnesses native browser APIs to execute real-time workflow processes:
-                  </p>
-                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-slate-400">
-                    <li>
-                      <strong className="text-slate-300">Source Code Matrix Data:</strong> When you stream a remote git repository, the code text files are parsed directly into temporary browser RAM via local variables (<code className="text-zinc-305 bg-slate-950 px-1 border border-slate-800/80">useRef</code> memory buffers). This text stream is strictly used to compile your markdown prompt clipboard modules. Live token usage values are dynamically generated in active memory using localized, precise byte-pair telemetry limits.
-                    </li>
-                    <li>
-                      <strong className="text-slate-300">State Preservation (LocalStorage Archive):</strong> To optimize developer workflow, the History Archive dashboard relies strictly on browser <code className="text-zinc-305 bg-slate-950 px-1 border border-slate-800/80">localStorage</code> to preserve structural metadata across interface reloads.
-                    </li>
-                  </ul>
-                  <div className="pl-4 space-y-1 text-[11px]">
-                    <p className="text-slate-400 font-bold uppercase tracking-widest text-[9px] mt-1">// STORED METRICS &amp; RETENTION SECURITY</p>
-                    <ul className="list-disc list-inside pl-2 space-y-1 text-zinc-450">
-                      <li><strong className="text-slate-300">Stored Metrics:</strong> The data saved on your machine is limited to: Repository Identities, Component Target Links, Compiled Token Estimates, and Event Timestamps.</li>
-                      <li><strong className="text-slate-300">Absolute User Sovereignty:</strong> This log is kept entirely on your physical device. You can selectively delete individual records via line-item trash icons, or use the <code className="text-zinc-355 bg-slate-950 px-1 border border-slate-800/80">[ CLEAR ARCHIVE ]</code> button to wipe all trace metrics instantly.</li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
-                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">3. EXPLICIT THIRD-PARTY SERVICE INTERACTIONS</h3>
-                  <p>
-                    To seamlessly compile, stream, and render design assets without forcing you to set up database endpoints or proxy keys, the platform initiates direct client-to-server calls to two external global networks. Your browser interacts directly with their independent content servers under the following parameters:
-                  </p>
-
-                  <div className="pl-3 space-y-4">
-                    <div className="space-y-1">
-                      <h4 className="text-slate-300 font-bold text-[10px] uppercase">A. THE GITHUB DEVELOPMENT NETWORK &amp; SLIDING CONCURRENCY</h4>
-                      <p className="text-slate-400">
-                        When mapping or appending a remote project link, your browser directly calls GitHub’s open public API endpoints to parse metadata and stream raw assets.
-                      </p>
-                      <ul className="list-disc list-inside pl-2 text-[11px] text-slate-400 space-y-1">
-                        <li><strong className="text-zinc-355">API Tree Requests:</strong> Fetched through <code className="text-slate-300">api.github.com</code> to isolate public folder hierarchies.</li>
-                        <li><strong className="text-zinc-355">Continuous Sliding-Window Concurrency:</strong> Individual source code structures are pulled sequentially from <code className="text-slate-300">raw.githubusercontent.com</code>. To maximize data bandwidth efficiency, your browser initializes an isolated sliding-window pool of up to 25 parallel file network lines simultaneously. These connection loops are run entirely client-side on your network hardware.</li>
-                      </ul>
-                      <div className="flex gap-3 text-[10px] mt-2">
-                        <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-white underline">[ GitHub General Privacy Statement ]</a>
-                        <a href="https://docs.github.com/rest" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-white underline">[ GitHub REST API Terms of Use ]</a>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1 border-t border-slate-800/80/30 pt-3">
-                      <h4 className="text-slate-300 font-bold text-[10px] uppercase">B. THE GOOGLE FONTS REGISTRY</h4>
-                      <p className="text-slate-400">
-                        To preserve our sharp, high-contrast monochrome design style, our interface links to the Google Fonts directory to fetch specialized monospace typefaces.
-                      </p>
-                      <ul className="list-disc list-inside pl-2 text-[11px] text-slate-400 space-y-1">
-                        <li><strong className="text-zinc-355">Font Asset Requests:</strong> When initializing the system frame, your browser calls Google’s deployment networks to load the typography package.</li>
-                        <li><strong className="text-zinc-355">IP Address Transmission:</strong> During this brief connection, Google's networks naturally log your public IP address to successfully deliver the font components to your browser. Google states that this optimization log is separate from other tracking services and is never cross-referenced to compile user profiles.</li>
-                      </ul>
-                      <div className="mt-2">
-                        <a href="https://fonts.googleblog.com/2022/11/your-privacy-and-google-fonts.html" target="_blank" rel="noopener noreferrer" className="text-slate-300 hover:text-white underline text-[10px]">[ Google Fonts Privacy Documentation ]</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2 border-t border-slate-800/80/50 pt-4">
-                  <h3 className="text-slate-200 font-bold uppercase tracking-wider text-[11px]">4. GLOBAL REGULATORY COMPLIANCE &amp; HARDWARE PROTECTION</h3>
-                  <p>
-                    Because N-nex operates entirely inside your local client browser sandbox, it inherently provides top-tier compliance metrics with stringent global data privacy regimes:
-                  </p>
-                  <ul className="list-disc list-inside pl-2 space-y-1.5 text-slate-400">
-                    <li><strong className="text-zinc-355">GDPR &amp; CCPA/CPRA Compliance:</strong> We do not collect, monetize, sell, or rent your intellectual property, personal consumer identifiers, or application data. Your source code never hits our server boundaries. You retain 100% data erasure rights since you control your own local device storage.</li>
-                    <li><strong className="text-zinc-355">Absolute Shield Against AI Model Scraping:</strong> Because your codebase arrays are processed inside isolated browser memory loops and never pass through a middleman server, it is physically impossible for our platform or unauthorized data crawlers to scrape your private code repositories to train public AI models.</li>
-                    <li><strong className="text-zinc-355">Hardware-Accelerated Thread Safety:</strong> Large repositories are safely structured within hidden background client variables (<code className="text-zinc-305 bg-slate-950 px-1 border border-slate-800/80">useRef</code> memory arrays) rather than being continually injected into the visible page layout DOM. This configuration shields your data structures from unauthorized browser extensions and prevents operating system memory overhead spikes.</li>
-                    <li><strong className="text-zinc-355">System Resync Kill-Switch:</strong> Triggering the <code className="text-zinc-355 bg-slate-950 px-1 border border-[#1b1b1c]">// FORCE RESYNC ENGINE</code> action immediately resets the application UI and purges all residual context vectors from your browser's active RAM cache in a single frame.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Minimalist Industrial Footer */}
         <footer className="border-t border-slate-800/80 mt-12 pt-6 pb-2 text-[10px] font-mono text-slate-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-slate-600 rounded-full animate-pulse" />
-            <span>N-NEX // ZERO-SERVER LOCAL CLIENT SECURED</span>
+            <span>WORKSPACE // ZERO-SERVER LOCAL CLIENT SECURED</span>
           </div>
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setActiveTab('legal')}
-              className="hover:text-white transition-colors duration-150 uppercase"
-            >
-              [ Legal &amp; Privacy Policy ]
-            </button>
             <span>© 2026 // VOID.ARCHITECTS</span>
           </div>
         </footer>

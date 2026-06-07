@@ -15,7 +15,7 @@ function HowItWorksSection() {
     {
       icon: <FolderSync className="w-5 h-5 sm:w-6 sm:h-6 text-[#38bdf8]" />,
       title: "Secure Ingestion",
-      desc: "Select local directories or connect a GitHub repository. N-nex accesses files completely client-side. Zero cloud upload."
+      desc: "Connect any public GitHub repository. Workspace accesses files completely in-browser. Zero cloud storage or external upload."
     },
     {
       icon: <Cpu className="w-5 h-5 sm:w-6 sm:h-6 text-[#818cf8]" />,
@@ -47,7 +47,7 @@ function HowItWorksSection() {
           Architectural <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] to-[#0ea5e9]">Flow</span>
         </h2>
         <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-          A seamless local-first extraction pipeline engineered to keep your IP protected while radically supercharging AI context windows.
+          A seamless browser-first extraction pipeline engineered to keep your IP protected while radically supercharging AI context windows.
         </p>
       </motion.div>
 
@@ -331,12 +331,8 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
              </defs>
 
              {/* Path from GitHub to Core */}
-             <path d="M 90 60 C 250 60 250 200 360 200" fill="none" stroke="url(#pipe-gradient-1)" strokeWidth="2" opacity="0.4" />
-             <path d="M 90 60 C 250 60 250 200 360 200" fill="none" stroke="url(#pipe-glow)" strokeWidth="3" className="animate-[dash_8s_linear_infinite]" strokeDasharray="10 15" />
-
-             {/* Path from Local to Core */}
-             <path d="M 90 340 C 250 340 250 200 360 200" fill="none" stroke="url(#pipe-gradient-1)" strokeWidth="2" opacity="0.4" />
-             <path d="M 90 340 C 250 340 250 200 360 200" fill="none" stroke="url(#pipe-glow)" strokeWidth="3" className="animate-[dash_8s_linear_infinite]" strokeDasharray="10 15" />
+             <path d="M 120 200 L 360 200" fill="none" stroke="url(#pipe-gradient-1)" strokeWidth="2" opacity="0.4" />
+             <path d="M 120 200 L 360 200" fill="none" stroke="url(#pipe-glow)" strokeWidth="3" className="animate-[dash_8s_linear_infinite]" strokeDasharray="10 15" />
 
              {/* Path from Core to Markdown */}
              <path d="M 440 200 L 660 200" fill="none" stroke="#0ea5e9" strokeWidth="2" opacity="0.4" />
@@ -349,29 +345,21 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
 
            {/* Nodes */}
            {/* 1. GitHub Node */}
-           <div className="absolute top-[15%] left-[5%] -translate-y-1/2 flex flex-col items-center gap-3">
+           <div className="absolute top-[50%] left-[5%] -translate-y-1/2 flex flex-col items-center gap-3">
              <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.15)] z-10 relative">
                <Github className="text-[#38bdf8] w-8 h-8" />
              </div>
              <span className="text-[11px] font-mono font-medium text-slate-400 uppercase tracking-wider">GitHub Repo</span>
            </div>
 
-           {/* 2. Local Node */}
-           <div className="absolute top-[85%] left-[5%] -translate-y-1/2 flex flex-col items-center gap-3">
-             <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.15)] z-10 relative">
-               <FolderSync className="text-[#38bdf8] w-8 h-8" />
-             </div>
-             <span className="text-[11px] font-mono font-medium text-slate-400 uppercase tracking-wider">Local Folder</span>
-           </div>
-
-           {/* 3. Core Engine Node */}
+           {/* 2. Core Engine Node */}
            <div className="absolute top-[50%] left-[40%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
              <div className="w-24 h-24 rounded-3xl bg-[#020617] border-2 border-[#0ea5e9]/50 flex items-center justify-center shadow-[0_0_40px_rgba(14,165,233,0.3)] z-10 relative overflow-hidden group hover:border-[#38bdf8] transition-colors">
                <div className="absolute inset-0 bg-gradient-to-br from-[#0ea5e9]/10 to-transparent" />
                <Terminal className="text-[#bae6fd] w-12 h-12 relative z-20 group-hover:scale-110 transition-transform" />
              </div>
              <div className="flex flex-col items-center">
-               <span className="text-[13px] font-bold text-white tracking-wide">N-NEX ENGINE</span>
+               <span className="text-[13px] font-bold text-white tracking-wide">WORKSPACE ENGINE</span>
                <span className="text-[10px] font-mono text-[#38bdf8]">AST PARSE / MINIMIZE</span>
              </div>
            </div>
@@ -402,7 +390,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
            transition={{ duration: 0.6, ease: "easeOut" }}
            className="w-full flex flex-col items-center gap-6 mt-16 sm:hidden text-sm font-mono text-[#bae6fd]"
          >
-            <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">1. Fetch Local / GitHub</div>
+            <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">1. Fetch GitHub</div>
             <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-slate-600" />
             <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">2. Parse AST / Minify</div>
             <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-slate-600" />
@@ -626,14 +614,14 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
         >
           
           <h2 
-            className="text-[22vw] lg:text-[18vw] leading-[0.8] font-black tracking-tighter text-transparent w-full text-center select-none relative z-10"
+            className="text-[16vw] lg:text-[14vw] leading-[0.8] font-black tracking-tighter text-transparent w-full text-center select-none relative z-10 uppercase"
             style={{ 
               WebkitTextStroke: '1px rgba(56, 189, 248, 0.4)',
               background: 'linear-gradient(180deg, transparent 50%, rgba(14, 165, 233, 0.1) 100%)',
               WebkitBackgroundClip: 'text',
             }}
           >
-            N-nex
+            Workspace
           </h2>
         </motion.div>
       </footer>

@@ -14,15 +14,9 @@ export function QuickStartTour() {
 
   const steps: Step[] = [
     {
-      target: '#tour-step-1-local',
-      content: 'Click here to load a local folder securely from your machine.',
-      disableBeacon: true,
-      title: 'Import Local Repository',
-      placement: 'bottom',
-    },
-    {
       target: '#tour-step-2-github',
-      content: 'Or, paste any public GitHub repository URL directly. N-nex will instantly analyze the tree.',
+      content: 'Paste any public GitHub repository URL directly. Workspace will instantly analyze the tree.',
+      disableBeacon: true,
       title: 'Remote Repository Fetch',
       placement: 'bottom',
     },

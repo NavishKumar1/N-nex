@@ -16,7 +16,7 @@ export function ShowcaseSection() {
           <span className="text-slate-500">you send it to the LLM.</span>
         </h2>
         <p className="text-slate-400 max-w-xl text-sm sm:text-base">
-          N-nex structures your entire codebase into a single, highly-optimized token stream. Choose between Raw Markdown or XML tag formatting.
+          Workspace structures your entire codebase into a single, highly-optimized token stream. Choose between Raw Markdown or XML tag formatting.
         </p>
       </div>
 

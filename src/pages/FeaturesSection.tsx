@@ -31,9 +31,9 @@ export function FeaturesSection() {
               <div className="w-12 h-12 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center mb-6 shadow-lg">
                 <Shield className="w-6 h-6 text-[#38bdf8]" />
               </div>
-              <h3 className="text-2xl font-semibold text-white mb-3 tracking-tight">Absolute Zero-Cloud Policy</h3>
+              <h3 className="text-2xl font-semibold text-white mb-3 tracking-tight">Zero-Cloud Storage Policy</h3>
               <p className="text-slate-400 leading-relaxed max-w-md">
-                We engineered this platform with a strict "local-first" constraint. N-nex accesses your local filesystem directly through the browser sandbox, parsing gigabytes of code without a single byte ever hitting our servers. Your IP never leaves your machine.
+                We engineered this platform to execute all processing entirely within your browser environment. Workspace fetches GitHub repositories directly, parsing gigabytes of code without a single byte being durably stored on our servers. Your assets are processed ephemerally in memory.
               </p>
             </div>
             <div className="flex items-center gap-4 text-xs font-mono text-slate-500 uppercase tracking-widest mt-auto border-t border-slate-800/50 pt-6 font-semibold">
