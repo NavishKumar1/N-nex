@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap } from 'lucide-react';
+import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap, Shield, Activity, Filter, Wand2, Database, Lock, Code2, MoveRight } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 
 function HowItWorksSection() {
@@ -100,6 +100,8 @@ function HowItWorksSection() {
   );
 }
 
+import { FeaturesSection } from './FeaturesSection';
+
 export default function LandingPage({ onEnter }: { onEnter: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
@@ -156,7 +158,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             <div className="hidden sm:flex items-center gap-1 md:gap-2">
               <button 
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-slate-400 hover:text-white px-4 md:px-5 py-2 rounded-full font-sans font-medium text-[13px] md:text-[14px] transition-colors"
+                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
               >
                 Home
               </button>
@@ -164,9 +166,17 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                 onClick={() => {
                   document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-slate-400 hover:text-white px-4 md:px-5 py-2 rounded-full font-sans font-medium text-[13px] md:text-[14px] transition-colors"
+                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
               >
                 How it works
+              </button>
+              <button 
+                onClick={() => {
+                  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
+              >
+                Features
               </button>
             </div>
           </div>
@@ -306,7 +316,13 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
          </motion.div>
          
          {/* Mobile Alternative Visual Flow */}
-         <div className="w-full flex flex-col items-center gap-6 mt-16 sm:hidden text-sm font-mono text-[#bae6fd]">
+         <motion.div 
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true, margin: "-50px" }}
+           transition={{ duration: 0.6, ease: "easeOut" }}
+           className="w-full flex flex-col items-center gap-6 mt-16 sm:hidden text-sm font-mono text-[#bae6fd]"
+         >
             <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">1. Fetch Local / GitHub</div>
             <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-slate-600" />
             <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">2. Parse AST / Minify</div>
@@ -314,16 +330,67 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">3. Layer Dependencies</div>
             <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-[#0ea5e9]" />
             <div className="bg-[#020617] border border-[#0ea5e9]/50 shadow-[0_0_20px_rgba(56,189,248,0.2)] px-6 py-3 rounded-full w-full max-w-[250px] text-center text-white font-bold">4. AI-Ready Context Output</div>
-         </div>
+         </motion.div>
          
       </div>
 
       {/* How it Works Scroll Section */}
       <HowItWorksSection />
 
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1 }}
+        className="w-full w-screen max-w-full overflow-hidden z-10 relative mt-8 mb-16 sm:mt-16 sm:mb-24 h-[60px] sm:h-[120px] lg:h-[160px] flex justify-center"
+      >
+        <svg viewBox="0 0 1440 160" className="w-[150%] sm:w-full h-full min-w-[1000px]" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="swoosh-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#020617" stopOpacity="0" />
+              <stop offset="20%" stopColor="#0284c7" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#38bdf8" stopOpacity="1" />
+              <stop offset="80%" stopColor="#0284c7" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#020617" stopOpacity="0" />
+            </linearGradient>
+            <filter id="swoosh-glow" x="-20%" y="-20%" width="140%" height="140%">
+               <feGaussianBlur stdDeviation="5" result="blur" />
+               <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path 
+            d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140" 
+            fill="none" 
+            stroke="url(#swoosh-gradient)" 
+            strokeWidth="3"
+            filter="url(#swoosh-glow)"
+          />
+          <path 
+            d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140" 
+            fill="none" 
+            stroke="rgba(255,255,255,0.6)" 
+            strokeWidth="1"
+          />
+          <path 
+            d="M 0,140 C 250,140 350,20 550,20 L 890,20 C 1090,20 1190,140 1440,140 L 1440,160 L 0,160 Z" 
+            fill="url(#swoosh-gradient)"
+            opacity="0.1" 
+          />
+        </svg>
+      </motion.div>
+
+      {/* Features Grid Section */}
+      <FeaturesSection />
+
       {/* Footer */}
       <footer className="w-full mt-auto relative z-10 overflow-hidden pt-20 pb-12 px-6 border-t border-slate-800/50 flex justify-center">
-        <div className="w-full max-w-[1400px] relative flex flex-col">
+        <motion.div 
+          initial={{ opacity: 0, y: 50, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-full max-w-[1400px] relative flex flex-col"
+        >
           
           <h2 
             className="text-[22vw] lg:text-[18vw] leading-[0.8] font-black tracking-tighter text-transparent w-full text-center select-none relative z-10"
@@ -335,7 +402,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
           >
             N-nex
           </h2>
-        </div>
+        </motion.div>
       </footer>
 
       <motion.div 
