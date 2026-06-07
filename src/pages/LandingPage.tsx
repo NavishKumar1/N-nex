@@ -104,6 +104,7 @@ import { FeaturesSection } from './FeaturesSection';
 import { ComparisonSection } from './ComparisonSection';
 import { FAQSection } from './FAQSection';
 import { ShowcaseSection } from './ShowcaseSection';
+import { UseCasesSection } from './UseCasesSection';
 
 export default function LandingPage({ onEnter }: { onEnter: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -132,40 +133,65 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
       {/* Floating Pill Navbar */}
       <div className="fixed z-50 flex justify-center left-0 right-0 px-4 md:px-6 top-4 sm:top-6 pointer-events-none">
         <nav className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-slate-800/80 w-full max-w-[1200px] h-16 sm:h-20 px-4 sm:px-8 relative">
-          <div className="flex items-center h-full gap-2 sm:gap-6 md:gap-10">
+          <div className="flex items-center h-full sm:w-48">
             <img 
               src="/N-nex.png" 
               alt="Logo" 
-              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-10 sm:h-16 shrink-0"
+              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-8 sm:h-12 shrink-0"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             />
-            <div className="hidden md:flex items-center gap-1">
-              <button 
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
-              >
-                Home
-              </button>
-              <button 
-                onClick={() => {
-                  document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors whitespace-nowrap"
-              >
-                How it works
-              </button>
-              <button 
-                onClick={() => {
-                  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="text-slate-400 hover:text-white px-3 md:px-5 py-2 rounded-full font-sans font-medium text-[12px] md:text-[14px] transition-colors"
-              >
-                Features
-              </button>
-            </div>
+          </div>
+
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => {
+                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
+            >
+              How it works
+            </button>
+            <button 
+              onClick={() => {
+                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
+            >
+              Features
+            </button>
+            <button 
+              onClick={() => {
+                document.getElementById('output')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
+            >
+              Output
+            </button>
+            <button 
+              onClick={() => {
+                document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
+            >
+              Use Cases
+            </button>
+            <button 
+              onClick={() => {
+                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-white px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
+            >
+              FAQ
+            </button>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 sm:w-48 justify-end">
             <button
               onClick={onEnter}
               className="group px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] shrink-0"
@@ -217,6 +243,33 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                   className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
                 >
                   Features
+                </button>
+                <button 
+                  onClick={() => {
+                    document.getElementById('output')?.scrollIntoView({ behavior: 'smooth' });
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
+                >
+                  Output
+                </button>
+                <button 
+                  onClick={() => {
+                    document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
+                >
+                  Use Cases
+                </button>
+                <button 
+                  onClick={() => {
+                    document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="text-left text-slate-300 hover:text-white hover:bg-slate-800/50 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors"
+                >
+                  FAQ
                 </button>
               </motion.div>
             )}
@@ -427,6 +480,9 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
 
       {/* Output Showcase Section */}
       <ShowcaseSection />
+
+      {/* Use Cases Section */}
+      <UseCasesSection />
 
       {/* Top Swoosh Divider (Purple) - Valley shape */}
       <motion.div 

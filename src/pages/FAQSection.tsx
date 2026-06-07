@@ -25,7 +25,7 @@ export function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
+    <div id="faq" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
       <div className="text-center mb-16 sm:mb-24 flex flex-col items-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[#38bdf8] text-xs font-mono font-medium mb-6">
           <MessageSquare className="w-4 h-4" /> DEVELOPER FAQ
