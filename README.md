@@ -1,72 +1,106 @@
-# CONTEXT.ENGINE // [ V1.2.0 ]
+# N-NEX Workspace & CLI
 
-> High-velocity, memory-accelerated repository context compiler for LLM prompt orchestration. Zero servers. Zero database liabilities. Strict browser client isolation.
+**The Next-Generation Context Extraction Engine for AI Code Generation**
 
-Context.Engine is an industrial-grade developer utility engineered to recursively compile entire project directory maps and code asset arrays into highly optimized Markdown context blocks. It features a custom sliding-window network architecture designed to bypass connection limits and deliver your codebase payload directly to your clipboard in seconds.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![NPM Version](https://img.shields.io/npm/v/n-nex.svg)](https://www.npmjs.com/package/n-nex)
 
----
+N-NEX is an enterprise-grade developer utility designed to recursively compile complex project directory maps and code assets into highly optimized context payloads (Markdown, JSON, or TXT) for Large Language Models (LLMs). By providing precise, token-optimized context, N-NEX bridges the gap between massive codebases and AI prompt limits.
 
-## 🚀 THE PIPELINE ARCHITECTURE
-
-[ Pinned Prompt Preset ] ──┐
-├─► [ Full-Width Engine ] ──► [ 25x Concurrency Stream ] ──► [ Token Gauge Matrix ]
-[ Filtered Git URL Link ] ─┘
-
-
-1. **Preset Injection:** Frame your payload instantly with native system directives (`// BUG FINDER`, `// REFACTOR/CLEAN`).
-2. **Stream Mapping:** Paste a repository path—the application instantly structures the full directory blueprint via a lightweight index request.
-3. **Continuous Concurrency:** A sliding-window pool processes up to 25 files in parallel, maximizing bandwidth efficiency without hitting API rate drops or HTTP 500 server errors.
-4. **Isolate & Copy:** Trim target nodes down with real-time checkbox filters and export your project context directly to your LLM workspace.
+N-NEX features both a **Command Line Interface (CLI)** for immediate terminal usage and a **Web Workspace (GUI)** for structured analysis, filtering, and codebase topology visual rendering.
 
 ---
 
-## 🛠️ KEY PLATFORM METRICS
+## 🚀 Features
 
-| Core Module | Engine Configuration | System Advantage |
-| :--- | :--- | :--- |
-| **VOID Sandbox Mode** | 100% Client-Side RAM Processing | Code data never moves to a third-party server. Fully safe against public AI scrapers. |
-| **Sliding-Window Pipeline** | 25x Parallel Active Streams | Automatically drops slow connections and pulls the next file pointer instantly to prevent thread stalls. |
-| **Integrated Privacy Vault** | Fully Self-Contained Legal Suite | Complete compliance parameters (GDPR/CCPA/GitHub APIs) mapped directly inside the application core. |
-| **Hardware Thread Shield** | Hidden `useRef` Reference Cache | Large repositories (up to 6.5M+ tokens) are held inside background memory to protect browser DOM frames from lag. |
-| **Full-Width Console Canvas** | Unified Layout Interface Modality | Eliminates bulky split panels to deliver an expansive, minimalist viewport engineered for rapid code staging. |
+### Core Processing Engine
+* **Universal Repository Support:** Ingest local file directory paths or remote GitHub repositories.
+* **Intelligent File Filtering:** Automatically excludes build directories, lockfiles, and binaries based on `.gitignore` and default patterns. Sub-checklist pruning enables granular token optimization.
+* **Token Gauge Matrix:** Live-calculates context windows relative to major models (Claude 3.5, GPT-4o, Gemini 1.5, DeepSeek) via integrated `cl100k_base` estimation.
+* **Secure Cache Memory:** Extracts massive codebases (up to 6.5M+ tokens) directly into background memory, safeguarding your browser DOM and system CPU from rendering spikes.
 
----
+### N-NEX Web Workspace
+* **Codebase Topology Visualization:** Renders interactive, clustered D3.js node charts of your codebase architecture.
+* **Metrics Dashboard:** Analyzes contributor networks, language distribution, commit velocity, and repository size in an elegant UI.
+* **System Preset Directives:** Prepend compiled matrices with system-level behavioral bounds (e.g., `// BUG FINDER`, `// REFACTOR`, `// WRITE TESTS`).
 
-## 📊 TELEMETRY & MODEL CAPACITY BOUNDARIES
-
-The tracking suite automatically maps live code arrays against official production window thresholds:
-
-* **Claude 3.5 Sonnet:** Exactly `200,000` tokens max capacity boundary.
-* **GPT-4o Context Window:** Exactly `128,000` tokens max capacity boundary.
-* **Gemini 1.5 Flash:** Exactly `1,048,576` tokens max capacity boundary.
-* **DeepSeek V3 / R1:** Exactly `64,000` tokens conservative safety threshold.
+### N-NEX CLI
+* **Zero-Configuration Execution:** Pack local environments or fetch remote GitHub archives with a single command.
+* **Format Flexibility:** Export directly to Markdown (`.md`), Plain Text (`.txt`), or highly structured JSON payloads (`.json`).
+* **Direct Clipboard Output:** Built-in `pbcopy`/`xclip` bindings pipe compiled matrices directly into your clipboard for instant prompt pasting.
 
 ---
 
-## ⚡ INSTANT DEPLOYMENT // LOCAL SETUP
+## 📦 Installation & Usage (CLI)
 
-### Prerequisites
-Make sure your development machine has **Node.js** installed.
+### Global Installation
+You can install the CLI globally via NPM:
 
 ```bash
-# 1. Clone the core engineering layer
-git clone https://github.com/username/context-engine.git
-cd context-engine
+npm install -g n-nex
+```
 
-# 2. Extract and mount environment modules
+### Local Execution (via npx)
+```bash
+npx n-nex pack ./src/ --clipboard --format json
+```
+
+### CLI Command Reference
+
+**Pack a local repository**
+```bash
+n-nex pack <directory> [options]
+```
+
+**Fetch a remote GitHub repository**
+```bash
+n-nex fetch <github_url> [options]
+```
+
+#### CLI Options
+| Flag | Description | Default |
+| :--- | :--- | :--- |
+| `--out <file>` | Output file destination path | `null` |
+| `--clipboard` | Copy the compiled context to system clipboard | `false` |
+| `--format <fmt>` | Export format (`md`, `txt`, `json`) | `md` |
+| `--wrapper <wrap>` | Wrapper type (`system`, `chat`) | `system` |
+| `--preset <key>` | Prompt preset (`NONE`, `BUG_FINDER`, `REFACTOR`, `UNIT_TESTS`) | `NONE` |
+| `--token <token>`| GitHub Personal Access Token (for private remote repos) | `null` |
+
+---
+
+## 💻 Running the Web Workspace
+
+To run the interactive React/Vite workspace locally:
+
+```bash
+# Clone the core repository
+git clone https://github.com/your-org/n-nex.git
+cd n-nex
+
+# Install dependencies
 npm install
 
-# 3. Fire up the local streaming environment
+# Start the environment
 npm run dev
 ```
-Navigate to http://localhost:5173 to interact with your secure local development workspace.
+Navigate to the provided localhost port (default `3000`) to access the interface.
 
-🔒 DATA PORTABILITY & FORENSICS ATTESTATION
-Zero Database Cloud Footprint: The platform operates with no database tracking scripts, user registration systems, or backend tracking.
+---
 
-LocalStorage Chronology Logs: The History Archive module relies purely on browser localStorage parameters mapped locally on your machine.
+## 🏗️ Architecture & Privacy
 
-Hardware Kill-Switch: Triggering the [ // FORCE RESYNC ENGINE ] action permanently flushes all active RAM arrays, clearing the application state instantly.
+**100% Client-Side RAM Processing (Web Mode)**
+N-NEX Web operates entirely in your browser. Local folders are parsed using standard HTML5 File System APIs, and remote repositories are mapped using GitHub's open API boundaries. Your proprietary codebase data never transverses through a third-party proprietary server—eliminating data governance liabilities.
 
-📄 LICENSE
-Distributed under the MIT open-source license. Engineered by developers, for developers.
+**Hardware Thread Shield**
+Visualizing large strings or 2,000+ files breaks browser engines. N-NEX handles rendering via decoupled React hooks and state-deferred memory caches.
+
+---
+
+## 🤝 Contributing
+
+We welcome pull requests! For major changes, please open an issue first to discuss the proposed change. Ensure all tests and linting protocols pass before submitting PRs.
+
+## 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details. Engineered for elite developers.
