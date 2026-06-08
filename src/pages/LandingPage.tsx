@@ -310,10 +310,10 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            transition={{ duration: 1.2, ease: "easeOut", delay: 0.4 }}
-           className="w-full max-w-[1000px] mt-24 sm:mt-32 relative hidden sm:flex items-center justify-between h-[200px] px-8 lg:px-12 mx-auto"
+           className="w-full max-w-[1000px] mt-24 sm:mt-32 relative flex flex-col sm:flex-row items-center justify-between gap-12 sm:gap-0 sm:h-[200px] px-8 lg:px-12 mx-auto"
          >
-           {/* SVG Connections Line Background */}
-           <div className="absolute left-[8%] right-[8%] top-1/2 -translate-y-[60%] h-[4px] pointer-events-none z-0">
+           {/* SVG Connections Line Background (Desktop) */}
+           <div className="absolute left-[8%] right-[8%] top-1/2 -translate-y-[60%] h-[4px] pointer-events-none z-0 hidden sm:block">
              <svg width="100%" height="4" overflow="visible" preserveAspectRatio="none">
                <line x1="0" y1="2" x2="100%" y2="2" stroke="#1e293b" strokeWidth="2" />
                <line 
@@ -328,64 +328,66 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                />
              </svg>
            </div>
+           
+           {/* SVG Connections Line Background (Mobile) */}
+           <div className="absolute top-[5%] bottom-[5%] left-1/2 -translate-x-1/2 w-[4px] pointer-events-none z-0 sm:hidden">
+             <svg width="4" height="100%" overflow="visible" preserveAspectRatio="none">
+               <line x1="2" y1="0" x2="2" y2="100%" stroke="#1e293b" strokeWidth="2" />
+               <line 
+                 x1="2" 
+                 y1="0" 
+                 x2="2" 
+                 y2="100%" 
+                 stroke="#0ea5e9" 
+                 strokeWidth="3" 
+                 strokeDasharray="16 16" 
+                 className="animate-[dash_30s_linear_infinite_vertical]" 
+               />
+             </svg>
+           </div>
 
            {/* Nodes */}
            {/* 1. GitHub Node */}
-           <div className="flex flex-col items-center gap-4 z-10 w-32 relative group">
-             <div className="w-[84px] h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
-               <Github strokeWidth={1.5} className="text-[#38bdf8] w-10 h-10" />
+           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-32 relative group">
+             <div className="w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
+               <Github strokeWidth={1.5} className="text-[#38bdf8] w-8 h-8 sm:w-10 sm:h-10" />
              </div>
-             <span className="text-[12px] font-mono font-bold text-[#94a3b8] uppercase tracking-widest">GitHub Repo</span>
+             <span className="text-[11px] sm:text-[12px] font-mono font-bold text-[#94a3b8] uppercase tracking-widest text-center shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-0.5 rounded-lg">GitHub Repo</span>
            </div>
 
            {/* 2. Core Engine Node */}
-           <div className="flex flex-col items-center gap-4 z-10 w-48 relative group">
-             <div className="w-[100px] h-[100px] rounded-[28px] bg-[#020617] border-2 border-[#0ea5e9] flex items-center justify-center shadow-[0_0_40px_rgba(14,165,233,0.3)] transition-transform group-hover:scale-105 overflow-hidden relative">
+           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-48 relative group">
+             <div className="w-[88px] h-[88px] sm:w-[100px] sm:h-[100px] rounded-[28px] bg-[#020617] border-2 border-[#0ea5e9] flex items-center justify-center shadow-[0_0_40px_rgba(14,165,233,0.3)] transition-transform group-hover:scale-105 overflow-hidden relative">
                <div className="absolute inset-0 bg-gradient-to-tr from-[#0ea5e9]/10 to-transparent pointer-events-none" />
-               <Terminal strokeWidth={2} className="text-white w-10 h-10 relative z-10" />
+               <Terminal strokeWidth={2} className="text-white w-9 h-9 sm:w-10 sm:h-10 relative z-10" />
              </div>
-             <div className="flex flex-col items-center text-center gap-1.5">
-               <span className="text-[14px] font-bold text-white tracking-wide leading-none">WORKSPACE ENGINE</span>
-               <span className="text-[10px] font-mono font-bold text-[#0ea5e9] tracking-widest uppercase leading-none">AST Parse / Minimize</span>
+             <div className="flex flex-col items-center text-center gap-1 sm:gap-1.5 shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-1 rounded-lg">
+               <span className="text-[13px] sm:text-[14px] font-bold text-white tracking-wide leading-none">N-NEX ENGINE</span>
+               <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#0ea5e9] tracking-widest uppercase leading-none">AST Parse / Minimize</span>
              </div>
            </div>
 
            {/* 4. Markdown Context Node */}
-           <div className="flex flex-col items-center gap-4 z-10 w-32 relative group">
-             <div className="w-[84px] h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105 relative">
-               <FileText strokeWidth={1.5} className="text-white w-9 h-9" />
-               <div className="absolute -top-2 px-2 py-0.5 rounded-full bg-[#38bdf8] text-[#020617] text-[11px] font-black uppercase shadow-md right-[-10px]">
+           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-32 relative group">
+             <div className="w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105 relative">
+               <FileText strokeWidth={1.5} className="text-white w-8 h-8 sm:w-9 sm:h-9" />
+               <div className="absolute -top-2 px-2 py-0.5 rounded-full bg-[#38bdf8] text-[#020617] text-[10px] sm:text-[11px] font-black uppercase shadow-md right-[-10px]">
                  .MD
                </div>
              </div>
-             <span className="text-[13px] font-sans font-bold text-[#e2e8f0] tracking-wide">Packed Context</span>
+             <span className="text-[12px] sm:text-[13px] font-sans font-bold text-[#e2e8f0] tracking-wide text-center shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-0.5 rounded-lg">Packed Context</span>
            </div>
 
            {/* 5. AI Ready Node */}
-           <div className="flex flex-col items-center gap-4 z-10 w-32 relative group">
-             <div className="w-[84px] h-[84px] rounded-full bg-[#031d14] border border-[#10b981]/60 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105">
-               <Sparkles strokeWidth={2.5} className="text-[#10b981] w-8 h-8" />
+           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-32 relative group">
+             <div className="w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] rounded-full bg-[#031d14] border border-[#10b981]/60 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105">
+               <Sparkles strokeWidth={2.5} className="text-[#10b981] w-7 h-7 sm:w-8 sm:h-8" />
              </div>
-             <span className="text-[12px] font-mono font-bold text-[#10b981] tracking-widest uppercase shadow-sm">AI Ready</span>
+             <span className="text-[11px] sm:text-[12px] font-mono font-bold text-[#10b981] tracking-widest uppercase text-center shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-0.5 rounded-lg">AI Ready</span>
            </div>
          </motion.div>
          
-         {/* Mobile Alternative Visual Flow */}
-         <motion.div 
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true, margin: "-50px" }}
-           transition={{ duration: 0.6, ease: "easeOut" }}
-           className="w-full flex flex-col items-center gap-6 mt-16 sm:hidden text-sm font-mono text-[#bae6fd]"
-         >
-            <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">1. Fetch GitHub</div>
-            <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-slate-600" />
-            <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">2. Parse AST / Minify</div>
-            <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-slate-600" />
-            <div className="bg-slate-900/50 border border-slate-800 px-6 py-3 rounded-full w-full max-w-[250px] text-center shadow-lg">3. Layer Dependencies</div>
-            <div className="h-10 w-px bg-gradient-to-b from-slate-800 to-[#0ea5e9]" />
-            <div className="bg-[#020617] border border-[#0ea5e9]/50 shadow-[0_0_20px_rgba(56,189,248,0.2)] px-6 py-3 rounded-full w-full max-w-[250px] text-center text-white font-bold">4. AI-Ready Context Output</div>
-         </motion.div>
+
          
       </div>
 
