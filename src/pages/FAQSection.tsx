@@ -5,19 +5,31 @@ import { ChevronDown, MessageSquare } from 'lucide-react';
 const faqs = [
   {
     question: "Is my code really private? Does it leave my machine?",
-    answer: "Yes, absolute zero-cloud. Workspace uses modern browser architectures to fetch public GitHub repositories directly into your client session. Not a single line of your code is persistently stored on our servers. All extraction and formatting happens ephemerally in your browser memory."
+    answer: "Yes, absolute zero-cloud. N-nex uses modern browser architectures to fetch public GitHub repositories directly into your client session. Not a single line of your code is persistently stored on our servers. All extraction and formatting happens ephemerally in your browser memory."
   },
   {
-    question: "Which file types are ignored?",
-    answer: "By default, Workspace ignores massive dependencies (node_modules, vendor directories), hidden repository data (.git, .svn), built artifacts (dist, build, .next), and binary assets (images, audio, videos, compiled executables). We only extract meaningful text-based source code."
+    question: "Which file types are automatically ignored?",
+    answer: "By default, N-nex ignores massive dependencies (node_modules, vendor directories), hidden repository data (.git, .svn), built artifacts (dist, build, .next), and binary assets (images, audio, videos, compiled executables). We only extract meaningful text-based source code."
   },
   {
     question: "How do you count tokens?",
-    answer: "We use a fast BPE (Byte-Pair Encoding) algorithm running entirely in-browser. Our token counting metrics map closely to standard encodings, providing a highly accurate estimate of context consumption for major large language models."
+    answer: "We use a fast BPE (Byte-Pair Encoding) algorithm running entirely in-browser. Our token counting metrics map closely to standard encodings, providing a highly accurate estimate of context consumption for major large language models before you paste."
   },
   {
     question: "Can I customize the extraction format?",
-    answer: "Yes. Workspace provides options to structure the output into clean XML tags or raw markdown, giving you full control over how you want to present the context to your LLMs."
+    answer: "Yes. N-nex provides options to structure the output into clean XML tags or raw markdown sequence, giving you full control over how you want to present the context to your LLMs."
+  },
+  {
+    question: "Are there size limits on the repositories I can parse?",
+    answer: "Since N-nex executes locally within your browser environment, the practical limit depends on your system's memory. However, our optimized thread-detached streaming engine gracefully handles massive repositories with tens of thousands of files without freezing your tab."
+  },
+  {
+    question: "Can I target specific branches or pull requests?",
+    answer: "Absolutely. N-nex's precision targeting allows you to hone in on particular branches, individual commit hashes, or active Pull Requests, helping you isolate precise diffs instead of downloading the entire structural tree."
+  },
+  {
+    question: "Does N-nex support private repositories?",
+    answer: "Currently, our zero-auth architecture is specifically optimized for instant ingestion of public open-source GitHub repositories. Support for private repositories via secure, ephemeral, local-only Personal Access Tokens is coming in the next major update."
   }
 ];
 
@@ -28,7 +40,7 @@ export function FAQSection() {
     <div id="faq" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
       <div className="text-center mb-16 sm:mb-24 flex flex-col items-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[#38bdf8] text-xs font-mono font-medium mb-6">
-          <MessageSquare className="w-4 h-4" /> DEVELOPER FAQ
+          <MessageSquare className="w-4 h-4" /> PLATFORM FAQ
         </div>
         <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-sans font-medium text-white tracking-tight mb-6 max-w-2xl leading-tight">
           Common Questions <br className="hidden sm:block" />
@@ -36,7 +48,7 @@ export function FAQSection() {
         </h2>
       </div>
 
-      <div className="max-w-3xl mx-auto flex flex-col gap-4">
+      <div className="max-w-4xl mx-auto flex flex-col gap-4">
         {faqs.map((faq, index) => (
           <motion.div 
             key={index}
