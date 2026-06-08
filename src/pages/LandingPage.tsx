@@ -310,75 +310,63 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            transition={{ duration: 1.2, ease: "easeOut", delay: 0.4 }}
-           className="w-full max-w-[1000px] mt-24 sm:mt-32 relative hidden sm:block h-[400px]"
+           className="w-full max-w-[1000px] mt-24 sm:mt-32 relative hidden sm:flex items-center justify-between h-[200px] px-8 lg:px-12 mx-auto"
          >
-           {/* SVG Connections */}
-           <svg 
-             className="absolute inset-0 w-full h-full pointer-events-none" 
-             viewBox="0 0 1000 400" 
-             preserveAspectRatio="xMidYMid meet"
-           >
-             <defs>
-               <linearGradient id="pipe-glow" x1="0%" y1="0%" x2="100%" y2="0%">
-                 <stop offset="0%" stopColor="#bae6fd" stopOpacity="0.1" />
-                 <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.8" />
-                 <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0.1" />
-               </linearGradient>
-               <linearGradient id="pipe-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
-                 <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.5" />
-                 <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0.8" />
-               </linearGradient>
-             </defs>
-
-             {/* Path from GitHub to Core */}
-             <path d="M 120 200 L 360 200" fill="none" stroke="url(#pipe-gradient-1)" strokeWidth="2" opacity="0.4" />
-             <path d="M 120 200 L 360 200" fill="none" stroke="url(#pipe-glow)" strokeWidth="3" className="animate-[dash_8s_linear_infinite]" strokeDasharray="10 15" />
-
-             {/* Path from Core to Markdown */}
-             <path d="M 440 200 L 660 200" fill="none" stroke="#0ea5e9" strokeWidth="2" opacity="0.4" />
-             <path d="M 440 200 L 660 200" fill="none" stroke="#38bdf8" strokeWidth="3" className="animate-[dash_5s_linear_infinite]" strokeDasharray="15 20" />
-
-             {/* Path from Markdown to AI */}
-             <path d="M 740 200 L 910 200" fill="none" stroke="#0ea5e9" strokeWidth="2" opacity="0.4" />
-             <path d="M 740 200 L 910 200" fill="none" stroke="#38bdf8" strokeWidth="3" className="animate-[dash_5s_linear_infinite]" strokeDasharray="15 20" />
-           </svg>
+           {/* SVG Connections Line Background */}
+           <div className="absolute left-[8%] right-[8%] top-1/2 -translate-y-[60%] h-[4px] pointer-events-none z-0">
+             <svg width="100%" height="4" overflow="visible" preserveAspectRatio="none">
+               <line x1="0" y1="2" x2="100%" y2="2" stroke="#1e293b" strokeWidth="2" />
+               <line 
+                 x1="0" 
+                 y1="2" 
+                 x2="100%" 
+                 y2="2" 
+                 stroke="#0ea5e9" 
+                 strokeWidth="3" 
+                 strokeDasharray="16 16" 
+                 className="animate-[dash_30s_linear_infinite]" 
+               />
+             </svg>
+           </div>
 
            {/* Nodes */}
            {/* 1. GitHub Node */}
-           <div className="absolute top-[50%] left-[5%] -translate-y-1/2 flex flex-col items-center gap-3">
-             <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.15)] z-10 relative">
-               <Github className="text-[#38bdf8] w-8 h-8" />
+           <div className="flex flex-col items-center gap-4 z-10 w-32 relative group">
+             <div className="w-[84px] h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
+               <Github strokeWidth={1.5} className="text-[#38bdf8] w-10 h-10" />
              </div>
-             <span className="text-[11px] font-mono font-medium text-slate-400 uppercase tracking-wider">GitHub Repo</span>
+             <span className="text-[12px] font-mono font-bold text-[#94a3b8] uppercase tracking-widest">GitHub Repo</span>
            </div>
 
            {/* 2. Core Engine Node */}
-           <div className="absolute top-[50%] left-[40%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
-             <div className="w-24 h-24 rounded-3xl bg-[#020617] border-2 border-[#0ea5e9]/50 flex items-center justify-center shadow-[0_0_40px_rgba(14,165,233,0.3)] z-10 relative overflow-hidden group hover:border-[#38bdf8] transition-colors">
-               <div className="absolute inset-0 bg-gradient-to-br from-[#0ea5e9]/10 to-transparent" />
-               <Terminal className="text-[#bae6fd] w-12 h-12 relative z-20 group-hover:scale-110 transition-transform" />
+           <div className="flex flex-col items-center gap-4 z-10 w-48 relative group">
+             <div className="w-[100px] h-[100px] rounded-[28px] bg-[#020617] border-2 border-[#0ea5e9] flex items-center justify-center shadow-[0_0_40px_rgba(14,165,233,0.3)] transition-transform group-hover:scale-105 overflow-hidden relative">
+               <div className="absolute inset-0 bg-gradient-to-tr from-[#0ea5e9]/10 to-transparent pointer-events-none" />
+               <Terminal strokeWidth={2} className="text-white w-10 h-10 relative z-10" />
              </div>
-             <div className="flex flex-col items-center">
-               <span className="text-[13px] font-bold text-white tracking-wide">WORKSPACE ENGINE</span>
-               <span className="text-[10px] font-mono text-[#38bdf8]">AST PARSE / MINIMIZE</span>
+             <div className="flex flex-col items-center text-center gap-1.5">
+               <span className="text-[14px] font-bold text-white tracking-wide leading-none">WORKSPACE ENGINE</span>
+               <span className="text-[10px] font-mono font-bold text-[#0ea5e9] tracking-widest uppercase leading-none">AST Parse / Minimize</span>
              </div>
            </div>
 
            {/* 4. Markdown Context Node */}
-           <div className="absolute top-[50%] left-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
-             <div className="w-20 h-20 rounded-2xl bg-slate-900 border border-[#38bdf8]/40 flex items-center justify-center shadow-[0_0_25px_rgba(56,189,248,0.2)] z-10 relative">
-               <FileText className="text-white w-10 h-10" />
-               <div className="absolute -top-2 -right-2 bg-[#0ea5e9] text-[9px] font-bold px-2 py-0.5 rounded-full text-[#020617]">.MD</div>
+           <div className="flex flex-col items-center gap-4 z-10 w-32 relative group">
+             <div className="w-[84px] h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105 relative">
+               <FileText strokeWidth={1.5} className="text-white w-9 h-9" />
+               <div className="absolute -top-2 px-2 py-0.5 rounded-full bg-[#38bdf8] text-[#020617] text-[11px] font-black uppercase shadow-md right-[-10px]">
+                 .MD
+               </div>
              </div>
-             <span className="text-[12px] font-medium text-[#bae6fd]">Packed Context</span>
+             <span className="text-[13px] font-sans font-bold text-[#e2e8f0] tracking-wide">Packed Context</span>
            </div>
 
            {/* 5. AI Ready Node */}
-           <div className="absolute top-[50%] left-[95%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-3 animate-[pulse_3s_ease-in-out_infinite]">
-             <div className="w-16 h-16 rounded-full bg-slate-800 border border-green-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.3)] z-10 relative">
-               <Sparkles className="text-green-400 w-8 h-8" />
+           <div className="flex flex-col items-center gap-4 z-10 w-32 relative group">
+             <div className="w-[84px] h-[84px] rounded-full bg-[#031d14] border border-[#10b981]/60 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105">
+               <Sparkles strokeWidth={2.5} className="text-[#10b981] w-8 h-8" />
              </div>
-             <span className="text-[11px] font-mono font-bold text-green-400 tracking-wider">AI READY</span>
+             <span className="text-[12px] font-mono font-bold text-[#10b981] tracking-widest uppercase shadow-sm">AI Ready</span>
            </div>
          </motion.div>
          

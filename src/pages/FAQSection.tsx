@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     question: "How do you count tokens?",
-    answer: "We use a BPE (Byte-Pair Encoding) algorithm running entirely in-browser. Our token counting metrics map directly to the cl100k_base encodings, which accurately reflect the token consumption for major models like GPT-4, GPT-4o, and Claude 3.5 Sonnet."
+    answer: "We use a fast BPE (Byte-Pair Encoding) algorithm running entirely in-browser. Our token counting metrics map closely to standard encodings, providing a highly accurate estimate of context consumption for major large language models."
   },
   {
     question: "Can I customize the extraction format?",
