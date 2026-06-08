@@ -1,0 +1,102 @@
+import React from 'react';
+import { motion } from 'motion/react';
+import { ArrowLeft, Scale } from 'lucide-react';
+
+export function TermsOfUse({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-[#0ea5e9] selection:text-white flex flex-col items-center">
+      <div className="w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12">
+        <div className="flex items-center justify-between border-b border-slate-800/80 pb-6">
+          <button 
+            onClick={onBack}
+            className="text-slate-400 hover:text-white flex items-center gap-2 text-sm font-medium transition-colors bg-slate-900/50 hover:bg-slate-800 px-4 py-2 rounded-full border border-slate-800"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back
+          </button>
+          
+          <div className="flex items-center gap-3">
+             <div className="w-8 h-8 rounded bg-[#020617] border border-[#a855f7] flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                <Scale strokeWidth={2} className="text-[#a855f7] w-4 h-4" />
+             </div>
+             <span className="text-xl font-bold tracking-tight text-white border-l-2 pl-3 border-slate-800">
+               Terms of Use
+             </span>
+          </div>
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          className="prose prose-invert prose-slate max-w-none pb-20"
+        >
+          <div className="bg-[#050A15] border border-slate-800/80 rounded-[32px] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#a855f7]/5 blur-[120px] rounded-full pointer-events-none" />
+            
+            <div className="relative z-10 space-y-8 text-slate-300 leading-relaxed text-[15px]">
+              <div>
+                <h1 className="text-3xl font-bold mb-2 text-white">Terms of Use</h1>
+                <p className="text-slate-500 font-mono text-sm">Last Updated: June 8, 2026</p>
+              </div>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-white">1. Acceptance of Terms</h2>
+                <p>
+                  By accessing and using N-NEX ("we", "us", "our"), a service designed to parse, map, and export GitHub repositories into local syntax tree structures, you agree to comply with and be bound by these Terms of Use. If you do not agree with any part of these terms, you must not use our platform.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-white">2. Platform Execution and Use</h2>
+                <p>
+                  N-NEX operates as a strictly stateless pipeline and client-based AST processor. 
+                </p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>
+                    <strong>No Authentication:</strong> We do not require an active account to process source materials.
+                  </li>
+                  <li>
+                    <strong>Appropriate Use:</strong> You are strictly responsible for the repository data you pass via our execution engine. N-NEX is licensed purely as a transformation tool. You must not use the tool to index or distribute proprietary, malicious, or illicit code.
+                  </li>
+                  <li>
+                    <strong>Public Repositories Only:</strong> Our engine targets public repositories on GitHub. Attempting to exploit or bypass GitHub's API rules utilizing our pipeline is explicitly prohibited.
+                  </li>
+                </ul>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-white">3. Third-Party Deployment and Tooling</h2>
+                <p>
+                  Our services run on <strong>Vercel</strong> infrastructure. Your usage of this platform must comply with the <a href="https://vercel.com/legal/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-[#0ea5e9] hover:text-[#38bdf8] underline">Vercel Terms of Service</a> regarding acceptable bandwidth, compute usage, and fair operations behavior. Additionally, any data tracking relies strictly on <strong>Google Analytics</strong> and <strong>Google Fonts</strong>, governed by Google's respective Terms of Service.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-white">4. No Warranties or Guarantees (AS-IS)</h2>
+                <p className="text-white border-l-2 border-[#a855f7] pl-4 py-1">
+                  We provide the N-NEX engine entirely "AS-IS" and "AS AVAILABLE". We disclaim all implied or explicit warranties concerning exact code extraction accuracy, syntax mapping perfection, or service uptime.
+                </p>
+                <p>
+                  Our pipeline fetches real-time data from external providers (e.g., GitHub). We are not responsible for temporary disruptions, API quota limitations, or changes to third-party endpoints that may limit the abilities of N-NEX.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-white">5. Intellectual Property</h2>
+                <p>
+                  You retain all necessary rights and intellectual property associated with the source code fetched through N-NEX. The tool simply processes visual abstractions into localized memory. We lay no claim over any codebase exported through our service.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-white">6. Changes to Terms</h2>
+                <p>
+                  We reserve the right to revise these Terms of Use at any given moment. By continuing to access the tool following updates to these Terms, you signify agreement with the revised provisions.
+                </p>
+              </section>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

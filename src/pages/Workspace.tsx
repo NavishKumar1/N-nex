@@ -973,6 +973,34 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     setStatus('Stored history archives cleared successfully.');
   };
 
+  // --- GLOBAL SHORTCUT LAYER ---
+  const handleKeyboardSubmitRef = useRef<() => void>();
+  handleKeyboardSubmitRef.current = () => {
+    const fileCount = loadedFiles.filter(f => !uncheckedFiles.has(`${f.source}:${f.path}`)).length;
+    if (fileCount > 0) {
+      // If we are actively previewing matrices, update the preview. Otherwise, copy to clipboard.
+      if (activeTab === 'preview') {
+        compileWithWorker('preview');
+      } else {
+        copyToClipboard();
+      }
+    } else if (githubUrl) {
+      // If no files active but there's a github URL, trigger generation
+      executeGithubStreaming(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        handleKeyboardSubmitRef.current?.();
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
   const handleAddFilter = () => {
     if (customExt) {
       const formatted = customExt.startsWith('.') ? customExt.toLowerCase() : `.${customExt.toLowerCase()}`;
@@ -1284,9 +1312,12 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       id="tour-step-3-compile"
                       onClick={() => executeGithubStreaming(false)} 
                       disabled={isLoading || !githubUrl} 
-                      className="flex-1 border border-[#38bdf8] bg-[#38bdf8] text-slate-950 hover:bg-sky-400 px-4 sm:px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 border border-[#38bdf8] bg-[#38bdf8] text-slate-950 hover:bg-sky-400 px-4 sm:px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.2)] disabled:opacity-50 disabled:cursor-not-allowed group relative"
                     >
                       Overwrite Layer
+                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] hidden group-hover:block whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                        Shortcut: <kbd className="bg-slate-800 px-1 rounded">Ctrl+Enter</kbd>
+                      </div>
                     </button>
                     <button 
                       onClick={() => executeGithubStreaming(true)} 
@@ -1511,7 +1542,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     ) : (
                       <>
                         <Copy size={13} />
-                        EXPORT MATRIX
+                        EXPORT MATRIX <span className="opacity-50 tracking-normal ml-1">(Ctrl+Enter)</span>
                       </>
                     )}
                   </button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Joyride, CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, STATUS } from 'react-joyride';
 
 export function QuickStartTour() {
   const [run, setRun] = useState(false);
@@ -12,7 +12,7 @@ export function QuickStartTour() {
     }
   }, []);
 
-  const steps: Step[] = [
+  const steps: any[] = [
     {
       target: '#tour-step-2-github',
       content: 'Paste any public GitHub repository URL directly. Workspace will instantly analyze the tree.',
@@ -34,7 +34,7 @@ export function QuickStartTour() {
     },
   ];
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
+  const handleJoyrideCallback = (data: any) => {
     const { status } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 

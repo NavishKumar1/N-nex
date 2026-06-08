@@ -1,13 +1,36 @@
 import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import Workspace from './pages/Workspace';
+import { Docs } from './pages/Docs';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsOfUse } from './pages/TermsOfUse';
 
 export default function App() {
-  const [showLanding, setShowLanding] = useState(true);
+  const [currentView, setCurrentView] = useState<'landing' | 'workspace' | 'docs' | 'privacy' | 'terms'>('landing');
   
-  if (showLanding) {
-    return <LandingPage onEnter={() => setShowLanding(false)} />;
+  if (currentView === 'landing') {
+    return (
+      <LandingPage 
+        onEnter={() => setCurrentView('workspace')} 
+        onDocs={() => setCurrentView('docs')}
+        onPrivacy={() => setCurrentView('privacy')}
+        onTerms={() => setCurrentView('terms')}
+      />
+    );
   }
   
-  return <Workspace onBackToLanding={() => setShowLanding(true)} />;
+  if (currentView === 'docs') {
+    return <Docs onBack={() => setCurrentView('landing')} />;
+  }
+
+  if (currentView === 'privacy') {
+    return <PrivacyPolicy onBack={() => setCurrentView('landing')} />;
+  }
+
+  if (currentView === 'terms') {
+    return <TermsOfUse onBack={() => setCurrentView('landing')} />;
+  }
+  
+  return <Workspace onBackToLanding={() => setCurrentView('landing')} />;
 }
+

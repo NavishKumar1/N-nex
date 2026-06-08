@@ -106,7 +106,7 @@ import { FAQSection } from './FAQSection';
 import { ShowcaseSection } from './ShowcaseSection';
 import { UseCasesSection } from './UseCasesSection';
 
-export default function LandingPage({ onEnter }: { onEnter: () => void }) {
+export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { onEnter: () => void, onDocs?: () => void, onPrivacy?: () => void, onTerms?: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -180,6 +180,12 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
               className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
             >
               FAQ
+            </button>
+            <button 
+              onClick={() => onDocs && onDocs()}
+              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5" /> Docs
             </button>
           </div>
           
@@ -257,7 +263,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
                   </button>
                   <button 
                     onClick={() => {
-                      window.open('#', '_blank');
+                      if (onDocs) onDocs();
                       setIsMobileMenuOpen(false);
                     }}
                     className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center gap-2"
@@ -298,7 +304,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
              </button>
              <button
                 className="bg-transparent border border-slate-700/80 text-white px-8 py-3.5 sm:px-10 sm:py-4 rounded-md font-sans font-semibold text-sm hover:bg-slate-800/50 hover:border-slate-500 transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
-                onClick={() => window.open('#', '_blank')}
+                onClick={() => onDocs && onDocs()}
              >
                <FileText className="w-4 h-4" /> Docs
              </button>
@@ -635,6 +641,14 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
           >
             N-NEX
           </h2>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 sm:pt-20 mt-8 sm:mt-12 border-t border-slate-800/30">
+            <div className="flex items-center gap-6 text-sm font-sans font-medium text-slate-500">
+              <button onClick={() => onPrivacy && onPrivacy()} className="hover:text-white transition-colors">Privacy Policy</button>
+              <span className="w-1 h-1 rounded-full bg-slate-800" />
+              <button onClick={() => onTerms && onTerms()} className="hover:text-white transition-colors">Terms of Use</button>
+            </div>
+          </div>
         </motion.div>
       </footer>
 
