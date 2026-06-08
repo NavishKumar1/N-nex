@@ -44,8 +44,10 @@ export function QuickStartTour() {
     }
   };
 
+  const JoyrideAny = Joyride as any;
+
   return (
-    <Joyride
+    <JoyrideAny
       callback={handleJoyrideCallback}
       continuous={true}
       run={run}

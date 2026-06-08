@@ -4,7 +4,11 @@ import { CodebaseVisualizer } from '../components/CodebaseVisualizer';
 import { ContributionGraph } from '../components/ContributionGraph';
 import { VelocityMetrics } from '../components/VelocityMetrics';
 import { ContributorNetwork } from '../components/ContributorNetwork';
+import { RepoSummary } from '../components/RepoSummary';
+import { MetricsDashboard } from '../components/MetricsDashboard';
 import { QuickStartTour } from '../components/QuickStartTour';
+import { HistoryArchivePanel } from '../components/HistoryArchivePanel';
+import { MatrixPreviewPanel } from '../components/MatrixPreviewPanel';
 import { 
   FolderSearch, Github, Settings, Copy, Check, Trash2, Filter, ArrowRight, Activity, Code,
   AlertCircle, GitBranch, X, FileCode, Terminal, Sparkles, Layers, Clock, LayoutGrid, Download,
@@ -1296,7 +1300,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
         {/* Dynamic Panels Workspace Render */}
         {activeTab === 'engine' && (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fadeIn">
             
             {/* Directives preset selection row (High-Contrast styling) */}
             <div className="border border-slate-800 bg-slate-900/50 p-4 sm:p-6 rounded-xl shadow-sm space-y-4">
@@ -1475,215 +1479,12 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               </div>
             )}
 
-            {/* Terminal Live Output logs window */}
-            <div className="border border-slate-700 bg-slate-950 p-5 rounded-xl space-y-3 shadow-inner">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                <span className="text-slate-400 text-xs font-semibold flex items-center gap-2">
-                  <Terminal size={14} className="text-slate-500" />
-                  Terminal Console
-                </span>
-                <span className="text-slate-500 text-[10px] font-mono flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-green-500/80 rounded-full animate-pulse" />
-                  IDLE // ENGINE
-                </span>
-              </div>
-              <p className="text-sky-400 font-mono text-xs leading-relaxed font-medium">
-                <span className="text-slate-500 mr-2">&gt;</span>{status}
-              </p>
-            </div>
-
-          </div>
-        )}
-
-        {/* History Archive Panel with garbage deletion mechanism using target unique IDs */}
-        {activeTab === 'history' && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <span className="text-white text-sm font-semibold flex items-center gap-2">
-                <Clock size={16} className="text-purple-400" />
-                Recent Workspace Archives
-              </span>
-              {history.length > 0 && (
-                <button 
-                  onClick={clearHistoryArchive}
-                  className="text-xs text-slate-400 hover:text-white font-medium transition-colors"
-                >
-                  Clear Archive
-                </button>
-              )}
-            </div>
-
-            {history.length === 0 ? (
-              <div className="py-16 flex flex-col items-center justify-center border border-dashed border-slate-700 rounded-xl bg-slate-900/30 text-center">
-                <FolderSync className="w-8 h-8 text-slate-600 mb-3" />
-                <p className="text-sm text-slate-400 font-medium">No history archives available</p>
-                <p className="text-xs text-slate-500 mt-1">Saved structures will appear here for quick access</p>
-              </div>
-            ) : (
-              <div className="border border-slate-800 divide-y divide-slate-800 bg-slate-900/50 rounded-xl overflow-hidden shadow-sm">
-                {history.map((log) => {
-                  const isLocal = log.repo.toLowerCase().includes('local');
-                  return (
-                    <div 
-                      key={log.id} 
-                      onClick={() => restoreFromHistoryNode(log.repo)}
-                      className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between hover:bg-slate-800/80 transition-all duration-200 cursor-pointer group gap-4 sm:gap-0"
-                    >
-                      <div className="space-y-1.5 text-left w-full sm:w-auto">
-                        <div className="text-slate-200 font-semibold text-sm group-hover:text-sky-400 transition-colors truncate max-w-[280px] sm:max-w-[400px]">
-                          {log.repo}
-                        </div>
-                        <div className="text-[11px] font-mono text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" /> {log.timestamp}</span>
-                          <span className="hidden sm:inline text-slate-600">•</span>
-                          <span className="flex items-center gap-1.5"><FileCode className="w-3 h-3" /> {log.fileCount} files</span>
-                          <span className="hidden sm:inline text-slate-600">•</span>
-                          <span className="flex items-center gap-1.5"><Code2 className="w-3 h-3" /> {log.tokens.toLocaleString()} tokens</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 w-full sm:w-auto">
-                        {!isLocal && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              restoreFromHistoryNode(log.repo);
-                            }}
-                            className="flex-1 sm:flex-initial border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white px-4 py-2 text-xs font-medium transition-all duration-200 bg-slate-800 rounded-lg text-center"
-                          >
-                            Stage Source
-                          </button>
-                        )}
-                        <button 
-                          onClick={(e) => deleteHistoryEntry(log.id, e)}
-                          className="flex-none p-2 border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-200 bg-slate-800 rounded-lg"
-                          title="Delete history entry"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Compile Visual Pre-views Workspace */}
-        {activeTab === 'preview-tab' && (
-          <div className="space-y-6 animate-fadeIn">
-            
-            {/* Context metrics board */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
-                <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
-                  <FolderSearch size={14} className="text-sky-400" />
-                  Compacted Files
-                </div>
-                <div className="text-2xl text-white font-bold">{fileCount}</div>
-              </div>
-              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
-                <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
-                  <Code size={14} className="text-purple-400" />
-                  Characters
-                </div>
-                <div className="text-2xl text-white font-bold">{estimatedChars.toLocaleString()}</div>
-              </div>
-              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
-                <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
-                  <Activity size={14} className="text-fuchsia-400" />
-                  Estimated Tokens
-                </div>
-                <div className="text-2xl text-white font-bold">{estimatedTokens.toLocaleString()}</div>
-              </div>
-              
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between gap-4">
-                <div className="space-y-2 text-left">
-                  <span className="text-xs text-slate-400 font-semibold tracking-wide block">
-                    Prompt Wrapper
-                  </span>
-                  <div className="flex gap-2 bg-slate-950 p-1 rounded-lg border border-slate-800">
-                    <button
-                      onClick={() => {
-                        setPromptWrapper('SYSTEM');
-                        setStatus('Prompt formatting selector modified: [ SYSTEM ONLY ] active.');
-                      }}
-                      className={`flex-1 py-1.5 text-xs font-semibold tracking-wide text-center transition-all duration-200 rounded-md ${
-                        promptWrapper === 'SYSTEM'
-                          ? 'bg-slate-800 text-white shadow-sm'
-                          : 'text-slate-500 hover:text-slate-300 transparent'
-                      }`}
-                    >
-                      SYS ONLY
-                    </button>
-                    <button
-                      onClick={() => {
-                        setPromptWrapper('CHAT');
-                        setStatus('Prompt formatting selector modified: [ CHAT SHELL ] active.');
-                      }}
-                      className={`flex-1 py-1.5 text-xs font-semibold tracking-wide text-center transition-all duration-200 rounded-md ${
-                        promptWrapper === 'CHAT'
-                          ? 'bg-slate-800 text-white shadow-sm'
-                          : 'text-slate-500 hover:text-slate-300 transparent'
-                      }`}
-                    >
-                      CHAT SHELL
-                    </button>
-                  </div>
-                </div>
-
-                  <button 
-                    onClick={copyToClipboard}
-                    disabled={fileCount === 0}
-                    className="w-full h-10 border border-sky-400 hover:bg-sky-400 text-sky-400 hover:text-slate-950 transition-all font-bold text-xs flex items-center justify-center gap-2 bg-sky-400/10 disabled:opacity-30 disabled:pointer-events-none rounded-lg shadow-sm"
-                  >
-                    {copied ? (
-                      <>
-                        <Check size={14} className="text-inherit" />
-                        COPIED
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={13} />
-                        EXPORT MATRIX <span className="opacity-50 tracking-normal ml-1">(Ctrl+Enter)</span>
-                      </>
-                    )}
-                  </button>
-              </div>
-            </div>
-
-            {/* D3 CODEBASE VISUALIZATION */}
-            {loadedFiles.length > 0 && (
-              <div className="border border-slate-800 bg-slate-900/50 rounded-xl p-4 sm:p-6 space-y-4 shadow-sm text-left">
-                <div className="flex items-center gap-2 font-sans border-b border-slate-700/50 pb-4">
-                  <Activity size={16} className="text-sky-400" />
-                  <span className="text-sm text-white font-semibold">
-                    Codebase Topology Visualization
-                  </span>
-                </div>
-                <CodebaseVisualizer files={checklistFilteredFiles} />
-              </div>
-            )}
-
-            {/* CONTRIBUTION & METRICS WIDGETS */}
-            {activeLayers.length > 0 && (
-              <div className="space-y-6">
-                {/* Advanced Contribution Graphs */}
-                {activeLayers.map((layer) => (
-                  <div key={layer} className="space-y-6">
-                    <ContributionGraph 
-                      repoSource={layer} 
-                      githubToken={githubToken} 
-                    />
-                    
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <VelocityMetrics repoSource={layer} githubToken={githubToken} />
-                      <ContributorNetwork repoSource={layer} githubToken={githubToken} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <MetricsDashboard 
+              loadedFiles={loadedFiles}
+              checklistFilteredFiles={checklistFilteredFiles}
+              activeLayers={activeLayers}
+              githubToken={githubToken}
+            />
 
             {/* CORE LAYERS & ACTIVE FILE PRUNING TREE */}
             {loadedFiles.length > 0 && (
@@ -1762,126 +1563,55 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               </div>
             )}
 
-            {/* Programmatic Disk streams downloader bindings row */}
-            {fileCount > 0 && (
-              <div className="border border-slate-800 bg-slate-900/50 p-4 sm:p-6 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
-                <div className="space-y-1.5 font-sans text-left">
-                  <span className="text-white font-semibold text-sm block">Programmatic Saved Documents</span>
-                  <p className="text-xs text-slate-400">Save your compiled multi-layer engine matrix directly to high bandwidth disk streams as Markdown or custom JSON configurations.</p>
-                </div>
-                <div className="flex flex-wrap gap-3 w-full md:w-auto">
-                  <button 
-                    onClick={handleDownloadMarkdown}
-                    className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
-                  >
-                    <Download size={14} />
-                    Download .md
-                  </button>
-                  <button 
-                    onClick={handleDownloadTXT}
-                    className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
-                  >
-                    <Download size={14} />
-                    Download .txt
-                  </button>
-                  <button 
-                    onClick={handleDownloadJSON}
-                    className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
-                  >
-                    <Download size={14} />
-                    Download .json
-                  </button>
-                </div>
+            {/* Terminal Live Output logs window */}
+            <div className="border border-slate-700 bg-slate-950 p-5 rounded-xl space-y-3 shadow-inner">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <span className="text-slate-400 text-xs font-semibold flex items-center gap-2">
+                  <Terminal size={14} className="text-slate-500" />
+                  Terminal Console
+                </span>
+                <span className="text-slate-500 text-[10px] font-mono flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-green-500/80 rounded-full animate-pulse" />
+                  IDLE // ENGINE
+                </span>
               </div>
-            )}
-
-
-
-            {/* Performance protecting layer */}
-            {!isPreviewVisible ? (
-              <div className="border border-slate-800/80 bg-slate-950 p-12 text-center space-y-6 flex flex-col items-center justify-center">
-                <div className="w-10 h-10 border border-slate-800/80 flex items-center justify-center text-slate-500 rounded-none bg-slate-950">
-                  <FileCode size={18} />
-                </div>
-                <div className="space-y-2">
-                  <p className="text-white text-xs uppercase tracking-widest font-black leading-relaxed">
-                    Visual Render Thread Protected
-                  </p>
-                  <p className="text-[10px] text-slate-500 max-w-sm mx-auto leading-relaxed font-mono">
-                    Compacted raw matrices held safely in background cache memories. Rendering extensive blocks inside browser page DOMs triggers CPU rendering spikes.
-                  </p>
-                </div>
-                <button
-                  onClick={handleRevealPreview}
-                  disabled={fileCount === 0}
-                  className="px-6 py-2.5 bg-white text-black text-xs font-bold uppercase hover:bg-zinc-200 transition-all tracking-widest rounded-none disabled:opacity-20 disabled:pointer-events-none"
-                >
-                  Unveil Preview Matrices
-                </button>
-              </div>
-            ) : (
-              <div className="border border-slate-800/80 bg-slate-950 p-4 sm:p-6 space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-3 gap-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                    <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold font-mono">ACTIVE DIRECTIVES STREAM</span>
-                    <div className="flex gap-1 bg-slate-900 border border-slate-700/50 p-0.5 rounded">
-                      <button
-                        onClick={() => setPreviewMode('raw')}
-                        className={`text-[10px] px-3 py-1 font-bold uppercase transition-colors rounded-sm ${previewMode === 'raw' ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300'}`}
-                      >
-                        RAW CONTEXT
-                      </button>
-                      <button
-                        onClick={() => setPreviewMode('rendered')}
-                        className={`text-[10px] px-3 py-1 font-bold uppercase transition-colors rounded-sm ${previewMode === 'rendered' ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300'}`}
-                      >
-                        RENDERED
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <button 
-                      onClick={copyToClipboard}
-                      className="text-[10px] text-sky-400 hover:text-white uppercase font-bold flex items-center gap-1"
-                    >
-                      {copied ? <><Check size={12}/> COPIED</> : <><Copy size={12}/> COPY CONTEXT</>}
-                    </button>
-                    <button 
-                      onClick={() => setIsPreviewVisible(false)}
-                      className="text-[10px] text-slate-400 hover:text-white underline underline-offset-4 uppercase font-bold"
-                    >
-                      Shield Visual Render
-                    </button>
-                  </div>
-                </div>
-                <div className="w-full h-[450px] bg-slate-950 border border-slate-800/80 overflow-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-                  {previewMode === 'raw' ? (
-                    <SyntaxHighlighter 
-                      language="markdown"
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        padding: '1rem',
-                        background: 'transparent',
-                        fontSize: '10px',
-                        lineHeight: '1.6',
-                      }}
-                      wrapLines={true}
-                    >
-                      {renderedText}
-                    </SyntaxHighlighter>
-                  ) : (
-                    <div className="prose prose-invert prose-sm max-w-none p-4 font-sans text-slate-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {renderedText}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+              <p className="text-sky-400 font-mono text-xs leading-relaxed font-medium">
+                <span className="text-slate-500 mr-2">&gt;</span>{status}
+              </p>
+            </div>
 
           </div>
+        )}
+
+        {/* History Archive Panel with garbage deletion mechanism using target unique IDs */}
+        {activeTab === 'history' && (
+          <HistoryArchivePanel
+            history={history}
+            clearHistoryArchive={clearHistoryArchive}
+            restoreFromHistoryNode={restoreFromHistoryNode}
+            deleteHistoryEntry={deleteHistoryEntry}
+          />
+        )}
+
+        {/* Compile Visual Pre-views Workspace */}
+        {activeTab === 'preview-tab' && (
+          <MatrixPreviewPanel
+            fileCount={fileCount}
+            estimatedChars={estimatedChars}
+            estimatedTokens={estimatedTokens}
+            promptWrapper={promptWrapper}
+            setPromptWrapper={setPromptWrapper}
+            setStatus={setStatus}
+            copyToClipboard={copyToClipboard}
+            copied={copied}
+            previewMode={previewMode}
+            setPreviewMode={setPreviewMode}
+            renderedText={renderedText}
+            downloadAsTextFile={downloadAsTextFile}
+            handleDownloadTXT={handleDownloadTXT}
+            handleDownloadJSON={handleDownloadJSON}
+            handleRevealPreview={handleRevealPreview}
+          />
         )}
 
         {/* Minimalist Industrial Footer */}
