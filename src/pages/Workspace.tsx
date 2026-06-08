@@ -1637,17 +1637,20 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
                 {/* Sub-Checklist search search bar filter */}
                 <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+                    <FolderSearch size={16} />
+                  </div>
                   <input 
                     type="text"
                     placeholder="Search tree list by name or directory paths..."
                     value={pruningSearch}
                     onChange={(e) => setPruningSearch(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 px-4 h-[42px] text-sm text-slate-300 placeholder:text-slate-500 focus:outline-none focus:border-sky-400 rounded-lg shadow-inner transition-colors"
+                    className="w-full bg-slate-950 border border-slate-700 pl-10 pr-16 h-[42px] text-sm text-slate-300 placeholder:text-slate-500 focus:outline-none focus:border-sky-400 rounded-lg shadow-inner transition-colors"
                   />
                   {pruningSearch && (
                     <button 
                       onClick={() => setPruningSearch('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-white font-medium p-1 bg-slate-800 rounded-md"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-white font-medium px-2 py-1 bg-slate-800 rounded-md transition-colors"
                     >
                       Reset
                     </button>
