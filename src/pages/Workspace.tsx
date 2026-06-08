@@ -597,20 +597,55 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       const currentLabelIdentity = `${owner}/${repo}`;
 
       // Resolve overriding branches parameter
-      const urlMatch = githubUrl.match(/github\.com\/[^/]+\/[^/]+\/tree\/([^/]+)/);
+      const treeMatch = githubUrl.match(/github\.com\/[^/]+\/[^/]+\/tree\/([^/?#]+)/);
+      const commitMatch = githubUrl.match(/github\.com\/[^/]+\/[^/]+\/commit\/([a-f0-9]+)/);
+      const prMatch = githubUrl.match(/github\.com\/[^/]+\/[^/]+\/pull\/(\d+)/);
       
       requestAnimationFrame(() => {
         setStatus('> STREAMING NETWORK REPOSITORY METADATA FLOW...');
       });
 
-      // Fetch repo metadata to obtain default branch if not specified
-      const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-      if (!repoRes.ok) {
-        if (repoRes.status === 403) throw new Error('GitHub API rate limit exhausted. Please try again soon.');
-        throw new Error('Repository lookup unreachable. Verify visibility (public access required).');
+      let targetBranch = branch.trim();
+
+      // If user provided a pure number in the branch field, maybe it's a PR. 
+      // We will assume it's a PR if it's purely digits and no branch exists with that name?
+      // Actually we can check PRs if it starts with #
+      let manualPrMatch = null;
+      if (targetBranch.startsWith('#')) {
+        manualPrMatch = targetBranch.substring(1);
+      } else if (!targetBranch && prMatch) {
+        manualPrMatch = prMatch[1];
+      } else if (targetBranch && /^\d+$/.test(targetBranch)) {
+        // Option fallback if they just type 123
+        manualPrMatch = targetBranch;
       }
-      const repoData = await repoRes.json();
-      const targetBranch = branch || (urlMatch ? urlMatch[1] : repoData.default_branch);
+
+      if (manualPrMatch) {
+        requestAnimationFrame(() => {
+          setStatus(`> RESOLVING PULL REQUEST #${manualPrMatch} METADATA...`);
+        });
+        const prRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${manualPrMatch}`);
+        if (!prRes.ok) {
+          throw new Error(`Failed to lookup Pull Request #${manualPrMatch}.`);
+        }
+        const prData = await prRes.json();
+        targetBranch = prData.head.sha; // Extract exact head commit
+      } else if (!targetBranch) {
+        if (commitMatch) {
+          targetBranch = commitMatch[1];
+        } else if (treeMatch) {
+          targetBranch = treeMatch[1];
+        } else {
+          // Fetch repo metadata to obtain default branch if not specified
+          const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+          if (!repoRes.ok) {
+            if (repoRes.status === 403) throw new Error('GitHub API rate limit exhausted. Please try again soon.');
+            throw new Error('Repository lookup unreachable. Verify visibility (public access required).');
+          }
+          const repoData = await repoRes.json();
+          targetBranch = repoData.default_branch;
+        }
+      }
 
       // Request architectural directory mapping (High efficiency metadata mapping)
       requestAnimationFrame(() => {
@@ -960,27 +995,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     setStatus(`Extension dynamic rule destroyed: Re-allowed "${ext}"`);
   };
 
-  // --- MODEL TOKEN PROGRESS PROGRESS GRAPH METRICS ---
-  const modelsBudgets = useMemo(() => {
-    const total = Math.max(1, estimatedTokens);
-    return [
-      { name: 'Claude 3.5 Sonnet', max: 200000, color: 'bg-amber-400 border-amber-400' },
-      { name: 'GPT-4o Context', max: 128000, color: 'bg-emerald-400 border-emerald-400' },
-      { name: 'Gemini 1.5 Flash', max: 1048576, color: 'bg-blue-400 border-blue-400' },
-      { name: 'DeepSeek V3 / R1', max: 64000, color: 'bg-red-400 border-red-400' }
-    ].map(m => {
-      const percentage = Math.min(100, Math.ceil((total / m.max) * 100));
-      return {
-        ...m,
-        percentage,
-        isExceeded: total > m.max
-      };
-    });
-  }, [estimatedTokens]);
 
-  const exceedsAllModels = useMemo(() => {
-    return modelsBudgets.every(m => m.isExceeded);
-  }, [modelsBudgets]);
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans flex flex-col antialiased selection:bg-[#38bdf8]/30 selection:text-white">
@@ -1206,9 +1221,9 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                 </p>
               </div>
               
-              <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div>
+              <div className="space-y-4 sm:space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
+                  <div className="md:col-span-5">
                     <label className="text-xs text-slate-300 font-medium mb-2 block">
                       Repository Destination URL
                     </label>
@@ -1222,7 +1237,20 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-300 font-mono transition-colors"
                     />
                   </div>
-                  <div>
+                  <div className="md:col-span-3">
+                    <label className="text-xs text-slate-300 font-medium mb-2 block">
+                      Branch / Hash / PR <span className="text-slate-500 font-normal">(Optional)</span>
+                    </label>
+                    <input 
+                      type="text"
+                      placeholder="e.g. main, a1b2c3d, 15"
+                      value={branch}
+                      onChange={(e) => setBranch(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && executeGithubStreaming(false)}
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-300 font-mono transition-colors"
+                    />
+                  </div>
+                  <div className="md:col-span-4">
                     <label className="text-xs text-slate-300 font-medium mb-2 block">
                       Global Extension Filter <span className="text-slate-500 font-normal">(Optional)</span>
                     </label>
@@ -1470,15 +1498,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   </div>
                 </div>
 
-                {exceedsAllModels ? (
-                  <button 
-                    disabled={true}
-                    className="w-full h-10 border border-red-900/50 bg-red-500/10 text-red-500 font-bold text-xs uppercase flex items-center justify-center p-2 rounded-lg cursor-not-allowed animate-pulse shadow-sm"
-                    title="Estimated token context size exceeds all supported model budget thresholds. Please trim files in the layer checklist below."
-                  >
-                    Exceeds Budget (Trim Files)
-                  </button>
-                ) : (
                   <button 
                     onClick={copyToClipboard}
                     disabled={fileCount === 0}
@@ -1496,7 +1515,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       </>
                     )}
                   </button>
-                )}
               </div>
             </div>
 
@@ -1600,38 +1618,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               </div>
             )}
 
-            {/* VISUAL MODEL TOKEN ALLOCATION GAUGES (PROGRESS GRAPH) */}
-            <div className="border border-slate-800/80 p-4 sm:p-6 bg-slate-950/40 space-y-4 sm:space-y-5 text-left">
-              <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black block animate-pulse">VISUAL TRACKING PROGRESS GRAPH // MODEL TOKENS ALLOCATIONS</span>
-                <span className="text-[10px] text-slate-500 font-mono">ESTIMATED TOKEN COUNT: {estimatedTokens.toLocaleString()}</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {modelsBudgets.map((model) => (
-                  <div key={model.name} className="bg-[#020617] border border-slate-800/80 p-4 space-y-2.5 hover:border-slate-600 transition-all duration-150">
-                    <div className="flex justify-between items-center text-[10px]">
-                      <span className={`font-bold ${model.isExceeded ? 'text-red-400 animate-pulse' : 'text-white'}`}>{model.name}</span>
-                      <span className={model.isExceeded ? 'text-red-400 font-bold' : 'text-slate-400'}>
-                        {estimatedTokens.toLocaleString()} / <span className="text-slate-500 font-black">{model.max.toLocaleString()} max</span>
-                      </span>
-                    </div>
-                    {/* Visual Tracking bar progress graph gauges */}
-                    <div className="w-full h-1.5 bg-slate-950 border border-zinc-901 rounded-none overflow-hidden relative">
-                      <div 
-                        className={`h-full transition-all duration-550 ${model.isExceeded ? 'bg-red-500' : model.color}`} 
-                        style={{ width: `${model.percentage}%` }}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between text-[9px] font-mono select-none">
-                      <span className="text-slate-500">BUDGET USAGE</span>
-                      <span className={model.isExceeded ? 'text-red-500 font-bold animate-[pulse_1s_infinite]' : 'text-slate-400'}>
-                        {model.isExceeded ? `EXCEEDED (${model.percentage}% USED) ⚠️` : `${model.percentage}% USED`}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+
 
             {/* Performance protecting layer */}
             {!isPreviewVisible ? (
