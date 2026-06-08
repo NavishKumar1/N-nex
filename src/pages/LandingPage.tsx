@@ -609,7 +609,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
               WebkitBackgroundClip: 'text',
             }}
           >
-            Workspace
+            N-NEX
           </h2>
         </motion.div>
       </footer>
