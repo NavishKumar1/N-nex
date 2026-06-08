@@ -137,7 +137,7 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
             <img 
               src="/N-nex.png" 
               alt="Logo" 
-              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-8 sm:h-12 shrink-0"
+              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-12 sm:h-16 shrink-0 md:h-16"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             />
           </div>

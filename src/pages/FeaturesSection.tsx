@@ -23,7 +23,7 @@ export function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5 }}
-          className="md:col-span-2 bg-[#020617] border border-slate-800/80 rounded-3xl p-8 sm:p-10 relative overflow-hidden group hover:border-slate-700 transition-colors shadow-2xl"
+          className="md:col-span-2 bg-[#020617] border border-slate-800/80 rounded-3xl p-6 sm:p-10 relative overflow-hidden group hover:border-slate-700 transition-colors shadow-2xl"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#0284c7]/5 to-transparent opacity-0 group-hover:opacity-100 transition-duration-500" />
           <div className="relative z-10 h-full flex flex-col justify-between">
@@ -48,7 +48,7 @@ export function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="md:col-span-1 bg-slate-900/40 backdrop-blur-sm border border-slate-800/60 rounded-3xl p-8 sm:p-10 relative overflow-hidden flex flex-col justify-between group hover:border-slate-700 transition-colors shadow-xl"
+          className="md:col-span-1 bg-slate-900/40 backdrop-blur-sm border border-slate-800/60 rounded-3xl p-6 sm:p-10 relative overflow-hidden flex flex-col justify-between group hover:border-slate-700 transition-colors shadow-xl"
         >
           <div className="relative z-10 w-full">
             <div className="w-12 h-12 bg-[#0ea5e9]/10 border border-[#0ea5e9]/20 rounded-xl flex items-center justify-center mb-6">
@@ -82,7 +82,7 @@ export function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="md:col-span-1 bg-slate-900/40 backdrop-blur-sm border border-slate-800/60 rounded-3xl p-8 sm:p-10 relative overflow-hidden group hover:border-slate-700 transition-colors shadow-xl"
+          className="md:col-span-1 bg-slate-900/40 backdrop-blur-sm border border-slate-800/60 rounded-3xl p-6 sm:p-10 relative overflow-hidden group hover:border-slate-700 transition-colors shadow-xl"
         >
           <div className="absolute -right-10 -bottom-10 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity">
             <Filter className="w-64 h-64 text-white" />
@@ -104,7 +104,7 @@ export function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="md:col-span-2 bg-[#020617] border border-slate-800/80 rounded-3xl p-8 sm:p-10 relative overflow-hidden group hover:border-slate-700 transition-colors shadow-2xl flex flex-col md:flex-row gap-8 justify-between"
+          className="md:col-span-2 bg-[#020617] border border-slate-800/80 rounded-3xl p-6 sm:p-10 relative overflow-hidden group hover:border-slate-700 transition-colors shadow-2xl flex flex-col md:flex-row gap-8 justify-between"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#818cf8]/5 opacity-0 group-hover:opacity-100 transition-duration-500" />
           

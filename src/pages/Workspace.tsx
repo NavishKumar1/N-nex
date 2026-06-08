@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { InteractiveFileTree } from '../components/InteractiveFileTree';
 import { QuickStartTour } from '../components/QuickStartTour';
 import { 
   FolderSearch, Github, Settings, Copy, Check, Trash2, Filter, ArrowRight, Activity, Code,
   AlertCircle, GitBranch, X, FileCode, Terminal, Sparkles, Layers, Clock, LayoutGrid, Download,
-  FileText, RefreshCw, FolderSync
+  FileText, RefreshCw, FolderSync, Code2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { getEncoding } from 'js-tiktoken';
 import { LoadedFile, FilterSettings, TabItem, HistoricalLog } from '../types';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { 
   DEFAULT_IGNORE_EXTENSIONS, DEFAULT_IGNORE_DIRECTORIES, DEFAULT_FETCH_LIMIT, 
   STORAGE_KEY, HISTORY_STORAGE_KEY, PROMPT_PRESETS 
@@ -146,6 +149,41 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     };
   }, []);
 
+  const handleToggleFile = useCallback((fileKey: string, targetVal: boolean) => {
+    setUncheckedFiles(prev => {
+      const next = new Set(prev);
+      if (!targetVal) next.add(fileKey);
+      else next.delete(fileKey);
+      return next;
+    });
+    setLoadedFiles(prev => prev.map(f => {
+      if (`${f.source}:${f.path}` === fileKey) {
+        return { ...f, enabled: targetVal };
+      }
+      return f;
+    }));
+    setStatus(`Toggled matrix item state: ${targetVal ? 'CHECKED' : 'UNCHECKED'} // ${fileKey}`);
+  }, []);
+
+  const handleToggleDirectory = useCallback((fileKeys: string[], targetVal: boolean) => {
+    setUncheckedFiles(prev => {
+      const next = new Set(prev);
+      fileKeys.forEach(key => {
+        if (!targetVal) next.add(key);
+        else next.delete(key);
+      });
+      return next;
+    });
+    const keySet = new Set(fileKeys);
+    setLoadedFiles(prev => prev.map(f => {
+      if (keySet.has(`${f.source}:${f.path}`)) {
+        return { ...f, enabled: targetVal };
+      }
+      return f;
+    }));
+    setStatus(`Toggled bulk matrix directory state: ${targetVal ? 'CHECKED' : 'UNCHECKED'} // ${fileKeys.length} files`);
+  }, []);
+
   // --- Final Utility States (GLYPH Feature Upgrades) ---
   const [globalExtensionFilter, setGlobalExtensionFilter] = useState('');
   const [uncheckedFiles, setUncheckedFiles] = useState<Set<string>>(new Set());
@@ -153,7 +191,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   
   // High-performance search & pagination for Pruning Tree
   const [pruningSearch, setPruningSearch] = useState('');
-  const [pruningPage, setPruningPage] = useState(1);
 
   // Exclusion configuration settings state
   const [filters, setFilters] = useState<FilterSettings>(() => {
@@ -266,20 +303,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     if (!q) return processedLoadedFiles;
     return processedLoadedFiles.filter(f => f.path.toLowerCase().includes(q));
   }, [processedLoadedFiles, pruningSearch]);
-
-  const totalPruningPages = useMemo(() => {
-    return Math.ceil(checklistFilteredFiles.length / 25) || 1;
-  }, [checklistFilteredFiles]);
-
-  const paginatedChecklistFiles = useMemo(() => {
-    const start = (pruningPage - 1) * 25;
-    return checklistFilteredFiles.slice(start, start + 25);
-  }, [checklistFilteredFiles, pruningPage]);
-
-  // Reset page safely on search query modification
-  useEffect(() => {
-    setPruningPage(1);
-  }, [pruningSearch]);
 
   // --- REACTIVE DIRECT METRICS RE-COMPUTATIONS (FILTERS) ---
   const filteredFiles = useMemo(() => {
@@ -1046,7 +1069,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               exit={{ opacity: 0, height: 0 }}
               className="overflow-hidden border border-slate-800 bg-slate-900/50 shadow-lg rounded-xl backdrop-blur-sm"
             >
-              <div className="p-6 space-y-6 text-sm">
+              <div className="p-4 sm:p-6 space-y-6 text-sm">
                 <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
                   <span className="text-white font-semibold flex items-center gap-2">
                     <Filter size={14} className="text-[#38bdf8]" />
@@ -1143,7 +1166,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           <div className="space-y-6">
             
             {/* Directives preset selection row (High-Contrast styling) */}
-            <div className="border border-slate-800 bg-slate-900/50 p-6 rounded-xl shadow-sm space-y-4">
+            <div className="border border-slate-800 bg-slate-900/50 p-4 sm:p-6 rounded-xl shadow-sm space-y-4">
               <div className="flex items-center gap-2">
                 <Sparkles size={14} className="text-[#38bdf8]" />
                 <span className="text-xs text-slate-300 font-semibold tracking-wide block">System Preset Directive</span>
@@ -1158,10 +1181,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                         setSelectedPreset(key as keyof typeof PROMPT_PRESETS);
                         setIsPreviewVisible(false); // force visual repack safely
                       }}
-                      className={`px-4 py-2 font-medium transition-all border rounded-lg shadow-sm ${
+                      className={`px-4 py-2 font-medium transition-all border rounded-lg shadow-sm whitespace-nowrap text-xs sm:text-sm flex-1 sm:flex-initial text-center ${
                         isSelected 
-                          ? 'border-[#38bdf8] text-slate-950 bg-[#38bdf8]' 
-                          : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 bg-slate-800/50'
+                          ? 'border-[#38bdf8] text-slate-950 bg-[#38bdf8] shadow-[0_0_15px_rgba(56,189,248,0.4)]' 
+                          : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 hover:bg-slate-800 bg-slate-800/50'
                       }`}
                     >
                       {PROMPT_PRESETS[key as keyof typeof PROMPT_PRESETS].label}
@@ -1172,7 +1195,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             </div>
 
             {/* CRITICAL FIX: CLEANED UP FULL-WIDTH WORKSPACE PIPELINE INPUT */}
-            <div className="border border-slate-800 p-8 rounded-xl bg-slate-900/50 w-full space-y-5 shadow-sm">
+            <div className="border border-slate-800 p-5 sm:p-8 rounded-xl bg-slate-900/50 w-full space-y-4 sm:space-y-5 shadow-sm">
               <div className="mb-2">
                 <h3 className="text-sm font-semibold text-white flex items-center gap-2">
                   <Github size={16} className="text-[#38bdf8]" />
@@ -1228,19 +1251,19 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     />
                   </div>
 
-                  <div className="flex gap-3 flex-1 sm:flex-initial">
+                    <div className="flex gap-2 sm:gap-3 flex-1 w-full sm:w-auto">
                     <button 
                       id="tour-step-3-compile"
                       onClick={() => executeGithubStreaming(false)} 
                       disabled={isLoading || !githubUrl} 
-                      className="flex-1 sm:flex-none border border-[#38bdf8] bg-[#38bdf8] text-slate-950 hover:bg-sky-400 px-5 py-2.5 text-xs font-semibold transition-all rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 border border-[#38bdf8] bg-[#38bdf8] text-slate-950 hover:bg-sky-400 px-4 sm:px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Overwrite Layer Matrix
+                      Overwrite Layer
                     </button>
                     <button 
                       onClick={() => executeGithubStreaming(true)} 
                       disabled={isLoading || !githubUrl || loadedFiles.length === 0} 
-                      className="flex-1 sm:flex-none border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white px-5 py-2.5 text-xs font-semibold transition-all rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-slate-900"
+                      className="flex-1 border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white px-4 sm:px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-slate-900"
                     >
                       + Append Layer
                     </button>
@@ -1479,7 +1502,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* CORE LAYERS & ACTIVE FILE PRUNING TREE */}
             {loadedFiles.length > 0 && (
-              <div className="border border-slate-800 bg-slate-900/50 rounded-xl p-6 space-y-5 shadow-sm text-left">
+              <div className="border border-slate-800 bg-slate-900/50 rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 shadow-sm text-left">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-700/50 pb-4 gap-3">
                   <div className="flex items-center gap-2 font-sans">
                     <Layers size={16} className="text-[#38bdf8]" />
@@ -1532,96 +1555,19 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   )}
                 </div>
 
-                <div className="max-h-[320px] overflow-y-auto divide-y divide-slate-800/40 border border-slate-800 bg-slate-950 rounded-lg shadow-inner px-2 py-1 scrollbar-none font-sans">
-                  {paginatedChecklistFiles.map((file) => {
-                    const fileKey = `${file.source}:${file.path}`;
-                    const isChecked = file.enabled !== false && !uncheckedFiles.has(fileKey);
-                    const fileTokens = file.tokens || 0;
-                    
-                    return (
-                      <div key={fileKey} className="px-3 py-2.5 flex items-center justify-between hover:bg-slate-800/40 transition-all duration-150 min-h-[44px] gap-4 rounded-md my-1">
-                        <label className="flex items-center gap-3 cursor-pointer select-none max-w-[80%] w-full">
-                          <input 
-                            type="checkbox"
-                            checked={isChecked}
-                            onChange={() => {
-                              const next = new Set(uncheckedFiles);
-                              const targetVal = !isChecked;
-                              if (isChecked) {
-                                next.add(fileKey);
-                              } else {
-                                next.delete(fileKey);
-                              }
-                              setUncheckedFiles(next);
-                              setLoadedFiles(prev => prev.map(f => {
-                                if (`${f.source}:${f.path}` === fileKey) {
-                                  return { ...f, enabled: targetVal };
-                                }
-                                return f;
-                              }));
-                              setStatus(`Toggled matrix item state: ${targetVal ? 'CHECKED' : 'UNCHECKED'} // ${file.path}`);
-                            }}
-                            className="sr-only"
-                          />
-                          <div className={`w-4 h-4 border transition-all duration-150 flex items-center justify-center rounded-[4px] shrink-0 ${
-                            isChecked 
-                              ? 'border-[#38bdf8] bg-[#38bdf8] text-slate-950' 
-                              : 'border-slate-600 bg-transparent hover:border-slate-400'
-                          }`}>
-                            {isChecked && <Check size={12} strokeWidth={3} />}
-                          </div>
-                          <div className="flex flex-col text-left truncate ml-1 max-w-full">
-                            <span className={`truncate leading-snug font-medium text-sm select-all ${isChecked ? 'text-slate-200' : 'text-slate-500 line-through'}`}>
-                              {file.path}
-                            </span>
-                            <span className="text-[10px] text-slate-500 font-mono mt-0.5">
-                              LAYER // {file.source}
-                            </span>
-                          </div>
-                        </label>
-                        <span className={`text-xs font-mono px-2 py-1 border select-none shrink-0 rounded-md ${
-                          isChecked 
-                            ? 'text-slate-300 bg-slate-800 border-slate-700' 
-                            : 'text-slate-600 bg-transparent border-transparent'
-                        }`}>
-                          {fileTokens.toLocaleString()} tokens
-                        </span>
-                      </div>
-                    );
-                  })}
-                  {paginatedChecklistFiles.length === 0 && (
-                    <div className="py-8 text-center text-slate-500 font-medium text-xs">
-                      No matched files in active search filter views.
-                    </div>
-                  )}
+                <div className="max-h-[320px] overflow-y-auto border border-slate-800 bg-slate-950 rounded-lg shadow-inner py-1 overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                  <InteractiveFileTree 
+                    files={checklistFilteredFiles}
+                    uncheckedFiles={uncheckedFiles}
+                    onToggleFile={handleToggleFile}
+                    onToggleDirectory={handleToggleDirectory}
+                    searchQuery={pruningSearch}
+                  />
                 </div>
 
-                {/* Highly structured pagination buttons row in physical space */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-2 text-xs gap-3 select-none font-sans text-slate-400">
                   <div className="font-medium">
-                    Showing <span className="text-white">{checklistFilteredFiles.length === 0 ? 0 : (pruningPage - 1) * 25 + 1}-{Math.min(checklistFilteredFiles.length, pruningPage * 25)}</span> of <span className="text-white">{checklistFilteredFiles.length}</span> matched files
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setPruningPage(p => Math.max(1, p - 1))}
-                      disabled={pruningPage === 1}
-                      className="px-3 py-1.5 min-h-[30px] border border-slate-700 hover:bg-slate-800 rounded-md disabled:pointer-events-none disabled:opacity-30 text-white font-medium transition-colors"
-                    >
-                      Prev
-                    </button>
-                    <span className="text-slate-400 font-medium px-2 flex gap-1">
-                      <span>Page {pruningPage}</span>
-                      <span className="text-slate-600">/</span>
-                      <span>{totalPruningPages === 0 ? 1 : totalPruningPages}</span>
-                    </span>
-                    <button
-                      onClick={() => setPruningPage(p => Math.min(totalPruningPages, p + 1))}
-                      disabled={pruningPage === totalPruningPages || totalPruningPages === 0}
-                      className="px-3 py-1.5 min-h-[30px] border border-slate-700 hover:bg-slate-800 rounded-md disabled:pointer-events-none disabled:opacity-30 text-white font-medium transition-colors"
-                    >
-                      Next
-                    </button>
+                    Showing <span className="text-white">{checklistFilteredFiles.length}</span> matched files in active view layout
                   </div>
                 </div>
 
@@ -1630,7 +1576,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* Programmatic Disk streams downloader bindings row */}
             {fileCount > 0 && (
-              <div className="border border-slate-800 bg-slate-900/50 p-6 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+              <div className="border border-slate-800 bg-slate-900/50 p-4 sm:p-6 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
                 <div className="space-y-1.5 font-sans text-left">
                   <span className="text-white font-semibold text-sm block">Programmatic Saved Documents</span>
                   <p className="text-xs text-slate-400">Save your compiled multi-layer engine matrix directly to high bandwidth disk streams as Markdown or custom JSON configurations.</p>
@@ -1655,7 +1601,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             )}
 
             {/* VISUAL MODEL TOKEN ALLOCATION GAUGES (PROGRESS GRAPH) */}
-            <div className="border border-slate-800/80 p-6 bg-slate-950/40 space-y-5 text-left">
+            <div className="border border-slate-800/80 p-4 sm:p-6 bg-slate-950/40 space-y-4 sm:space-y-5 text-left">
               <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
                 <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black block animate-pulse">VISUAL TRACKING PROGRESS GRAPH // MODEL TOKENS ALLOCATIONS</span>
                 <span className="text-[10px] text-slate-500 font-mono">ESTIMATED TOKEN COUNT: {estimatedTokens.toLocaleString()}</span>
@@ -1710,21 +1656,40 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                 </button>
               </div>
             ) : (
-              <div className="border border-slate-800/80 bg-slate-950 p-6 space-y-6">
+              <div className="border border-slate-800/80 bg-slate-950 p-4 sm:p-6 space-y-6">
                 <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
                   <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold font-mono">ACTIVE DIRECTIVES STREAM</span>
-                  <button 
-                    onClick={() => setIsPreviewVisible(false)}
-                    className="text-[10px] text-slate-400 hover:text-white underline underline-offset-4 uppercase font-bold"
-                  >
-                    Shield Visual Render
-                  </button>
+                  <div className="flex items-center gap-4">
+                    <button 
+                      onClick={copyToClipboard}
+                      className="text-[10px] text-[#38bdf8] hover:text-white uppercase font-bold flex items-center gap-1"
+                    >
+                      {copied ? <><Check size={12}/> COPIED</> : <><Copy size={12}/> COPY CONTEXT</>}
+                    </button>
+                    <button 
+                      onClick={() => setIsPreviewVisible(false)}
+                      className="text-[10px] text-slate-400 hover:text-white underline underline-offset-4 uppercase font-bold"
+                    >
+                      Shield Visual Render
+                    </button>
+                  </div>
                 </div>
-                <textarea 
-                  readOnly
-                  value={renderedText}
-                  className="w-full h-[450px] p-4 bg-[#020617] border border-slate-800/80 text-[10px] text-slate-300 font-mono resize-none focus:outline-none leading-relaxed select-all"
-                />
+                <div className="w-full h-[450px] bg-[#020617] border border-slate-800/80 overflow-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                  <SyntaxHighlighter 
+                    language="markdown"
+                    style={vscDarkPlus}
+                    customStyle={{
+                      margin: 0,
+                      padding: '1rem',
+                      background: 'transparent',
+                      fontSize: '10px',
+                      lineHeight: '1.6',
+                    }}
+                    wrapLines={true}
+                  >
+                    {renderedText}
+                  </SyntaxHighlighter>
+                </div>
               </div>
             )}
 
