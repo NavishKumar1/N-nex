@@ -652,14 +652,6 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
         </motion.div>
       </footer>
 
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="fixed top-6 sm:top-8 left-6 sm:left-8 text-[10px] hidden sm:block text-slate-500 tracking-widest uppercase pointer-events-none z-10 font-sans font-medium"
-      >
-        V.2 // COMPILE.ARCHITECTS
-      </motion.div>
     </div>
   );
 }

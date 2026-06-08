@@ -21,6 +21,7 @@ const tokenizerEncoder = getEncoding('cl100k_base');
 export default function Workspace({ onBackToLanding }: { onBackToLanding: () => void }) {
   // --- UI/UX States ---
   const [githubUrl, setGithubUrl] = useState('');
+  const [githubToken, setGithubToken] = useState(() => localStorage.getItem('compile_architects_github_token') || '');
   const [branch, setBranch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState('Sandbox engine ready for secure context consolidation.');
@@ -34,6 +35,12 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   const [isLightMode, setIsLightMode] = useState(() => {
     return typeof document !== 'undefined' && document.documentElement.classList.contains('theme-light');
   });
+
+  useEffect(() => {
+    if (githubToken) {
+      localStorage.setItem('compile_architects_github_token', githubToken);
+    }
+  }, [githubToken]);
 
   useEffect(() => {
     if (isLightMode) {
@@ -603,7 +610,18 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       });
 
       // Clean the incoming string completely of whitespaces and common URL clutter
-      let cleanedUrl = githubUrl.trim()
+      let rawInput = githubUrl.trim();
+      let inlineToken = '';
+
+      // Check for inline auth token (e.g. https://<token>@github.com/...)
+      const authMatch = rawInput.match(/^(?:https?:\/\/)?(?:[^:]+:)?([^@:]+)@github\.com/i);
+      if (authMatch) {
+        inlineToken = authMatch[1];
+        if (inlineToken.toLowerCase() === 'git') inlineToken = ''; // Ignore standard git user
+        rawInput = rawInput.replace(/(https?:\/\/)?(?:[^:]+:)?([^@:]+)@/, '$1');
+      }
+
+      let cleanedUrl = rawInput
         .replace(/^(https?:\/\/)?(www\.)?/, '') // Strip http://, https://, and www.
         .replace(/\/$/, '');                    // Strip any trailing slashes
 
@@ -637,6 +655,20 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
       const currentLabelIdentity = `${owner}/${repo}`;
 
+      const effectiveToken = inlineToken || githubToken;
+
+      const apiHeaders: Record<string, string> = {
+        'Accept': 'application/vnd.github.v3+json'
+      };
+      if (effectiveToken) {
+        apiHeaders['Authorization'] = `Bearer ${effectiveToken.trim()}`;
+      }
+      
+      const rawHeaders: Record<string, string> = {};
+      if (effectiveToken) {
+        rawHeaders['Authorization'] = `Bearer ${effectiveToken.trim()}`;
+      }
+
       // Resolve overriding branches parameter
       const treeMatch = githubUrl.match(/github\.com\/[^/]+\/[^/]+\/tree\/([^/?#]+)/);
       const commitMatch = githubUrl.match(/github\.com\/[^/]+\/[^/]+\/commit\/([a-f0-9]+)/);
@@ -665,7 +697,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         requestAnimationFrame(() => {
           setStatus(`> RESOLVING PULL REQUEST #${manualPrMatch} METADATA...`);
         });
-        const prRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${manualPrMatch}`);
+        const prRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${manualPrMatch}`, { headers: apiHeaders });
         if (!prRes.ok) {
           throw new Error(`Failed to lookup Pull Request #${manualPrMatch}.`);
         }
@@ -678,10 +710,11 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           targetBranch = treeMatch[1];
         } else {
           // Fetch repo metadata to obtain default branch if not specified
-          const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+          const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: apiHeaders });
           if (!repoRes.ok) {
-            if (repoRes.status === 403) throw new Error('GitHub API rate limit exhausted. Please try again soon.');
-            throw new Error('Repository lookup unreachable. Verify visibility (public access required).');
+            if (repoRes.status === 403) throw new Error('GitHub API rate limit exhausted. Please try again soon. ' + (effectiveToken ? 'Check if token is valid.' : 'Use a token to increase limits.'));
+            if (repoRes.status === 404) throw new Error('Repository not found. ' + (effectiveToken ? 'Check token permissions and scopes (requires repo scope).' : 'If it is private, provide a GitHub Personal Access Token.'));
+            throw new Error(`Repository lookup unreachable. HTTP ${repoRes.status}`);
           }
           const repoData = await repoRes.json();
           targetBranch = repoData.default_branch;
@@ -693,7 +726,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         setStatus(`Streaming directory matrix layouts for ${currentLabelIdentity.toUpperCase()}...`);
       });
 
-      const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${targetBranch}?recursive=1`);
+      const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${targetBranch}?recursive=1`, { headers: apiHeaders });
       if (!treeRes.ok) {
         throw new Error(`Failed to map file matrix hierarchy. Status: ${treeRes.status}`);
       }
@@ -764,7 +797,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           const rawFileUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${targetBranch}/${item.path}`;
 
           try {
-            const res = await fetch(rawFileUrl);
+            const res = await fetch(rawFileUrl, { headers: rawHeaders });
             if (res.ok) {
               const content = await res.text();
               if (content && content.trim().length > 0) {
@@ -1301,7 +1334,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               
               <div className="space-y-4 sm:space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
-                  <div className="md:col-span-5">
+                  <div className="md:col-span-4">
                     <label className="text-xs text-slate-300 font-medium mb-2 block">
                       Repository Destination URL
                     </label>
@@ -1328,13 +1361,26 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-sky-400 text-slate-300 font-mono transition-colors"
                     />
                   </div>
-                  <div className="md:col-span-4">
+                  <div className="md:col-span-3">
                     <label className="text-xs text-slate-300 font-medium mb-2 block">
-                      Global Extension Filter <span className="text-slate-500 font-normal">(Optional)</span>
+                      GitHub Token <span className="text-slate-500 font-normal">(For Private Repos)</span>
+                    </label>
+                    <input 
+                      type="password"
+                      placeholder="ghp_..."
+                      value={githubToken}
+                      onChange={(e) => setGithubToken(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && executeGithubStreaming(false)}
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-sky-400 text-slate-300 font-mono transition-colors"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-xs text-slate-300 font-medium mb-2 block">
+                      Global Filter <span className="text-slate-500 font-normal">(Opt)</span>
                     </label>
                     <input 
                       type="text" 
-                      placeholder="e.g. *.js, *.ts, index.html" 
+                      placeholder="e.g. *.js" 
                       value={globalExtensionFilter}
                       onChange={(e) => {
                         setGlobalExtensionFilter(e.target.value);
