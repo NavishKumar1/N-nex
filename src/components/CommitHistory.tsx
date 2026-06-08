@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { GitCommit, Github, FileCode2, Code, ArrowRight, GitBranch, Terminal, ExternalLink, Activity, Plus, Minus, FileText } from 'lucide-react';
+import { GitCommit, Github, FileCode2, Code, ArrowRight, GitBranch, Terminal, ExternalLink, Activity, Plus, Minus, FileText, Sparkles } from 'lucide-react';
 
 interface Commit {
   sha: string;
@@ -53,6 +53,10 @@ export const CommitHistory: React.FC<CommitHistoryProps> = ({ repoSource, github
   const [selectedCommitSha, setSelectedCommitSha] = useState<string | null>(null);
   const [commitDetails, setCommitDetails] = useState<Record<string, CommitDetails>>({});
   const [loadingDetails, setLoadingDetails] = useState<Record<string, boolean>>({});
+  
+  // AI summary state
+  const [aiSummaries, setAiSummaries] = useState<Record<string, string>>({});
+  const [isSummarizing, setIsSummarizing] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     let mounted = true;
@@ -152,6 +156,36 @@ export const CommitHistory: React.FC<CommitHistoryProps> = ({ repoSource, github
       console.error(err);
     } finally {
       setLoadingDetails(prev => ({ ...prev, [sha]: false }));
+    }
+  };
+
+  const generateAiSummary = async (commit: Commit, details: CommitDetails) => {
+    if (aiSummaries[commit.sha] || isSummarizing[commit.sha]) return;
+    
+    setIsSummarizing(prev => ({ ...prev, [commit.sha]: true }));
+    try {
+      const diffStr = details.files
+        .map(f => `File: ${f.filename}\n${f.patch || ''}`)
+        .join('\n\n')
+        .slice(0, 15000); // Truncate to avoid massive payload issues
+        
+      const res = await fetch('/api/summarize-commit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: commit.commit.message,
+          diff: diffStr
+        })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed generating summary');
+      
+      setAiSummaries(prev => ({ ...prev, [commit.sha]: data.summary }));
+    } catch (err: any) {
+      setAiSummaries(prev => ({ ...prev, [commit.sha]: `Failed to generate summary: ${err.message}` }));
+    } finally {
+      setIsSummarizing(prev => ({ ...prev, [commit.sha]: false }));
     }
   };
 
@@ -270,6 +304,39 @@ export const CommitHistory: React.FC<CommitHistoryProps> = ({ repoSource, github
                         >
                           View on GitHub <ExternalLink size={12} />
                         </a>
+                      </div>
+
+                      {/* AI Commit Summarization */}
+                      <div className="bg-slate-900 border border-indigo-500/30 rounded-lg p-3 sm:p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2 text-xs font-semibold text-indigo-400">
+                            <Sparkles size={14} className="text-indigo-400" />
+                            AI Architectural Impact Summary
+                          </div>
+                          {!aiSummaries[commit.sha] && !isSummarizing[commit.sha] && (
+                            <button
+                              disabled={isSummarizing[commit.sha]}
+                              onClick={(e) => { e.stopPropagation(); generateAiSummary(commit, details); }}
+                              className="text-[10px] bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 px-2 py-1 rounded transition-colors"
+                            >
+                              Generate
+                            </button>
+                          )}
+                        </div>
+                        {isSummarizing[commit.sha] ? (
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
+                            <Activity size={12} className="animate-spin text-indigo-400" />
+                            Analyzing commit diffs...
+                          </div>
+                        ) : aiSummaries[commit.sha] ? (
+                          <div className="text-xs text-slate-300 leading-relaxed font-sans">
+                            {aiSummaries[commit.sha]}
+                          </div>
+                        ) : (
+                          <div className="text-xs text-slate-500 italic">
+                            Click generate to read diffs and summarize intent.
+                          </div>
+                        )}
                       </div>
 
                       {/* File Changes List */}

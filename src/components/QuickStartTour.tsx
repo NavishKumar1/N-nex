@@ -53,7 +53,7 @@ export function QuickStartTour() {
       showProgress={true}
       showSkipButton={true}
       steps={steps}
-      styles={{
+      styles={({
         options: {
           arrowColor: '#0f172a', // slate-900
           backgroundColor: '#0f172a', 
@@ -107,7 +107,7 @@ export function QuickStartTour() {
           fontWeight: '500',
           textTransform: 'none',
         }
-      }}
+      }) as any}
     />
   );
 }

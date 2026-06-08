@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { InteractiveFileTree } from '../components/InteractiveFileTree';
 import { CodebaseVisualizer } from '../components/CodebaseVisualizer';
 import { ContributionGraph } from '../components/ContributionGraph';
+import { VelocityMetrics } from '../components/VelocityMetrics';
+import { ContributorNetwork } from '../components/ContributorNetwork';
 import { QuickStartTour } from '../components/QuickStartTour';
 import { 
   FolderSearch, Github, Settings, Copy, Check, Trash2, Filter, ArrowRight, Activity, Code,
@@ -1055,7 +1057,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   };
 
   // --- GLOBAL SHORTCUT LAYER ---
-  const handleKeyboardSubmitRef = useRef<() => void>();
+  const handleKeyboardSubmitRef = useRef<() => void>(() => {});
   handleKeyboardSubmitRef.current = () => {
     const fileCount = loadedFiles.filter(f => !uncheckedFiles.has(`${f.source}:${f.path}`)).length;
     if (fileCount > 0) {
@@ -1663,15 +1665,22 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               </div>
             )}
 
-            {/* CONTRIBUTION GRAPHS */}
+            {/* CONTRIBUTION & METRICS WIDGETS */}
             {activeLayers.length > 0 && (
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {/* Advanced Contribution Graphs */}
                 {activeLayers.map((layer) => (
-                  <ContributionGraph 
-                    key={layer} 
-                    repoSource={layer} 
-                    githubToken={githubToken} 
-                  />
+                  <div key={layer} className="space-y-6">
+                    <ContributionGraph 
+                      repoSource={layer} 
+                      githubToken={githubToken} 
+                    />
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <VelocityMetrics repoSource={layer} githubToken={githubToken} />
+                      <ContributorNetwork repoSource={layer} githubToken={githubToken} />
+                    </div>
+                  </div>
                 ))}
               </div>
             )}

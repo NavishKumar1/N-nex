@@ -84,6 +84,27 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
+  app.post("/api/summarize-commit", async (req, res) => {
+    try {
+      const { message, diff } = req.body;
+      if (!process.env.GEMINI_API_KEY) {
+        return res.status(500).json({ error: "No API key configured for auto-summaries." });
+      }
+      const { GoogleGenAI } = await import("@google/genai");
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const prompt = `Analyze this commit and provide a clear, one-paragraph human-readable summary of what changed and its architectural impact. Keep it concise, insightful, and focused on why the change was made if apparent from the code. If the diff is too long, focus on the commit message and key structural changes.\n\nCommit Message: ${message}\n\nDiff Changes:\n${diff}`;
+      
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+      });
+      return res.json({ summary: response.text });
+    } catch (e: any) {
+      console.error(e);
+      return res.status(500).json({ error: "Failed to generate summary: " + e.message });
+    }
+  });
+
   // Vite middleware for development vs static asset output in production
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
