@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { GitCommit, AlertCircle, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { GitCommit, AlertCircle, Loader2, GitBranch } from 'lucide-react';
+import { CommitHistory } from './CommitHistory';
 
 interface ContributionDay {
   date: string;
@@ -23,6 +24,7 @@ export const ContributionGraph: React.FC<ContributionGraphProps> = ({ repoSource
   const [data, setData] = useState<ContributionWeek[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showCommits, setShowCommits] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -140,8 +142,21 @@ export const ContributionGraph: React.FC<ContributionGraphProps> = ({ repoSource
               Commit Activity Canvas
               <span className="font-mono text-xs font-normal text-slate-500 ml-2 bg-slate-900 border border-slate-700 px-2 flex justify-center items-center py-0.5 rounded-md">{repoSource}</span>
             </h4>
-            <div className="text-xs text-slate-500 font-medium">
-               Last Year • <span className="text-white">{data.reduce((acc, curr) => acc + curr.total, 0).toLocaleString()} Commits</span>
+            <div className="flex items-center gap-4">
+              <div className="text-xs text-slate-500 font-medium">
+                Last Year • <span className="text-white">{data.reduce((acc, curr) => acc + curr.total, 0).toLocaleString()} Commits</span>
+              </div>
+              <button
+                onClick={() => setShowCommits(!showCommits)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  showCommits 
+                  ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' 
+                  : 'bg-slate-900 text-slate-300 border border-slate-700 hover:bg-slate-800 hover:text-white'
+                }`}
+              >
+                <GitBranch size={14} />
+                {showCommits ? 'Hide Commits' : 'View All Commits'}
+              </button>
             </div>
           </div>
           
@@ -207,6 +222,21 @@ export const ContributionGraph: React.FC<ContributionGraphProps> = ({ repoSource
 
         </div>
       ) : null}
+
+      <AnimatePresence>
+        {showCommits && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-2 h-[600px] max-h-[80vh]">
+              <CommitHistory repoSource={repoSource} githubToken={githubToken} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

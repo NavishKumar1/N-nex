@@ -56,8 +56,6 @@ export const CodebaseVisualizer: React.FC<CodebaseVisualizerProps> = ({ files })
   useEffect(() => {
     if (!svgRef.current || !wrapperRef.current || files.length === 0) return;
 
-    const width = wrapperRef.current.clientWidth;
-    const height = 400;
     const margin = { top: 20, right: 90, bottom: 30, left: 90 };
 
     const svg = d3.select(svgRef.current);
@@ -65,9 +63,13 @@ export const CodebaseVisualizer: React.FC<CodebaseVisualizerProps> = ({ files })
 
     const root = d3.hierarchy(data);
 
-    // Calculate dimensions based on number of nodes
-    const dx = 20;
-    const dy = width / (root.height + 1) || width / 4;
+    // Calculate dimensions based on number of nodes and depth
+    const dx = 22; // vertical spacing
+    const dy = 180; // horizontal spacing between layers
+    const requiredWidth = (root.height + 1) * dy;
+    const width = Math.max(wrapperRef.current.clientWidth, requiredWidth + margin.left + margin.right * 2);
+    
+    const height = 400;
     const treeHeight = root.descendants().length * 15;
     const finalHeight = Math.max(height, treeHeight + margin.top + margin.bottom);
 
@@ -138,8 +140,8 @@ export const CodebaseVisualizer: React.FC<CodebaseVisualizerProps> = ({ files })
   if (files.length === 0) return null;
 
   return (
-    <div className="w-full bg-slate-950 border border-slate-800 rounded-lg overflow-x-auto overflow-y-auto max-h-[500px]" ref={wrapperRef}>
-      <svg ref={svgRef} className="w-full h-auto min-h-[300px]" />
+    <div className="w-full bg-slate-950 border border-slate-800 rounded-lg overflow-x-auto overflow-y-auto max-h-[500px] scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent" ref={wrapperRef}>
+      <svg ref={svgRef} className="block text-slate-300 min-h-[300px]" />
     </div>
   );
 };
