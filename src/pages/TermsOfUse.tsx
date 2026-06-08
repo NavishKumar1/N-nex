@@ -4,7 +4,7 @@ import { ArrowLeft, Scale } from 'lucide-react';
 
 export function TermsOfUse({ onBack }: { onBack: () => void }) {
   return (
-    <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-[#0ea5e9] selection:text-white flex flex-col items-center">
+    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-sky-500 selection:text-white flex flex-col items-center">
       <div className="w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12">
         <div className="flex items-center justify-between border-b border-slate-800/80 pb-6">
           <button 
@@ -15,8 +15,8 @@ export function TermsOfUse({ onBack }: { onBack: () => void }) {
           </button>
           
           <div className="flex items-center gap-3">
-             <div className="w-8 h-8 rounded bg-[#020617] border border-[#a855f7] flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.3)]">
-                <Scale strokeWidth={2} className="text-[#a855f7] w-4 h-4" />
+             <div className="w-8 h-8 rounded bg-slate-950 border border-purple-500 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                <Scale strokeWidth={2} className="text-purple-500 w-4 h-4" />
              </div>
              <span className="text-xl font-bold tracking-tight text-white border-l-2 pl-3 border-slate-800">
                Terms of Use
@@ -30,7 +30,7 @@ export function TermsOfUse({ onBack }: { onBack: () => void }) {
           className="prose prose-invert prose-slate max-w-none pb-20"
         >
           <div className="bg-[#050A15] border border-slate-800/80 rounded-[32px] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#a855f7]/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none" />
             
             <div className="relative z-10 space-y-8 text-slate-300 leading-relaxed text-[15px]">
               <div>
@@ -66,13 +66,13 @@ export function TermsOfUse({ onBack }: { onBack: () => void }) {
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold text-white">3. Third-Party Deployment and Tooling</h2>
                 <p>
-                  Our services run on <strong>Vercel</strong> infrastructure. Your usage of this platform must comply with the <a href="https://vercel.com/legal/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-[#0ea5e9] hover:text-[#38bdf8] underline">Vercel Terms of Service</a> regarding acceptable bandwidth, compute usage, and fair operations behavior. Additionally, any data tracking relies strictly on <strong>Google Analytics</strong> and <strong>Google Fonts</strong>, governed by Google's respective Terms of Service.
+                  Our services run on <strong>Vercel</strong> infrastructure. Your usage of this platform must comply with the <a href="https://vercel.com/legal/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-400 underline">Vercel Terms of Service</a> regarding acceptable bandwidth, compute usage, and fair operations behavior. Additionally, any data tracking relies strictly on <strong>Google Analytics</strong> and <strong>Google Fonts</strong>, governed by Google's respective Terms of Service.
                 </p>
               </section>
 
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold text-white">4. No Warranties or Guarantees (AS-IS)</h2>
-                <p className="text-white border-l-2 border-[#a855f7] pl-4 py-1">
+                <p className="text-white border-l-2 border-purple-500 pl-4 py-1">
                   We provide the N-NEX engine entirely "AS-IS" and "AS AVAILABLE". We disclaim all implied or explicit warranties concerning exact code extraction accuracy, syntax mapping perfection, or service uptime.
                 </p>
                 <p>

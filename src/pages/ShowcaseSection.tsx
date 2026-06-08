@@ -8,7 +8,7 @@ export function ShowcaseSection() {
   return (
     <div id="output" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
       <div className="text-center mb-16 flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[#e879f9] text-xs font-mono font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-fuchsia-400 text-xs font-mono font-medium mb-6">
           <Terminal className="w-4 h-4" /> OUTPUT DEMO
         </div>
         <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-sans font-medium text-white tracking-tight mb-6 max-w-2xl leading-tight">
@@ -45,7 +45,7 @@ export function ShowcaseSection() {
               </button>
               <button 
                 onClick={() => setActiveTab('compiled')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeTab === 'compiled' ? 'bg-[#c084fc]/20 text-[#e879f9]' : 'text-slate-500 hover:text-slate-300'}`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${activeTab === 'compiled' ? 'bg-purple-400/20 text-fuchsia-400' : 'text-slate-500 hover:text-slate-300'}`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Compiled Output
@@ -54,7 +54,7 @@ export function ShowcaseSection() {
           </div>
 
           {/* Editor Body */}
-          <div className="relative h-[400px] overflow-hidden bg-[#020617]">
+          <div className="relative h-[400px] overflow-hidden bg-slate-950">
             <AnimatePresence mode="wait">
               {activeTab === 'compiled' ? (
                 <motion.div 
@@ -66,14 +66,14 @@ export function ShowcaseSection() {
                   className="absolute inset-0 p-6 overflow-y-auto text-slate-300 leading-relaxed custom-scrollbar"
                 >
                   <pre className="text-xs sm:text-sm">
-<span className="text-[#c084fc]">{'<repository>'}</span>
-  <span className="text-[#38bdf8]">{'<file path="src/main.ts">'}</span>
+<span className="text-purple-400">{'<repository>'}</span>
+  <span className="text-sky-400">{'<file path="src/main.ts">'}</span>
 <span className="text-slate-400">{'import { bootstrap } from "./app";\n\nbootstrap();'}</span>
-  <span className="text-[#38bdf8]">{'</file>'}</span>
-  <span className="text-[#38bdf8]">{'<file path="src/app.ts">'}</span>
+  <span className="text-sky-400">{'</file>'}</span>
+  <span className="text-sky-400">{'<file path="src/app.ts">'}</span>
 <span className="text-slate-400">{'export function bootstrap() {\n  console.log("System initialized.");\n  // Codebase structure optimized\n}'}</span>
-  <span className="text-[#38bdf8]">{'</file>'}</span>
-<span className="text-[#c084fc]">{'</repository>'}</span>
+  <span className="text-sky-400">{'</file>'}</span>
+<span className="text-purple-400">{'</repository>'}</span>
                   </pre>
                 </motion.div>
               ) : (

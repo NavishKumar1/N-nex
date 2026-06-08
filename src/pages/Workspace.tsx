@@ -4,7 +4,7 @@ import { QuickStartTour } from '../components/QuickStartTour';
 import { 
   FolderSearch, Github, Settings, Copy, Check, Trash2, Filter, ArrowRight, Activity, Code,
   AlertCircle, GitBranch, X, FileCode, Terminal, Sparkles, Layers, Clock, LayoutGrid, Download,
-  FileText, RefreshCw, FolderSync, Code2
+  FileText, RefreshCw, FolderSync, Code2, Sun, Moon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { getEncoding } from 'js-tiktoken';
@@ -29,6 +29,19 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   // Exclusions panel toggling
   const [showSettings, setShowSettings] = useState(false);
   const [customExt, setCustomExt] = useState('');
+
+  // Theme switcher state
+  const [isLightMode, setIsLightMode] = useState(() => {
+    return typeof document !== 'undefined' && document.documentElement.classList.contains('theme-light');
+  });
+
+  useEffect(() => {
+    if (isLightMode) {
+      document.documentElement.classList.add('theme-light');
+    } else {
+      document.documentElement.classList.remove('theme-light');
+    }
+  }, [isLightMode]);
 
   // Prompt configuration & historical parameters
   const [selectedPreset, setSelectedPreset] = useState<keyof typeof PROMPT_PRESETS>('NONE');
@@ -124,7 +137,31 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         
         if (action === 'compile_matrix') {
           const { files, treeText, presetText } = payload;
-          let output = presetText + treeText + "## CODE BLOCKS DETAIL:\\n\\n";
+          
+          const langMap = {
+            'js': 'JavaScript', 'jsx': 'React (JSX)', 'ts': 'TypeScript', 'tsx': 'React (TSX)',
+            'py': 'Python', 'java': 'Java', 'rb': 'Ruby', 'go': 'Go', 'rs': 'Rust',
+            'c': 'C', 'cpp': 'C++', 'cs': 'C#', 'html': 'HTML', 'css': 'CSS',
+            'json': 'JSON', 'md': 'Markdown', 'sh': 'Shell Script', 'yml': 'YAML',
+            'yaml': 'YAML', 'xml': 'XML', 'php': 'PHP', 'swift': 'Swift', 'kt': 'Kotlin',
+            'sol': 'Solidity', 'sql': 'SQL', 'vue': 'Vue.js', 'svelte': 'Svelte'
+          };
+
+          const detectedLangs = new Set();
+          files.forEach(f => {
+            if (f.enabled && f.ext) {
+              const extLower = f.ext.toLowerCase();
+              const lang = langMap[extLower] || extLower.toUpperCase();
+              detectedLangs.add(lang);
+            }
+          });
+
+          let languageHeader = "";
+          if (detectedLangs.size > 0) {
+            languageHeader = "## LANGUAGE ANALYSIS:\\n- " + Array.from(detectedLangs).join("\\n- ") + "\\n\\n";
+          }
+
+          let output = presetText + languageHeader + treeText + "## CODE BLOCKS DETAIL:\\n\\n";
           let liveTokens = 0;
           let liveFiles = 0;
 
@@ -453,6 +490,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   // --- DISK STORAGE STREAMING DOWNLOADERS ---
   const handleDownloadMarkdown = () => {
     compileWithWorker('download_md');
+  };
+
+  const handleDownloadTXT = () => {
+    compileWithWorker('download_txt');
   };
 
   const handleDownloadJSON = () => {
@@ -801,7 +842,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     }
   };
 
-  const compileWithWorker = (actionType: 'copy' | 'preview' | 'download_md' | 'download_json') => {
+  const compileWithWorker = (actionType: 'copy' | 'preview' | 'download_md' | 'download_txt' | 'download_json') => {
     if (!workerRef.current) return;
     setIsLoading(true);
     setStatus('> STREAMING COMPOSITIONS TO WEB WORKER BACKEND...');
@@ -854,13 +895,15 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             setRenderedText(output);
             setIsPreviewVisible(true);
             setStatus('Preview matrix compiled successfully.');
-          } else if (actionType === 'download_md') {
-            const blob = new Blob([output], { type: 'text/markdown;charset=utf-8' });
+          } else if (actionType === 'download_md' || actionType === 'download_txt') {
+            const ext = actionType === 'download_md' ? 'md' : 'txt';
+            const mimeType = actionType === 'download_md' ? 'text/markdown;charset=utf-8' : 'text/plain;charset=utf-8';
+            const blob = new Blob([output], { type: mimeType });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             const prefix = selectedPreset !== 'NONE' ? `${selectedPreset.toLowerCase()}_` : '';
-            const filename = `${prefix}context_payload_${Date.now()}.md`;
+            const filename = `${prefix}context_payload_${Date.now()}.${ext}`;
             link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
@@ -1026,10 +1069,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-300 font-sans flex flex-col antialiased selection:bg-[#38bdf8]/30 selection:text-white">
+    <div className="min-h-screen bg-slate-950 text-slate-300 font-sans flex flex-col antialiased selection:bg-sky-400/30 selection:text-white">
       <QuickStartTour />
       {/* Stark Void Navigation Header */}
-      <nav className="border-b border-slate-800/80 bg-[#020617] h-20 sm:h-24 shrink-0 flex items-center justify-between px-3 sm:px-6 z-10 sticky top-0 shadow-sm">
+      <nav className="border-b border-slate-800/80 bg-slate-950 h-20 sm:h-24 shrink-0 flex items-center justify-between px-3 sm:px-6 z-10 sticky top-0 shadow-sm">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={onBackToLanding}
@@ -1039,13 +1082,13 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             <img src="/N-nex.png" alt="N-nex" className="h-16 sm:h-20 cursor-pointer opacity-90 group-hover:opacity-100 object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)]" />
           </button>
           <div className="flex items-center gap-2 sm:gap-3 border-l border-slate-800/80 pl-2 sm:pl-4">
-            <div className="w-1.5 h-1.5 bg-[#38bdf8] rounded-full animate-pulse shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
+            <div className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
             <span className="text-white font-bold tracking-widest text-[10px] sm:text-xs uppercase font-sans">Workspace</span>
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
           <div className="hidden sm:flex px-3 py-1.5 border border-slate-800/80 text-[10px] text-slate-400 tracking-wider rounded-lg font-mono items-center shadow-inner bg-slate-900/50">
-            <Sparkles className="w-3 h-3 text-[#c084fc] mr-1.5" />
+            <Sparkles className="w-3 h-3 text-purple-400 mr-1.5" />
             V1.1.0 COMPILER
           </div>
           <button 
@@ -1058,8 +1101,15 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             <span className="sm:hidden">RESYNC</span>
           </button>
           <button 
+            onClick={() => setIsLightMode(!isLightMode)}
+            className="p-1.5 sm:p-2 border border-slate-800/80 bg-slate-950 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 rounded-md shadow-sm ml-2"
+            title="Toggle Theme"
+          >
+            {isLightMode ? <Moon size={14} /> : <Sun size={14} />}
+          </button>
+          <button 
             onClick={() => setShowSettings(!showSettings)}
-            className={`p-1.5 sm:p-2 border rounded-md transition-all duration-200 shadow-sm ${showSettings ? 'bg-[#38bdf8] text-slate-950 border-[#38bdf8]' : 'border-slate-800/80 text-slate-400 hover:text-white hover:border-slate-600 bg-slate-950'}`}
+            className={`p-1.5 sm:p-2 border rounded-md transition-all duration-200 shadow-sm ml-2 ${showSettings ? 'bg-sky-400 text-slate-950 border-sky-400' : 'border-slate-800/80 text-slate-400 hover:text-white hover:border-slate-600 bg-slate-950'}`}
             title="Configure Ignored Extensions & Filters"
           >
             <Settings size={14} />
@@ -1068,7 +1118,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       </nav>
 
       {/* Modern SaaS Tab Navigation Bar */}
-      <div className="bg-[#020617] border-b border-slate-800/80 flex items-center h-14 px-3 sm:px-6 min-w-0 select-none overflow-x-auto shrink-0 scrollbar-none gap-2">
+      <div className="bg-slate-950 border-b border-slate-800/80 flex items-center h-14 px-3 sm:px-6 min-w-0 select-none overflow-x-auto shrink-0 scrollbar-none gap-2">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -1115,7 +1165,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               <div className="p-4 sm:p-6 space-y-6 text-sm">
                 <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
                   <span className="text-white font-semibold flex items-center gap-2">
-                    <Filter size={14} className="text-[#38bdf8]" />
+                    <Filter size={14} className="text-sky-400" />
                     Configuration Controls // Metric Filter
                   </span>
                   <button 
@@ -1124,7 +1174,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       ignoreDirectories: DEFAULT_IGNORE_DIRECTORIES,
                       fetchLimit: DEFAULT_FETCH_LIMIT
                     })}
-                    className="text-xs text-slate-400 hover:text-[#38bdf8] font-medium transition-colors"
+                    className="text-xs text-slate-400 hover:text-sky-400 font-medium transition-colors"
                   >
                     Reset Defaults
                   </button>
@@ -1145,7 +1195,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                             ...prev, 
                             fetchLimit: Math.max(1, Math.min(500, parseInt(e.target.value) || 1)) 
                           }))}
-                          className="bg-slate-950 border border-slate-800/80 px-3 py-2 w-24 text-white font-mono focus:outline-none focus:border-[#38bdf8] rounded-md text-xs shadow-inner"
+                          className="bg-slate-950 border border-slate-800/80 px-3 py-2 w-24 text-white font-mono focus:outline-none focus:border-sky-400 rounded-md text-xs shadow-inner"
                         />
                         <span className="text-xs text-slate-500">Max file fetches (1-500)</span>
                       </div>
@@ -1160,7 +1210,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                           onChange={(e) => setCustomExt(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && handleAddFilter()}
                           placeholder=".env, .yaml, .config"
-                          className="bg-slate-950 border border-slate-800/80 px-3 py-2 text-white placeholder:text-slate-600 font-mono focus:outline-none focus:border-[#38bdf8] text-xs w-full rounded-md shadow-inner"
+                          className="bg-slate-950 border border-slate-800/80 px-3 py-2 text-white placeholder:text-slate-600 font-mono focus:outline-none focus:border-sky-400 text-xs w-full rounded-md shadow-inner"
                         />
                         <button 
                           onClick={handleAddFilter}
@@ -1191,7 +1241,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   </div>
                 </div>
 
-                <div className="space-y-3 bg-[#020617] p-5 border border-slate-800/80 rounded-lg">
+                <div className="space-y-3 bg-slate-950 p-5 border border-slate-800/80 rounded-lg">
                   <div className="text-xs text-slate-400 font-medium">Standard Directories Shielded Globally</div>
                   <div className="flex flex-wrap gap-2 text-xs text-slate-500 font-mono">
                     {filters.ignoreDirectories.map(dir => (
@@ -1211,7 +1261,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             {/* Directives preset selection row (High-Contrast styling) */}
             <div className="border border-slate-800 bg-slate-900/50 p-4 sm:p-6 rounded-xl shadow-sm space-y-4">
               <div className="flex items-center gap-2">
-                <Sparkles size={14} className="text-[#38bdf8]" />
+                <Sparkles size={14} className="text-sky-400" />
                 <span className="text-xs text-slate-300 font-semibold tracking-wide block">System Preset Directive</span>
               </div>
               <div className="flex flex-wrap gap-2 text-sm font-sans">
@@ -1226,7 +1276,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       }}
                       className={`px-4 py-2 font-medium transition-all border rounded-lg shadow-sm whitespace-nowrap text-xs sm:text-sm flex-1 sm:flex-initial text-center ${
                         isSelected 
-                          ? 'border-[#38bdf8] text-slate-950 bg-[#38bdf8] shadow-[0_0_15px_rgba(56,189,248,0.4)]' 
+                          ? 'border-sky-400 text-slate-950 bg-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.4)]' 
                           : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 hover:bg-slate-800 bg-slate-800/50'
                       }`}
                     >
@@ -1241,7 +1291,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             <div className="border border-slate-800 p-5 sm:p-8 rounded-xl bg-slate-900/50 w-full space-y-4 sm:space-y-5 shadow-sm">
               <div className="mb-2">
                 <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                  <Github size={16} className="text-[#38bdf8]" />
+                  <Github size={16} className="text-sky-400" />
                   Remote Git Workspace Pipeline
                 </h3>
                 <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
@@ -1262,7 +1312,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       value={githubUrl}
                       onChange={(e) => setGithubUrl(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && executeGithubStreaming(false)}
-                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-300 font-mono transition-colors"
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-sky-400 text-slate-300 font-mono transition-colors"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -1275,7 +1325,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       value={branch}
                       onChange={(e) => setBranch(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && executeGithubStreaming(false)}
-                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-300 font-mono transition-colors"
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-sky-400 text-slate-300 font-mono transition-colors"
                     />
                   </div>
                   <div className="md:col-span-4">
@@ -1290,7 +1340,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                         setGlobalExtensionFilter(e.target.value);
                         setStatus(`Compiling dynamic pattern filter: "${e.target.value}"`);
                       }}
-                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-[#38bdf8] text-slate-400 font-mono transition-colors"
+                      className="w-full bg-slate-950 border border-slate-800 px-4 py-2.5 text-sm rounded-lg shadow-inner focus:outline-none focus:border-sky-400 text-slate-400 font-mono transition-colors"
                     />
                   </div>
                 </div>
@@ -1312,7 +1362,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       id="tour-step-3-compile"
                       onClick={() => executeGithubStreaming(false)} 
                       disabled={isLoading || !githubUrl} 
-                      className="flex-1 border border-[#38bdf8] bg-[#38bdf8] text-slate-950 hover:bg-sky-400 px-4 sm:px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.2)] disabled:opacity-50 disabled:cursor-not-allowed group relative"
+                      className="flex-1 border border-sky-400 bg-sky-400 text-slate-950 hover:bg-sky-400 px-4 sm:px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-lg shadow-[0_0_15px_rgba(56,189,248,0.2)] disabled:opacity-50 disabled:cursor-not-allowed group relative"
                     >
                       Overwrite Layer
                       <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] hidden group-hover:block whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
@@ -1336,7 +1386,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               <div className="border border-slate-700 bg-slate-800/30 p-5 rounded-xl space-y-4 animate-fadeIn shadow-inner">
                 <div className="flex items-center justify-between text-xs text-slate-300 border-b border-slate-700/80 pb-3">
                   <span className="font-semibold flex items-center gap-2">
-                    <Layers size={14} className="text-[#c084fc]" />
+                    <Layers size={14} className="text-purple-400" />
                     Active Compiling Ingress Layers ({activeLayers.length})
                   </span>
                   <button 
@@ -1373,7 +1423,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             )}
 
             {/* Terminal Live Output logs window */}
-            <div className="border border-slate-700 bg-[#020617] p-5 rounded-xl space-y-3 shadow-inner">
+            <div className="border border-slate-700 bg-slate-950 p-5 rounded-xl space-y-3 shadow-inner">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <span className="text-slate-400 text-xs font-semibold flex items-center gap-2">
                   <Terminal size={14} className="text-slate-500" />
@@ -1384,7 +1434,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   IDLE // ENGINE
                 </span>
               </div>
-              <p className="text-[#38bdf8] font-mono text-xs leading-relaxed font-medium">
+              <p className="text-sky-400 font-mono text-xs leading-relaxed font-medium">
                 <span className="text-slate-500 mr-2">&gt;</span>{status}
               </p>
             </div>
@@ -1397,7 +1447,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           <div className="space-y-4 animate-fadeIn">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <span className="text-white text-sm font-semibold flex items-center gap-2">
-                <Clock size={16} className="text-[#c084fc]" />
+                <Clock size={16} className="text-purple-400" />
                 Recent Workspace Archives
               </span>
               {history.length > 0 && (
@@ -1427,7 +1477,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between hover:bg-slate-800/80 transition-all duration-200 cursor-pointer group gap-4 sm:gap-0"
                     >
                       <div className="space-y-1.5 text-left w-full sm:w-auto">
-                        <div className="text-slate-200 font-semibold text-sm group-hover:text-[#38bdf8] transition-colors truncate max-w-[280px] sm:max-w-[400px]">
+                        <div className="text-slate-200 font-semibold text-sm group-hover:text-sky-400 transition-colors truncate max-w-[280px] sm:max-w-[400px]">
                           {log.repo}
                         </div>
                         <div className="text-[11px] font-mono text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -1474,21 +1524,21 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
               <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
                 <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
-                  <FolderSearch size={14} className="text-[#38bdf8]" />
+                  <FolderSearch size={14} className="text-sky-400" />
                   Compacted Files
                 </div>
                 <div className="text-2xl text-white font-bold">{fileCount}</div>
               </div>
               <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
                 <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
-                  <Code size={14} className="text-[#c084fc]" />
+                  <Code size={14} className="text-purple-400" />
                   Characters
                 </div>
                 <div className="text-2xl text-white font-bold">{estimatedChars.toLocaleString()}</div>
               </div>
               <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-center">
                 <div className="text-xs text-slate-400 font-semibold tracking-wide mb-1 flex items-center gap-2">
-                  <Activity size={14} className="text-[#e879f9]" />
+                  <Activity size={14} className="text-fuchsia-400" />
                   Estimated Tokens
                 </div>
                 <div className="text-2xl text-white font-bold">{estimatedTokens.toLocaleString()}</div>
@@ -1532,7 +1582,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   <button 
                     onClick={copyToClipboard}
                     disabled={fileCount === 0}
-                    className="w-full h-10 border border-[#38bdf8] hover:bg-[#38bdf8] text-[#38bdf8] hover:text-slate-950 transition-all font-bold text-xs flex items-center justify-center gap-2 bg-[#38bdf8]/10 disabled:opacity-30 disabled:pointer-events-none rounded-lg shadow-sm"
+                    className="w-full h-10 border border-sky-400 hover:bg-sky-400 text-sky-400 hover:text-slate-950 transition-all font-bold text-xs flex items-center justify-center gap-2 bg-sky-400/10 disabled:opacity-30 disabled:pointer-events-none rounded-lg shadow-sm"
                   >
                     {copied ? (
                       <>
@@ -1554,7 +1604,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               <div className="border border-slate-800 bg-slate-900/50 rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 shadow-sm text-left">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-700/50 pb-4 gap-3">
                   <div className="flex items-center gap-2 font-sans">
-                    <Layers size={16} className="text-[#38bdf8]" />
+                    <Layers size={16} className="text-sky-400" />
                     <span className="text-sm text-white font-semibold">
                       Core Layers & Active File Tree
                     </span>
@@ -1592,7 +1642,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     placeholder="Search tree list by name or directory paths..."
                     value={pruningSearch}
                     onChange={(e) => setPruningSearch(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 px-4 h-[42px] text-sm text-slate-300 placeholder:text-slate-500 focus:outline-none focus:border-[#38bdf8] rounded-lg shadow-inner transition-colors"
+                    className="w-full bg-slate-950 border border-slate-700 px-4 h-[42px] text-sm text-slate-300 placeholder:text-slate-500 focus:outline-none focus:border-sky-400 rounded-lg shadow-inner transition-colors"
                   />
                   {pruningSearch && (
                     <button 
@@ -1639,6 +1689,13 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     Download .md
                   </button>
                   <button 
+                    onClick={handleDownloadTXT}
+                    className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
+                  >
+                    <Download size={14} />
+                    Download .txt
+                  </button>
+                  <button 
                     onClick={handleDownloadJSON}
                     className="flex-1 md:flex-initial h-10 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs px-5 font-semibold transition-all flex items-center justify-center gap-2 bg-slate-800/50 rounded-lg shadow-sm"
                   >
@@ -1653,7 +1710,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
             {/* Performance protecting layer */}
             {!isPreviewVisible ? (
-              <div className="border border-slate-800/80 bg-[#020617] p-12 text-center space-y-6 flex flex-col items-center justify-center">
+              <div className="border border-slate-800/80 bg-slate-950 p-12 text-center space-y-6 flex flex-col items-center justify-center">
                 <div className="w-10 h-10 border border-slate-800/80 flex items-center justify-center text-slate-500 rounded-none bg-slate-950">
                   <FileCode size={18} />
                 </div>
@@ -1680,7 +1737,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   <div className="flex items-center gap-4">
                     <button 
                       onClick={copyToClipboard}
-                      className="text-[10px] text-[#38bdf8] hover:text-white uppercase font-bold flex items-center gap-1"
+                      className="text-[10px] text-sky-400 hover:text-white uppercase font-bold flex items-center gap-1"
                     >
                       {copied ? <><Check size={12}/> COPIED</> : <><Copy size={12}/> COPY CONTEXT</>}
                     </button>
@@ -1692,7 +1749,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     </button>
                   </div>
                 </div>
-                <div className="w-full h-[450px] bg-[#020617] border border-slate-800/80 overflow-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                <div className="w-full h-[450px] bg-slate-950 border border-slate-800/80 overflow-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                   <SyntaxHighlighter 
                     language="markdown"
                     style={vscDarkPlus}

@@ -15,7 +15,7 @@ export function ComparisonSection() {
   return (
     <div id="comparison" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
       <div className="text-center mb-16 sm:mb-24 flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/20 text-[#34d399] text-xs font-mono font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[#34d399] text-xs font-mono font-medium mb-6">
           <Target className="w-4 h-4" /> ROI MATRIX
         </div>
         <h2 className="text-[2.2rem] sm:text-5xl md:text-6xl font-sans font-medium text-white tracking-tight mb-6 max-w-3xl leading-tight">
@@ -46,7 +46,7 @@ export function ComparisonSection() {
             }}
           />
 
-          <div className="absolute top-0 right-0 w-full md:w-1/2 h-full bg-gradient-to-l from-[#10b981]/10 to-transparent pointer-events-none" />
+          <div className="absolute top-0 right-0 w-full md:w-1/2 h-full bg-gradient-to-l from-emerald-500/10 to-transparent pointer-events-none" />
 
           {/* Header row */}
           <div className="grid grid-cols-2 md:grid-cols-4 border-b border-slate-800/80 relative z-10 glass-panel">
@@ -56,7 +56,7 @@ export function ComparisonSection() {
             <div className="col-span-1 p-6 md:p-8 border-r md:border-l border-slate-800/80 bg-slate-900/40 flex flex-col items-center justify-center text-center">
               <span className="text-slate-400 font-semibold tracking-tight text-sm sm:text-base">Manual Copying</span>
             </div>
-            <div className="col-span-1 p-6 md:p-8 bg-[#10b981]/5 flex flex-col items-center justify-center text-center relative border-b-2 border-[#10b981]">
+            <div className="col-span-1 p-6 md:p-8 bg-emerald-500/5 flex flex-col items-center justify-center text-center relative border-b-2 border-emerald-500">
               <span className="text-white font-bold tracking-widest uppercase text-sm sm:text-base drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]">N-nex Engine</span>
             </div>
           </div>
@@ -88,7 +88,7 @@ export function ComparisonSection() {
                   <span className="text-slate-500 font-sans text-xs sm:text-sm">{row.manual}</span>
                 </div>
               </div>
-              <div className="col-span-1 p-5 sm:p-6 lg:p-8 flex items-center justify-center text-center bg-[#10b981]/[0.03]">
+              <div className="col-span-1 p-5 sm:p-6 lg:p-8 flex items-center justify-center text-center bg-emerald-500/[0.03]">
                 <div className="flex flex-col items-center gap-2">
                   <Check className="w-5 h-5 text-[#34d399]" />
                   <span className={`font-mono font-bold text-xs sm:text-sm ${row.engineColor}`}>{row.engine}</span>

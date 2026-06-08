@@ -104,7 +104,7 @@ function TiltCard({ useCase, index }: { useCase: typeof useCases[0], index: numb
         />
 
         <div 
-          className="w-14 h-14 rounded-2xl bg-[#020617] border border-slate-700/80 flex flex-col items-center justify-center mb-8 shrink-0 relative z-10 shadow-lg group-hover:scale-110 transition-transform duration-500 ease-out"
+          className="w-14 h-14 rounded-2xl bg-slate-950 border border-slate-700/80 flex flex-col items-center justify-center mb-8 shrink-0 relative z-10 shadow-lg group-hover:scale-110 transition-transform duration-500 ease-out"
           style={{ transform: "translateZ(40px)" }}
         >
           <useCase.icon strokeWidth={1.5} className={`w-7 h-7 ${useCase.iconColor}`} />
@@ -141,7 +141,7 @@ export function UseCasesSection() {
   return (
     <div id="use-cases" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative overflow-hidden">
       <div className="text-center mb-16 sm:mb-24 flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[#38bdf8] text-xs font-mono font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-sky-400 text-xs font-mono font-medium mb-6">
           <Zap className="w-4 h-4" /> IDEAL WORKFLOWS
         </div>
         <h2 className="text-[2.2rem] sm:text-5xl font-sans font-medium text-white tracking-tight mb-6 max-w-3xl leading-tight">

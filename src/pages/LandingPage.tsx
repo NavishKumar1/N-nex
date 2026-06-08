@@ -13,7 +13,7 @@ function HowItWorksSection() {
 
   const steps = [
     {
-      icon: <FolderSync className="w-5 h-5 sm:w-6 sm:h-6 text-[#38bdf8]" />,
+      icon: <FolderSync className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" />,
       title: "Secure Ingestion",
       desc: "Connect any public GitHub repository. Workspace accesses files completely in-browser. Zero cloud storage or external upload."
     },
@@ -23,12 +23,12 @@ function HowItWorksSection() {
       desc: "Our engine parses the code structure, strips unnecessary whitespace, and intelligently ignores native binary and build artifacts."
     },
     {
-      icon: <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-[#c084fc]" />,
+      icon: <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />,
       title: "Context Layering",
       desc: "Files are seamlessly concatenated with their full structural root paths intact, establishing critical relational mapping context."
     },
     {
-      icon: <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-[#e879f9]" />,
+      icon: <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-fuchsia-400" />,
       title: "Token Perfection",
       desc: "Generates highly readable Markdown arrays loaded directly into your clipboard for top-tier AI context windows."
     }
@@ -44,7 +44,7 @@ function HowItWorksSection() {
         className="text-center mb-24 md:mb-32"
       >
         <h2 className="text-[2.2rem] sm:text-5xl md:text-6xl font-sans font-medium text-white tracking-tight mb-6">
-          Architectural <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] to-[#0ea5e9]">Flow</span>
+          Architectural <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] to-sky-500">Flow</span>
         </h2>
         <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
           A seamless browser-first extraction pipeline engineered to keep your IP protected while radically supercharging AI context windows.
@@ -54,7 +54,7 @@ function HowItWorksSection() {
       <div ref={containerRef} className="relative w-full max-w-4xl mx-auto">
         <div className="absolute left-[24px] sm:left-1/2 top-4 bottom-4 w-px bg-slate-800/80 -translate-x-1/2 z-0" />
         <motion.div 
-          className="absolute left-[24px] sm:left-1/2 top-4 w-px bg-gradient-to-b from-[#38bdf8] via-[#818cf8] to-[#e879f9] -translate-x-1/2 z-10 origin-top shadow-[0_0_20px_rgba(56,189,248,0.8)]"
+          className="absolute left-[24px] sm:left-1/2 top-4 w-px bg-gradient-to-b from-sky-400 via-[#818cf8] to-fuchsia-400 -translate-x-1/2 z-10 origin-top shadow-[0_0_20px_rgba(56,189,248,0.8)]"
           style={{ height: lineHeight }}
         />
 
@@ -63,9 +63,9 @@ function HowItWorksSection() {
             const isEven = i % 2 === 0;
             return (
               <div key={i} className="relative w-full">
-                <div className="absolute left-[24px] sm:left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#020617] border border-slate-700/80 flex items-center justify-center z-20 shadow-[0_0_20px_rgba(2,6,23,1)] overflow-hidden">
+                <div className="absolute left-[24px] sm:left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-950 border border-slate-700/80 flex items-center justify-center z-20 shadow-[0_0_20px_rgba(2,6,23,1)] overflow-hidden">
                   <motion.div
-                    className="absolute inset-0 bg-[#38bdf8]/10"
+                    className="absolute inset-0 bg-sky-400/10"
                     initial={{ opacity: 0, scale: 0.5 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, margin: "-150px" }}
@@ -85,7 +85,7 @@ function HowItWorksSection() {
                     className={"ml-[64px] sm:ml-0 sm:w-1/2 " + (isEven ? 'sm:pr-12 lg:pr-20 flex sm:justify-end' : 'sm:pl-12 lg:pl-20 sm:ml-[50%] flex sm:justify-start')}
                   >
                     <div className="bg-slate-900/40 backdrop-blur-sm border border-slate-800/60 p-6 sm:p-8 rounded-3xl hover:bg-slate-800/60 transition-colors hover:border-slate-700 shadow-xl w-full max-w-[420px] text-left relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#0ea5e9]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <h3 className="text-xl sm:text-2xl font-semibold text-white mb-3 tracking-tight relative z-10">{step.title}</h3>
                       <p className="text-slate-400 text-sm sm:text-base leading-relaxed relative z-10">{step.desc}</p>
                     </div>
@@ -127,7 +127,7 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white flex flex-col font-sans relative overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-100">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col font-sans relative overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-100">
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] z-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1.5px)', backgroundSize: '40px 40px' }} />
       
       {/* Floating Pill Navbar */}
@@ -192,7 +192,7 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
           <div className="flex items-center gap-3 justify-end sm:w-auto xl:w-48">
             <button
               onClick={onEnter}
-              className="group px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#38bdf8] text-slate-950 hover:bg-sky-400 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(56,189,248,0.2)] shrink-0"
+              className="group px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-sky-400 text-slate-950 hover:bg-sky-400 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(56,189,248,0.2)] shrink-0"
             >
               <span className="text-[13px] sm:text-[14px] font-bold font-sans tracking-tight whitespace-nowrap">
                 Workspace
@@ -287,7 +287,7 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
          >
            <h1 className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] xl:text-[5.5rem] font-sans font-medium tracking-tight text-white leading-[1.1] sm:leading-[1.1]">
              Powering the <br />
-             <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#e0f2fe] via-[#7dd3fc] to-[#0ea5e9] drop-shadow-[0_0_35px_rgba(56,189,248,0.4)]">
+             <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#e0f2fe] via-[#7dd3fc] to-sky-500 drop-shadow-[0_0_35px_rgba(56,189,248,0.4)]">
                Repository Extraction Lifecycle
              </span>
            </h1>
@@ -400,15 +400,15 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
 
            {/* Final Output Node at Bottom */}
            <div className="absolute bottom-[-20px] flex flex-col items-center z-10">
-             <div className="h-12 w-px bg-gradient-to-b from-transparent to-[#0ea5e9]" />
+             <div className="h-12 w-px bg-gradient-to-b from-transparent to-sky-500" />
              <div className="flex flex-col items-center gap-3 relative group">
-               <div className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] rounded-3xl bg-[#020617] border-2 border-[#10b981] flex items-center justify-center shadow-[0_0_50px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105 overflow-hidden">
-                 <div className="absolute inset-0 bg-gradient-to-t from-[#10b981]/20 to-transparent pointer-events-none" />
-                 <Sparkles strokeWidth={2} className="text-[#10b981] w-8 h-8 sm:w-10 sm:h-10 relative z-10" />
+               <div className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] rounded-3xl bg-slate-950 border-2 border-emerald-500 flex items-center justify-center shadow-[0_0_50px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105 overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/20 to-transparent pointer-events-none" />
+                 <Sparkles strokeWidth={2} className="text-emerald-500 w-8 h-8 sm:w-10 sm:h-10 relative z-10" />
                </div>
-               <div className="flex flex-col items-center text-center gap-1.5 bg-[#020617] px-4 py-1.5 rounded-full border border-slate-800 shadow-xl">
+               <div className="flex flex-col items-center text-center gap-1.5 bg-slate-950 px-4 py-1.5 rounded-full border border-slate-800 shadow-xl">
                  <span className="text-[12px] sm:text-[14px] font-bold text-white tracking-wide leading-none">AI Context Pack</span>
-                 <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#10b981] tracking-widest uppercase leading-none">Ignition Ready</span>
+                 <span className="text-[9px] sm:text-[10px] font-mono font-bold text-emerald-500 tracking-widest uppercase leading-none">Ignition Ready</span>
                </div>
              </div>
            </div>
@@ -608,7 +608,7 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
       >
         <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-medium text-white tracking-tight mb-8">
           Ready to supercharge <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e879f9] to-[#c084fc] drop-shadow-[0_0_15px_rgba(232,121,249,0.3)]">your AI context?</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-400 drop-shadow-[0_0_15px_rgba(232,121,249,0.3)]">your AI context?</span>
         </h2>
         <button
           onClick={onEnter}

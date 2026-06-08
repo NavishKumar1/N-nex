@@ -4,7 +4,7 @@ import { ArrowLeft, Shield } from 'lucide-react';
 
 export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
   return (
-    <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-[#0ea5e9] selection:text-white flex flex-col items-center">
+    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-sky-500 selection:text-white flex flex-col items-center">
       <div className="w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12">
         <div className="flex items-center justify-between border-b border-slate-800/80 pb-6">
           <button 
@@ -15,8 +15,8 @@ export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           </button>
           
           <div className="flex items-center gap-3">
-             <div className="w-8 h-8 rounded bg-[#020617] border border-[#10b981] flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                <Shield strokeWidth={2} className="text-[#10b981] w-4 h-4" />
+             <div className="w-8 h-8 rounded bg-slate-950 border border-emerald-500 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                <Shield strokeWidth={2} className="text-emerald-500 w-4 h-4" />
              </div>
              <span className="text-xl font-bold tracking-tight text-white border-l-2 pl-3 border-slate-800">
                Privacy Policy
@@ -30,7 +30,7 @@ export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           className="prose prose-invert prose-slate max-w-none pb-20"
         >
           <div className="bg-[#050A15] border border-slate-800/80 rounded-[32px] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#10b981]/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
             
             <div className="relative z-10 space-y-8 text-slate-300 leading-relaxed text-[15px]">
               <div>
@@ -48,7 +48,7 @@ export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold text-white">2. Host and Infrastructure</h2>
                 <p>
-                  Our platform is hosted on and deployed via <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-[#0ea5e9] hover:text-[#38bdf8] underline">Vercel</a>. Vercel automatically collects certain technical information as part of its infrastructure delivery, such as IP addresses, referring URLs, and diagnostic data to ensure the platform remains online and secure.
+                  Our platform is hosted on and deployed via <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-400 underline">Vercel</a>. Vercel automatically collects certain technical information as part of its infrastructure delivery, such as IP addresses, referring URLs, and diagnostic data to ensure the platform remains online and secure.
                 </p>
               </section>
 
@@ -57,17 +57,17 @@ export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
                 <p>We strictly limit third-party operations to the absolute minimum necessary to run our service effectively:</p>
                 <ul className="list-disc pl-5 space-y-2">
                   <li>
-                    <strong>Google Analytics:</strong> We use <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#0ea5e9] hover:text-[#38bdf8] underline">Google Analytics</a> to understand aggregated user behaviors, measure traffic, and optimize our platform layout. Google Analytics may set non-identifying cookies in your browser. Our use of Google Analytics focuses strictly on aggregate trends and completely avoids tracking source code payloads or parameters.
+                    <strong>Google Analytics:</strong> We use <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-400 underline">Google Analytics</a> to understand aggregated user behaviors, measure traffic, and optimize our platform layout. Google Analytics may set non-identifying cookies in your browser. Our use of Google Analytics focuses strictly on aggregate trends and completely avoids tracking source code payloads or parameters.
                   </li>
                   <li>
-                    <strong>Google Fonts:</strong> Web typography is served dynamically using <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener noreferrer" className="text-[#0ea5e9] hover:text-[#38bdf8] underline">Google Fonts</a> API. Requests to Google Fonts are unauthenticated, meaning no cookies are sent, and your visits are not linked to your Google accounts.
+                    <strong>Google Fonts:</strong> Web typography is served dynamically using <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-400 underline">Google Fonts</a> API. Requests to Google Fonts are unauthenticated, meaning no cookies are sent, and your visits are not linked to your Google accounts.
                   </li>
                 </ul>
               </section>
 
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold text-white">4. Zero Source Code Retention</h2>
-                <p className="text-white border-l-2 border-[#10b981] pl-4 py-1">
+                <p className="text-white border-l-2 border-emerald-500 pl-4 py-1">
                   <strong>The core guarantee:</strong> We do NOT store, examine, or keep logs of the repositories, codebases, or source files you query using N-NEX.
                 </p>
                 <p>

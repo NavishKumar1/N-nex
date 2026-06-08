@@ -39,7 +39,7 @@ export function FAQSection() {
   return (
     <div id="faq" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
       <div className="text-center mb-16 sm:mb-24 flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[#38bdf8] text-xs font-mono font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-sky-400 text-xs font-mono font-medium mb-6">
           <MessageSquare className="w-4 h-4" /> PLATFORM FAQ
         </div>
         <h2 className="text-[2.2rem] sm:text-4xl md:text-5xl font-sans font-medium text-white tracking-tight mb-6 max-w-2xl leading-tight">
@@ -56,7 +56,7 @@ export function FAQSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className={`bg-[#020617] border ${openIndex === index ? 'border-slate-600' : 'border-slate-800/80'} rounded-2xl overflow-hidden shadow-lg transition-colors duration-300`}
+            className={`bg-slate-950 border ${openIndex === index ? 'border-slate-600' : 'border-slate-800/80'} rounded-2xl overflow-hidden shadow-lg transition-colors duration-300`}
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}

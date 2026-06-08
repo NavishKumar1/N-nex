@@ -6,7 +6,7 @@ export function FeaturesSection() {
   return (
     <div id="features" className="w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 z-10 relative">
       <div className="text-center mb-24 sm:mb-32 flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[#38bdf8] text-xs font-mono font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-sky-400 text-xs font-mono font-medium mb-6">
           <Sparkles className="w-4 h-4" /> PLATFORM CAPABILITIES
         </div>
         <h2 className="text-[2.2rem] sm:text-5xl font-sans font-medium text-white tracking-tight mb-6 max-w-3xl leading-tight">
@@ -26,8 +26,8 @@ export function FeaturesSection() {
             transition={{ duration: 0.6 }}
             className="flex-1 space-y-6"
           >
-            <div className="w-16 h-16 bg-[#0ea5e9]/10 border border-[#0ea5e9]/30 rounded-2xl flex items-center justify-center transform -rotate-3 mb-8 shadow-inner">
-              <Shield strokeWidth={1.5} className="w-8 h-8 text-[#0ea5e9]" />
+            <div className="w-16 h-16 bg-sky-500/10 border border-sky-500/30 rounded-2xl flex items-center justify-center transform -rotate-3 mb-8 shadow-inner">
+              <Shield strokeWidth={1.5} className="w-8 h-8 text-sky-500" />
             </div>
             <h3 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">Zero-Cloud Execution</h3>
             <p className="text-lg text-slate-400 leading-relaxed max-w-lg">
@@ -35,13 +35,13 @@ export function FeaturesSection() {
             </p>
             <ul className="space-y-3 mt-4">
               <li className="flex items-center gap-3 text-slate-300 font-medium">
-                <CheckCircle2 className="w-5 h-5 text-[#0ea5e9]" /> Complete source code privacy
+                <CheckCircle2 className="w-5 h-5 text-sky-500" /> Complete source code privacy
               </li>
               <li className="flex items-center gap-3 text-slate-300 font-medium">
-                <CheckCircle2 className="w-5 h-5 text-[#0ea5e9]" /> No server-side persistence
+                <CheckCircle2 className="w-5 h-5 text-sky-500" /> No server-side persistence
               </li>
               <li className="flex items-center gap-3 text-slate-300 font-medium">
-                <CheckCircle2 className="w-5 h-5 text-[#0ea5e9]" /> No external LLM telemetry
+                <CheckCircle2 className="w-5 h-5 text-sky-500" /> No external LLM telemetry
               </li>
             </ul>
           </motion.div>
@@ -54,21 +54,21 @@ export function FeaturesSection() {
             className="flex-1 w-full"
           >
             <div className="p-1 rounded-[2rem] bg-gradient-to-br from-slate-800 to-slate-950 shadow-2xl">
-              <div className="bg-[#020617] rounded-[1.8rem] h-full w-full p-8 relative overflow-hidden border border-slate-800/80">
+              <div className="bg-slate-950 rounded-[1.8rem] h-full w-full p-8 relative overflow-hidden border border-slate-800/80">
                 <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-                  <Lock className="w-48 h-48 text-[#0ea5e9] rotate-12" />
+                  <Lock className="w-48 h-48 text-sky-500 rotate-12" />
                 </div>
                 <div className="font-mono text-sm space-y-4 relative z-10">
                   <div className="flex items-center justify-between text-slate-500 border-b border-slate-800 pb-3 mb-6">
                     <span>SECURITY_KERNEL</span>
-                    <span className="text-[#10b981] font-bold text-xs flex items-center gap-2">● ISOLATED</span>
+                    <span className="text-emerald-500 font-bold text-xs flex items-center gap-2">● ISOLATED</span>
                   </div>
                   <div className="text-slate-400"># Validating execution context... OK</div>
                   <div className="text-slate-400"># Instantiating WebAssembly parser... OK</div>
                   <div className="text-slate-400"># Bypassing server ingress nodes...</div>
-                  <div className="bg-[#0ea5e9]/10 border border-[#0ea5e9]/20 rounded-xl p-4 mt-6 text-[#bae6fd]">
+                  <div className="bg-sky-500/10 border border-sky-500/20 rounded-xl p-4 mt-6 text-[#bae6fd]">
                     <div className="flex items-center gap-3 mb-2">
-                       <Lock size={16} className="text-[#38bdf8]" /> Local Sandboxed Stream Activity
+                       <Lock size={16} className="text-sky-400" /> Local Sandboxed Stream Activity
                     </div>
                     <div>Source fetched &amp; parsed completely in memory. Data never leaves your machine.</div>
                   </div>
@@ -88,7 +88,7 @@ export function FeaturesSection() {
             className="flex-1 w-full"
           >
             <div className="p-1 rounded-[2rem] bg-gradient-to-bl from-slate-800 to-slate-950 shadow-2xl">
-              <div className="bg-[#020617] rounded-[1.8rem] h-full w-full p-6 sm:p-8 relative overflow-hidden border border-slate-800/80">
+              <div className="bg-slate-950 rounded-[1.8rem] h-full w-full p-6 sm:p-8 relative overflow-hidden border border-slate-800/80">
                 <div className="font-mono text-sm space-y-2 relative z-10 w-full">
                   <div className="text-slate-500 mb-4 tracking-widest text-[10px] sm:text-xs">PRUNING_ENGINE // FILE_TREE</div>
                   
@@ -104,13 +104,13 @@ export function FeaturesSection() {
                     <span className="text-slate-600 line-through">package-lock.json (4MB)</span>
                     <span className="text-xs bg-slate-900 text-slate-600 px-2 py-0.5 rounded-full border border-slate-800">PRUNED</span>
                   </div>
-                  <div className="flex items-center justify-between py-2 border-b border-[#10b981]/20 bg-[#10b981]/5 px-3 rounded-lg mt-2">
+                  <div className="flex items-center justify-between py-2 border-b border-emerald-500/20 bg-emerald-500/5 px-3 rounded-lg mt-2">
                     <span className="text-slate-200">src/components/App.tsx</span>
-                    <span className="text-xs bg-[#10b981]/20 text-[#34d399] px-2 py-0.5 rounded-full border border-[#10b981]/30 font-bold">EXTRACTED</span>
+                    <span className="text-xs bg-emerald-500/20 text-[#34d399] px-2 py-0.5 rounded-full border border-emerald-500/30 font-bold">EXTRACTED</span>
                   </div>
-                  <div className="flex items-center justify-between py-2 border-b border-[#10b981]/20 bg-[#10b981]/5 px-3 rounded-lg">
+                  <div className="flex items-center justify-between py-2 border-b border-emerald-500/20 bg-emerald-500/5 px-3 rounded-lg">
                     <span className="text-slate-200">src/utils/engine.ts</span>
-                    <span className="text-xs bg-[#10b981]/20 text-[#34d399] px-2 py-0.5 rounded-full border border-[#10b981]/30 font-bold">EXTRACTED</span>
+                    <span className="text-xs bg-emerald-500/20 text-[#34d399] px-2 py-0.5 rounded-full border border-emerald-500/30 font-bold">EXTRACTED</span>
                   </div>
                 </div>
               </div>
@@ -124,8 +124,8 @@ export function FeaturesSection() {
             transition={{ duration: 0.6 }}
             className="flex-1 space-y-6"
           >
-            <div className="w-16 h-16 bg-[#10b981]/10 border border-[#10b981]/30 rounded-2xl flex items-center justify-center transform rotate-3 mb-8 shadow-inner">
-              <Filter strokeWidth={1.5} className="w-8 h-8 text-[#10b981]" />
+            <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center transform rotate-3 mb-8 shadow-inner">
+              <Filter strokeWidth={1.5} className="w-8 h-8 text-emerald-500" />
             </div>
             <h3 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">Dynamic Signal Pruning</h3>
             <p className="text-lg text-slate-400 leading-relaxed max-w-lg">
@@ -146,8 +146,8 @@ export function FeaturesSection() {
             transition={{ duration: 0.6 }}
             className="flex-1 space-y-6"
           >
-            <div className="w-16 h-16 bg-[#a855f7]/10 border border-[#a855f7]/30 rounded-2xl flex items-center justify-center transform -rotate-3 mb-8 shadow-inner">
-              <GitPullRequest strokeWidth={1.5} className="w-8 h-8 text-[#a855f7]" />
+            <div className="w-16 h-16 bg-purple-500/10 border border-purple-500/30 rounded-2xl flex items-center justify-center transform -rotate-3 mb-8 shadow-inner">
+              <GitPullRequest strokeWidth={1.5} className="w-8 h-8 text-purple-500" />
             </div>
             <h3 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">Granular Targeting</h3>
             <p className="text-lg text-slate-400 leading-relaxed max-w-lg">
@@ -155,13 +155,13 @@ export function FeaturesSection() {
             </p>
             <ul className="space-y-3 mt-4">
               <li className="flex items-center gap-3 text-slate-300 font-medium">
-                <CheckCircle2 className="w-5 h-5 text-[#a855f7]" /> Support for custom Branch extraction
+                <CheckCircle2 className="w-5 h-5 text-purple-500" /> Support for custom Branch extraction
               </li>
               <li className="flex items-center gap-3 text-slate-300 font-medium">
-                <CheckCircle2 className="w-5 h-5 text-[#a855f7]" /> Direct ingestion of open Pull Requests
+                <CheckCircle2 className="w-5 h-5 text-purple-500" /> Direct ingestion of open Pull Requests
               </li>
               <li className="flex items-center gap-3 text-slate-300 font-medium">
-                <CheckCircle2 className="w-5 h-5 text-[#a855f7]" /> Point-in-time specific Commit Hashes
+                <CheckCircle2 className="w-5 h-5 text-purple-500" /> Point-in-time specific Commit Hashes
               </li>
             </ul>
           </motion.div>
@@ -173,14 +173,14 @@ export function FeaturesSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex-1 w-full"
           >
-            <div className="p-1 rounded-[2rem] bg-gradient-to-tr from-slate-800 to-[#a855f7]/20 shadow-2xl">
-              <div className="bg-[#020617] rounded-[1.8rem] h-full w-full p-8 relative overflow-hidden border border-slate-800/80">
+            <div className="p-1 rounded-[2rem] bg-gradient-to-tr from-slate-800 to-purple-500/20 shadow-2xl">
+              <div className="bg-slate-950 rounded-[1.8rem] h-full w-full p-8 relative overflow-hidden border border-slate-800/80">
                 <div className="flex flex-col gap-6">
                   {/* Mock Branch Targeting Input */}
                   <div className="space-y-2">
                     <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Target Ingress Selection</label>
-                    <div className="flex items-center gap-3 bg-slate-900 border border-[#a855f7]/30 rounded-xl p-3 shadow-inner">
-                      <GitPullRequest className="text-[#a855f7] w-5 h-5" />
+                    <div className="flex items-center gap-3 bg-slate-900 border border-purple-500/30 rounded-xl p-3 shadow-inner">
+                      <GitPullRequest className="text-purple-500 w-5 h-5" />
                       <span className="text-slate-300 font-mono text-sm flex-1">github.com/facebook/react/pull/26002</span>
                     </div>
                   </div>
@@ -191,11 +191,11 @@ export function FeaturesSection() {
                        <span className="text-slate-600">&gt;</span> resolving metadata for PR #26002...
                      </div>
                      <div className="flex items-center gap-2 text-slate-500">
-                       <span className="text-slate-600">&gt;</span> mapping head sha <span className="text-[#a855f7]">a87d0e9</span>...
+                       <span className="text-slate-600">&gt;</span> mapping head sha <span className="text-purple-500">a87d0e9</span>...
                      </div>
                      <div className="flex items-center justify-between border-t border-slate-800/80 pt-3 mt-1">
                        <span className="text-slate-300">CONTEXT_SYNCED_FOR_REVIEW</span>
-                       <span className="bg-[#a855f7]/20 text-[#c084fc] px-2 py-0.5 rounded font-bold">READY</span>
+                       <span className="bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-bold">READY</span>
                      </div>
                   </div>
                 </div>

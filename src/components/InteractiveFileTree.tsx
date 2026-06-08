@@ -58,7 +58,7 @@ const FileTreeNode = ({
             onClick={() => onToggleFile(node.key, !isChecked)}
             className={`w-3.5 h-3.5 border transition-colors flex items-center justify-center rounded-[3px] shrink-0 ${
               isChecked 
-                ? 'border-[#38bdf8] bg-[#38bdf8] text-slate-950' 
+                ? 'border-sky-400 bg-sky-400 text-slate-950' 
                 : 'border-slate-600 bg-transparent group-hover:border-slate-400'
             }`}
           >
@@ -99,14 +99,14 @@ const FileTreeNode = ({
             }}
             className={`w-3.5 h-3.5 border transition-colors flex items-center justify-center rounded-[3px] shrink-0 ${
               allChecked 
-                ? 'border-[#38bdf8] bg-[#38bdf8] text-slate-950' 
+                ? 'border-sky-400 bg-sky-400 text-slate-950' 
                 : someChecked
-                  ? 'border-[#38bdf8] bg-[#38bdf8]/30'
+                  ? 'border-sky-400 bg-sky-400/30'
                   : 'border-slate-600 bg-transparent group-hover:border-slate-400'
             }`}
           >
             {allChecked && <Check size={10} strokeWidth={3} />}
-            {someChecked && !allChecked && <div className="w-1.5 h-1.5 bg-[#38bdf8] rounded-[1px]" />}
+            {someChecked && !allChecked && <div className="w-1.5 h-1.5 bg-sky-400 rounded-[1px]" />}
           </button>
           
           <button 
@@ -219,7 +219,7 @@ export const InteractiveFileTree: React.FC<InteractiveFileTreeProps> = ({
     <div className="flex flex-col font-sans">
       {Object.values(tree).map(sourceRoot => (
         <div key={sourceRoot.path} className="mb-2 last:mb-0">
-          <div className="px-2 py-1.5 bg-slate-900 border-b border-slate-800 text-[10px] font-bold tracking-widest text-[#38bdf8] uppercase rounded-t-md">
+          <div className="px-2 py-1.5 bg-slate-900 border-b border-slate-800 text-[10px] font-bold tracking-widest text-sky-400 uppercase rounded-t-md">
             LAYER // {sourceRoot.name}
           </div>
           <div className="py-1">
