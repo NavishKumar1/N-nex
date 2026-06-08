@@ -11,6 +11,8 @@ import { getEncoding } from 'js-tiktoken';
 import { LoadedFile, FilterSettings, TabItem, HistoricalLog } from '../types';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { 
   DEFAULT_IGNORE_EXTENSIONS, DEFAULT_IGNORE_DIRECTORIES, DEFAULT_FETCH_LIMIT, 
   STORAGE_KEY, HISTORY_STORAGE_KEY, PROMPT_PRESETS 
@@ -64,6 +66,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   // Loaded primary source files structured cleanly in React State for re-computations
   const [loadedFiles, setLoadedFiles] = useState<LoadedFile[]>([]);
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
+  const [previewMode, setPreviewMode] = useState<'raw' | 'rendered'>('raw');
   const [renderedText, setRenderedText] = useState('');
   const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1781,8 +1784,24 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
               </div>
             ) : (
               <div className="border border-slate-800/80 bg-slate-950 p-4 sm:p-6 space-y-6">
-                <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold font-mono">ACTIVE DIRECTIVES STREAM</span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-3 gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold font-mono">ACTIVE DIRECTIVES STREAM</span>
+                    <div className="flex gap-1 bg-slate-900 border border-slate-700/50 p-0.5 rounded">
+                      <button
+                        onClick={() => setPreviewMode('raw')}
+                        className={`text-[10px] px-3 py-1 font-bold uppercase transition-colors rounded-sm ${previewMode === 'raw' ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300'}`}
+                      >
+                        RAW CONTEXT
+                      </button>
+                      <button
+                        onClick={() => setPreviewMode('rendered')}
+                        className={`text-[10px] px-3 py-1 font-bold uppercase transition-colors rounded-sm ${previewMode === 'rendered' ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300'}`}
+                      >
+                        RENDERED
+                      </button>
+                    </div>
+                  </div>
                   <div className="flex items-center gap-4">
                     <button 
                       onClick={copyToClipboard}
@@ -1799,20 +1818,28 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   </div>
                 </div>
                 <div className="w-full h-[450px] bg-slate-950 border border-slate-800/80 overflow-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-                  <SyntaxHighlighter 
-                    language="markdown"
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      padding: '1rem',
-                      background: 'transparent',
-                      fontSize: '10px',
-                      lineHeight: '1.6',
-                    }}
-                    wrapLines={true}
-                  >
-                    {renderedText}
-                  </SyntaxHighlighter>
+                  {previewMode === 'raw' ? (
+                    <SyntaxHighlighter 
+                      language="markdown"
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        padding: '1rem',
+                        background: 'transparent',
+                        fontSize: '10px',
+                        lineHeight: '1.6',
+                      }}
+                      wrapLines={true}
+                    >
+                      {renderedText}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <div className="prose prose-invert prose-sm max-w-none p-4 font-sans text-slate-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {renderedText}
+                      </ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
