@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { InteractiveFileTree } from '../components/InteractiveFileTree';
+import { CodebaseVisualizer } from '../components/CodebaseVisualizer';
+import { ContributionGraph } from '../components/ContributionGraph';
 import { QuickStartTour } from '../components/QuickStartTour';
 import { 
   FolderSearch, Github, Settings, Copy, Check, Trash2, Filter, ArrowRight, Activity, Code,
@@ -1647,6 +1649,32 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   </button>
               </div>
             </div>
+
+            {/* D3 CODEBASE VISUALIZATION */}
+            {loadedFiles.length > 0 && (
+              <div className="border border-slate-800 bg-slate-900/50 rounded-xl p-4 sm:p-6 space-y-4 shadow-sm text-left">
+                <div className="flex items-center gap-2 font-sans border-b border-slate-700/50 pb-4">
+                  <Activity size={16} className="text-sky-400" />
+                  <span className="text-sm text-white font-semibold">
+                    Codebase Topology Visualization
+                  </span>
+                </div>
+                <CodebaseVisualizer files={checklistFilteredFiles} />
+              </div>
+            )}
+
+            {/* CONTRIBUTION GRAPHS */}
+            {activeLayers.length > 0 && (
+              <div className="space-y-4">
+                {activeLayers.map((layer) => (
+                  <ContributionGraph 
+                    key={layer} 
+                    repoSource={layer} 
+                    githubToken={githubToken} 
+                  />
+                ))}
+              </div>
+            )}
 
             {/* CORE LAYERS & ACTIVE FILE PRUNING TREE */}
             {loadedFiles.length > 0 && (
