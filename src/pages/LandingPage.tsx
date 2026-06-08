@@ -305,86 +305,108 @@ export default function LandingPage({ onEnter }: { onEnter: () => void }) {
            </div>
          </motion.div>
          
-         {/* Custom N-nex Pipeline Visual */}
+         {/* Converging Funnel Pipeline Visual */}
          <motion.div 
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            transition={{ duration: 1.2, ease: "easeOut", delay: 0.4 }}
-           className="w-full max-w-[1000px] mt-24 sm:mt-32 relative flex flex-col sm:flex-row items-center justify-between gap-12 sm:gap-0 sm:h-[200px] px-8 lg:px-12 mx-auto"
+           className="w-full max-w-[1000px] mt-24 sm:mt-32 relative flex flex-col items-center h-[350px] mx-auto px-4"
          >
-           {/* SVG Connections Line Background (Desktop) */}
-           <div className="absolute left-[8%] right-[8%] top-1/2 -translate-y-[60%] h-[4px] pointer-events-none z-0 hidden sm:block">
-             <svg width="100%" height="4" overflow="visible" preserveAspectRatio="none">
-               <line x1="0" y1="2" x2="100%" y2="2" stroke="#1e293b" strokeWidth="2" />
-               <line 
-                 x1="0" 
-                 y1="2" 
-                 x2="100%" 
-                 y2="2" 
-                 stroke="#0ea5e9" 
-                 strokeWidth="3" 
-                 strokeDasharray="16 16" 
-                 className="animate-[dash_30s_linear_infinite]" 
-               />
+           {/* Connecting Converging Curves SVG */}
+           <div className="absolute top-[40px] w-full h-[250px] pointer-events-none z-0">
+             <svg width="100%" height="100%" viewBox="0 0 1000 250" preserveAspectRatio="none">
+               {/* Left Far Node Curve */}
+               <path d="M 200 0 C 400 0, 500 100, 500 250" fill="none" stroke="url(#blue-gradient-1)" strokeWidth="2" strokeLinecap="round" className="animate-[dash_4s_linear_infinite]" strokeDasharray="10 10" />
+               <path d="M 200 0 C 400 0, 500 100, 500 250" fill="none" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" className="z-[-1] absolute" />
+               
+               {/* Left Near Node Curve */}
+               <path d="M 400 0 C 450 0, 500 100, 500 250" fill="none" stroke="url(#blue-gradient-2)" strokeWidth="2" strokeLinecap="round" className="animate-[dash_20s_linear_infinite]" strokeDasharray="15 15" />
+               <path d="M 400 0 C 450 0, 500 100, 500 250" fill="none" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
+
+               {/* Right Near Node Curve */}
+               <path d="M 600 0 C 550 0, 500 100, 500 250" fill="none" stroke="url(#blue-gradient-3)" strokeWidth="2" strokeLinecap="round" className="animate-[dash_6s_linear_infinite]" strokeDasharray="12 12" />
+               <path d="M 600 0 C 550 0, 500 100, 500 250" fill="none" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
+
+               {/* Right Far Node Curve */}
+               <path d="M 800 0 C 600 0, 500 100, 500 250" fill="none" stroke="url(#blue-gradient-4)" strokeWidth="2" strokeLinecap="round" className="animate-[dash_8s_linear_infinite]" strokeDasharray="10 10"/>
+               <path d="M 800 0 C 600 0, 500 100, 500 250" fill="none" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
+
+               {/* Central Stalk line down to final engine */}
+               <line x1="500" y1="200" x2="500" y2="250" stroke="#0ea5e9" strokeWidth="3" />
+
+               <defs>
+                 <linearGradient id="blue-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                   <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.1" />
+                   <stop offset="100%" stopColor="#0ea5e9" stopOpacity="1" />
+                 </linearGradient>
+                 <linearGradient id="blue-gradient-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                   <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.1" />
+                   <stop offset="100%" stopColor="#38bdf8" stopOpacity="1" />
+                 </linearGradient>
+                 <linearGradient id="blue-gradient-3" x1="100%" y1="0%" x2="0%" y2="100%">
+                   <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.1" />
+                   <stop offset="100%" stopColor="#38bdf8" stopOpacity="1" />
+                 </linearGradient>
+                 <linearGradient id="blue-gradient-4" x1="100%" y1="0%" x2="0%" y2="100%">
+                   <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.1" />
+                   <stop offset="100%" stopColor="#0ea5e9" stopOpacity="1" />
+                 </linearGradient>
+               </defs>
              </svg>
            </div>
-           
-           {/* SVG Connections Line Background (Mobile) */}
-           <div className="absolute top-[5%] bottom-[5%] left-1/2 -translate-x-1/2 w-[4px] pointer-events-none z-0 sm:hidden">
-             <svg width="4" height="100%" overflow="visible" preserveAspectRatio="none">
-               <line x1="2" y1="0" x2="2" y2="100%" stroke="#1e293b" strokeWidth="2" />
-               <line 
-                 x1="2" 
-                 y1="0" 
-                 x2="2" 
-                 y2="100%" 
-                 stroke="#0ea5e9" 
-                 strokeWidth="3" 
-                 strokeDasharray="16 16" 
-                 className="animate-[dash_30s_linear_infinite_vertical]" 
-               />
-             </svg>
+
+           {/* Top 4 Nodes Container */}
+           <div className="flex w-full justify-between sm:justify-center sm:gap-14 md:gap-24 z-10 px-2 lg:px-8">
+             
+             {/* Node 1 */}
+             <div className="flex flex-col items-center gap-2">
+               <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform hover:-translate-y-1">
+                 <FileText strokeWidth={1.5} className="text-slate-400 w-5 h-5 sm:w-6 sm:h-6" />
+               </div>
+               <span className="text-[9px] sm:text-[11px] font-mono font-bold text-slate-400 tracking-widest uppercase">Content</span>
+             </div>
+
+             {/* Node 2 */}
+             <div className="flex flex-col items-center gap-2">
+               <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform hover:-translate-y-1">
+                 <FolderSync strokeWidth={1.5} className="text-slate-400 w-5 h-5 sm:w-6 sm:h-6" />
+               </div>
+               <span className="text-[9px] sm:text-[11px] font-mono font-bold text-slate-400 tracking-widest uppercase">Structure</span>
+             </div>
+
+             {/* Node 3 */}
+             <div className="flex flex-col items-center gap-2">
+               <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform hover:-translate-y-1">
+                 <Github strokeWidth={1.5} className="text-slate-400 w-5 h-5 sm:w-6 sm:h-6" />
+               </div>
+               <span className="text-[9px] sm:text-[11px] font-mono font-bold text-slate-400 tracking-widest uppercase">History</span>
+             </div>
+
+             {/* Node 4 */}
+             <div className="flex flex-col items-center gap-2">
+               <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-900 border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform hover:-translate-y-1">
+                 <Cpu strokeWidth={1.5} className="text-slate-400 w-5 h-5 sm:w-6 sm:h-6" />
+               </div>
+               <span className="text-[9px] sm:text-[11px] font-mono font-bold text-slate-400 tracking-widest uppercase">Metadata</span>
+             </div>
+             
            </div>
 
-           {/* Nodes */}
-           {/* 1. GitHub Node */}
-           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-32 relative group">
-             <div className="w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
-               <Github strokeWidth={1.5} className="text-[#38bdf8] w-8 h-8 sm:w-10 sm:h-10" />
-             </div>
-             <span className="text-[11px] sm:text-[12px] font-mono font-bold text-[#94a3b8] uppercase tracking-widest text-center shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-0.5 rounded-lg">GitHub Repo</span>
-           </div>
-
-           {/* 2. Core Engine Node */}
-           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-48 relative group">
-             <div className="w-[88px] h-[88px] sm:w-[100px] sm:h-[100px] rounded-[28px] bg-[#020617] border-2 border-[#0ea5e9] flex items-center justify-center shadow-[0_0_40px_rgba(14,165,233,0.3)] transition-transform group-hover:scale-105 overflow-hidden relative">
-               <div className="absolute inset-0 bg-gradient-to-tr from-[#0ea5e9]/10 to-transparent pointer-events-none" />
-               <Terminal strokeWidth={2} className="text-white w-9 h-9 sm:w-10 sm:h-10 relative z-10" />
-             </div>
-             <div className="flex flex-col items-center text-center gap-1 sm:gap-1.5 shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-1 rounded-lg">
-               <span className="text-[13px] sm:text-[14px] font-bold text-white tracking-wide leading-none">N-NEX ENGINE</span>
-               <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#0ea5e9] tracking-widest uppercase leading-none">AST Parse / Minimize</span>
-             </div>
-           </div>
-
-           {/* 4. Markdown Context Node */}
-           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-32 relative group">
-             <div className="w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] rounded-[24px] bg-[#0A0F1F] border border-slate-700/80 flex items-center justify-center shadow-lg transition-transform group-hover:scale-105 relative">
-               <FileText strokeWidth={1.5} className="text-white w-8 h-8 sm:w-9 sm:h-9" />
-               <div className="absolute -top-2 px-2 py-0.5 rounded-full bg-[#38bdf8] text-[#020617] text-[10px] sm:text-[11px] font-black uppercase shadow-md right-[-10px]">
-                 .MD
+           {/* Final Output Node at Bottom */}
+           <div className="absolute bottom-[-20px] flex flex-col items-center z-10">
+             <div className="h-12 w-px bg-gradient-to-b from-transparent to-[#0ea5e9]" />
+             <div className="flex flex-col items-center gap-3 relative group">
+               <div className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] rounded-3xl bg-[#020617] border-2 border-[#10b981] flex items-center justify-center shadow-[0_0_50px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105 overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-t from-[#10b981]/20 to-transparent pointer-events-none" />
+                 <Sparkles strokeWidth={2} className="text-[#10b981] w-8 h-8 sm:w-10 sm:h-10 relative z-10" />
+               </div>
+               <div className="flex flex-col items-center text-center gap-1.5 bg-[#020617] px-4 py-1.5 rounded-full border border-slate-800 shadow-xl">
+                 <span className="text-[12px] sm:text-[14px] font-bold text-white tracking-wide leading-none">AI Context Pack</span>
+                 <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#10b981] tracking-widest uppercase leading-none">Ignition Ready</span>
                </div>
              </div>
-             <span className="text-[12px] sm:text-[13px] font-sans font-bold text-[#e2e8f0] tracking-wide text-center shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-0.5 rounded-lg">Packed Context</span>
            </div>
 
-           {/* 5. AI Ready Node */}
-           <div className="flex flex-col items-center gap-3 sm:gap-4 z-10 w-32 relative group">
-             <div className="w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] rounded-full bg-[#031d14] border border-[#10b981]/60 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105">
-               <Sparkles strokeWidth={2.5} className="text-[#10b981] w-7 h-7 sm:w-8 sm:h-8" />
-             </div>
-             <span className="text-[11px] sm:text-[12px] font-mono font-bold text-[#10b981] tracking-widest uppercase text-center shadow-sm bg-[#020617]/50 lg:bg-transparent px-2 py-0.5 rounded-lg">AI Ready</span>
-           </div>
          </motion.div>
          
 
