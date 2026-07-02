@@ -12,7 +12,6 @@ export default function App() {
     return (
       <LandingPage 
         onEnter={() => setCurrentView('workspace')} 
-        onDocs={() => setCurrentView('docs')}
         onPrivacy={() => setCurrentView('privacy')}
         onTerms={() => setCurrentView('terms')}
       />

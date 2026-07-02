@@ -109,7 +109,17 @@ export function TermsOfUse({ onBack }: { onBack: () => void }) {
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-white tracking-tight">6. Changes to Terms</h2>
+                <h2 className="text-2xl font-semibold text-white tracking-tight">6. MIT License & Limitation of Liability</h2>
+                <p>
+                  N-NEX is provided as an open-source tool under the <strong>MIT License</strong>. We offer this software "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.
+                </p>
+                <p>
+                  In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software. By using this service, you acknowledge that we are not liable for any issues, data loss, or damages resulting from its use.
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">7. Changes to Terms</h2>
                 <p>
                   We reserve the right to revise these Terms of Use at any given moment. By continuing to access the tool following updates to these Terms, you signify agreement with the revised provisions.
                 </p>

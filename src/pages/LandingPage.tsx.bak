@@ -216,15 +216,6 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
         </div>
         
         <div className="flex items-center gap-4 justify-end sm:w-auto xl:w-48">
-          <a
-            href="https://github.com/NavishKumar1/N-nex"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 sm:p-2.5 border border-slate-800/80 bg-slate-950 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 rounded-md shadow-sm"
-            title="GitHub Repository"
-          >
-            <Github size={18} />
-          </a>
           <button 
             onClick={() => setIsLightMode(!isLightMode)}
             className="p-2 sm:p-2.5 border border-slate-800/80 bg-slate-950 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 rounded-md shadow-sm"
@@ -233,7 +224,7 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
             {isLightMode ? <Moon size={18} /> : <Sun size={18} />}
           </button>
           <button
-            onClick={handleEnterClick}
+            onClick={onEnter}
             className="group px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-white text-black hover:bg-gray-200 transition-all duration-300 flex items-center justify-center shrink-0 shadow-lg"
           >
             <span className="text-[14px] sm:text-[15px] font-medium font-sans whitespace-nowrap">
@@ -287,16 +278,6 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
               >
                 FAQ
               </button>
-              <a 
-                href="https://github.com/NavishKumar1/N-nex"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 text-left text-slate-400 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-[15px] transition-colors"
-              >
-                <Github size={18} />
-                GitHub
-              </a>
             </motion.div>
           )}
         </AnimatePresence>
@@ -323,7 +304,7 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
            
            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 w-full">
              <button
-                onClick={handleEnterClick}
+                onClick={onEnter}
                 className="bg-slate-100 text-slate-950 px-8 py-3.5 sm:px-10 sm:py-4 rounded-md font-sans font-semibold text-sm hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.15)] ring-1 ring-white/20 w-full sm:w-auto"
              >
                Start building
@@ -631,9 +612,27 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-400 drop-shadow-[0_0_15px_rgba(232,121,249,0.3)]">your AI context?</span>
         </h2>
         
+        <div className="flex items-center gap-3 mb-8 text-left bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+          <input
+            type="checkbox"
+            id="terms-checkbox"
+            checked={agreedToTerms}
+            onChange={(e) => setAgreedToTerms(e.target.checked)}
+            className="w-5 h-5 rounded border-slate-700 bg-slate-950 text-sky-500 focus:ring-sky-500/50 cursor-pointer"
+          />
+          <label htmlFor="terms-checkbox" className="text-sm sm:text-base text-slate-300 cursor-pointer select-none">
+            I agree to the <button onClick={onTerms} className="text-sky-400 hover:text-sky-300 underline underline-offset-2">Terms of Use</button> and <button onClick={onPrivacy} className="text-sky-400 hover:text-sky-300 underline underline-offset-2">Privacy Policy</button>
+          </label>
+        </div>
+
         <button
-          onClick={handleEnterClick}
-          className="group px-8 sm:px-10 py-3 sm:py-4 rounded-full bg-slate-100 text-slate-900 hover:bg-white transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.25)] hover:-translate-y-1"
+          onClick={onEnter}
+          disabled={!agreedToTerms}
+          className={`group px-8 sm:px-10 py-3 sm:py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-3 ${
+            agreedToTerms 
+              ? 'bg-slate-100 text-slate-900 hover:bg-white shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.25)] hover:-translate-y-1 cursor-pointer' 
+              : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+          }`}
         >
           <span className="text-sm sm:text-lg font-bold font-sans tracking-tight">
             Launch Workspace
@@ -676,19 +675,7 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
             N-NEX
           </h2>
           
-          <div className="flex flex-col sm:flex-row items-center justify-between w-full pt-12 sm:pt-16 mt-8 sm:mt-12 border-t border-slate-800/30 gap-6">
-            <div className="text-sm font-sans font-medium text-slate-500 flex items-center gap-2">
-              <span>Created by</span>
-              <a 
-                href="https://github.com/NavishKumar1" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-300 hover:text-sky-400 transition-colors font-semibold"
-              >
-                Navish Kumar
-              </a>
-            </div>
-            
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12 sm:pt-20 mt-8 sm:mt-12 border-t border-slate-800/30">
             <div className="flex items-center gap-6 text-sm font-sans font-medium text-slate-500">
               <button onClick={() => onPrivacy && onPrivacy()} className="hover:text-white transition-colors">Privacy Policy</button>
               <span className="w-1 h-1 rounded-full bg-slate-800" />
@@ -697,63 +684,6 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
           </div>
         </motion.div>
       </footer>
-
-      {/* Agreement Modal */}
-      <AnimatePresence>
-        {showAgreementModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="w-full max-w-md bg-slate-900 border border-slate-700 shadow-2xl rounded-2xl overflow-hidden flex flex-col"
-            >
-              <div className="p-6 pb-4 border-b border-slate-800">
-                <h3 className="text-xl font-bold text-white mb-2">Terms & Privacy</h3>
-                <p className="text-sm text-slate-400">Please review and accept our policies to continue to the workspace.</p>
-              </div>
-              <div className="p-6 py-8">
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    id="modal-terms-checkbox"
-                    checked={modalCheckboxChecked}
-                    onChange={(e) => setModalCheckboxChecked(e.target.checked)}
-                    className="w-5 h-5 mt-0.5 rounded border-slate-700 bg-slate-950 text-sky-500 focus:ring-sky-500/50 cursor-pointer"
-                  />
-                  <label htmlFor="modal-terms-checkbox" className="text-sm text-slate-300 cursor-pointer select-none leading-relaxed">
-                    I agree to the{' '}
-                    <button onClick={onTerms} className="text-sky-400 hover:text-sky-300 underline underline-offset-2">Terms of Use</button>{' '}
-                    and{' '}
-                    <button onClick={onPrivacy} className="text-sky-400 hover:text-sky-300 underline underline-offset-2">Privacy Policy</button>.
-                    <br/><br/>
-                    <span className="text-slate-500 text-xs">By checking this box, you acknowledge that N-NEX is provided as-is under the MIT License and operates entirely within your local browser environment.</span>
-                  </label>
-                </div>
-              </div>
-              <div className="p-4 border-t border-slate-800 bg-slate-900/50 flex justify-end gap-3">
-                <button
-                  onClick={() => setShowAgreementModal(false)}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleAcceptTerms}
-                  disabled={!modalCheckboxChecked}
-                  className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    modalCheckboxChecked
-                      ? 'bg-sky-500 text-white hover:bg-sky-400 shadow-[0_0_15px_rgba(14,165,233,0.3)]'
-                      : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                  }`}
-                >
-                  Accept & Continue
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </div>
   );

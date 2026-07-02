@@ -103,6 +103,13 @@ export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
                 </ul>
               </section>
 
+              <section className="space-y-4">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">6. Open Source & Licensing</h2>
+                <p>
+                  N-NEX is distributed under the <strong>MIT License</strong>. We operate with full transparency. The platform is offered "as is", and as an open-source tool, we hold no liability for the ways in which it is used or any resulting consequences. For more details on our limitations of liability, please see our Terms of Use.
+                </p>
+              </section>
+
               <section className="space-y-4 pt-8 border-t border-slate-800/50">
                 <h2 className="text-xl font-semibold text-white">Contact</h2>
                 <p>
