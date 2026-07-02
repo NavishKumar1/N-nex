@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap, Shield, Activity, Filter, Wand2, Database, Lock, Code2, MoveRight, Menu, X } from 'lucide-react';
+import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap, Shield, Activity, Filter, Wand2, Database, Lock, Code2, MoveRight, Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 
 function HowItWorksSection() {
@@ -111,6 +111,18 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const [isLightMode, setIsLightMode] = useState(() => {
+    return typeof document !== 'undefined' && document.documentElement.classList.contains('theme-light');
+  });
+
+  useEffect(() => {
+    if (isLightMode) {
+      document.documentElement.classList.add('theme-light');
+    } else {
+      document.documentElement.classList.remove('theme-light');
+    }
+  }, [isLightMode]);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
@@ -130,150 +142,122 @@ export default function LandingPage({ onEnter, onDocs, onPrivacy, onTerms }: { o
     <div className="min-h-screen bg-slate-950 text-white flex flex-col font-sans relative overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-100">
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] z-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1.5px)', backgroundSize: '40px 40px' }} />
       
-      {/* Floating Pill Navbar */}
-      <div className="fixed z-50 flex justify-center left-0 right-0 px-4 md:px-6 top-4 sm:top-6 pointer-events-none">
-        <nav className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl rounded-full shadow-2xl pointer-events-auto border border-slate-800/80 w-full max-w-[1200px] h-16 sm:h-20 px-4 sm:px-8 relative">
-          <div className="flex items-center h-full sm:w-48">
+      {/* Animated Navbar */}
+      <div className={`fixed z-50 left-0 right-0 flex justify-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none ${scrolled ? 'top-4 sm:top-6 px-4 md:px-6' : 'top-0 px-0'}`}>
+        <nav className={`pointer-events-auto flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          scrolled 
+            ? 'bg-slate-950/90 backdrop-blur-xl rounded-full shadow-2xl border border-slate-800/80 w-full max-w-[1200px] h-16 sm:h-20 px-4 sm:px-8' 
+            : 'bg-slate-950 border-b border-slate-800/80 w-full max-w-full h-20 sm:h-24 px-4 sm:px-8'
+        } relative`}>
+        <div className="flex items-center h-full sm:w-48">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-center hover:bg-slate-800/80 rounded-md transition-colors group p-1 sm:p-2">
             <img 
               src="/N-nex.png" 
               alt="Logo" 
-              className="object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] cursor-pointer h-12 sm:h-16 shrink-0 md:h-16"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className={`object-contain cursor-pointer shrink-0 opacity-90 group-hover:opacity-100 drop-shadow-[0_0_15px_rgba(56,189,248,0.15)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${scrolled ? 'h-8 sm:h-10 md:h-10' : 'h-10 sm:h-12 md:h-14'}`}
             />
-          </div>
+          </button>
+        </div>
 
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
-            >
-              Home
-            </button>
-            <button 
-              onClick={() => {
-                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
-            >
-              How it works
-            </button>
-            <button 
-              onClick={() => {
-                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
-            >
-              Features
-            </button>
-            <button 
-              onClick={() => {
-                document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors whitespace-nowrap"
-            >
-              Use Cases
-            </button>
-            <button 
-              onClick={() => {
-                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors"
-            >
-              FAQ
-            </button>
-            <button 
-              onClick={() => onDocs && onDocs()}
-              className="text-slate-400 hover:text-white px-2.5 xl:px-3 py-2 rounded-full font-sans font-medium text-[13px] transition-colors flex items-center gap-1.5"
-            >
-              <FileText className="w-3.5 h-3.5" /> Docs
-            </button>
-          </div>
-          
-          <div className="flex items-center gap-3 justify-end sm:w-auto xl:w-48">
-            <button
-              onClick={onEnter}
-              className="group px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-sky-400 text-slate-950 hover:bg-sky-400 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(56,189,248,0.2)] shrink-0"
-            >
-              <span className="text-[13px] sm:text-[14px] font-bold font-sans tracking-tight whitespace-nowrap">
-                Workspace
-              </span>
-            </button>
-            <button 
-              className="lg:hidden p-2 text-slate-300 hover:text-white bg-slate-800/50 rounded-full transition-colors border border-slate-700"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+        <div className="hidden lg:flex items-center gap-8 xl:gap-10">
+          <button 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="relative text-slate-400 hover:text-white px-2 py-2 font-sans font-medium text-[15px] transition-colors"
+          >
+            Platform
+          </button>
+          <button 
+            onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+            className="relative text-slate-400 hover:text-white px-2 py-2 font-sans font-medium text-[15px] transition-colors whitespace-nowrap"
+          >
+            How it Works
+          </button>
+          <button 
+            onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+            className="relative text-slate-400 hover:text-white px-2 py-2 font-sans font-medium text-[15px] transition-colors"
+          >
+            Features
+          </button>
+          <button 
+            onClick={() => document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' })}
+            className="relative text-slate-400 hover:text-white px-2 py-2 font-sans font-medium text-[15px] transition-colors whitespace-nowrap"
+          >
+            Use Cases
+          </button>
+          <button 
+            onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}
+            className="relative text-slate-400 hover:text-white px-2 py-2 font-sans font-medium text-[15px] transition-colors"
+          >
+            FAQ
+          </button>
+        </div>
+        
+        <div className="flex items-center gap-4 justify-end sm:w-auto xl:w-48">
+          <button 
+            onClick={() => setIsLightMode(!isLightMode)}
+            className="p-2 sm:p-2.5 border border-slate-800/80 bg-slate-950 text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-200 rounded-md shadow-sm"
+            title="Toggle Theme"
+          >
+            {isLightMode ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+          <button
+            onClick={onEnter}
+            className="group px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-white text-black hover:bg-gray-200 transition-all duration-300 flex items-center justify-center shrink-0 shadow-lg"
+          >
+            <span className="text-[14px] sm:text-[15px] font-medium font-sans whitespace-nowrap">
+              Workspace
+            </span>
+          </button>
+          <button 
+            className="lg:hidden p-2 text-slate-300 hover:text-white bg-slate-800/50 rounded-md transition-colors border border-slate-700"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
 
-          <AnimatePresence>
-            {isMobileMenuOpen && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="absolute top-[calc(100%+8px)] left-0 right-0 bg-slate-900 border border-slate-700/80 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden p-3 flex flex-col gap-1 z-50 lg:hidden pointer-events-auto"
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 right-0 bg-slate-950 border-b border-slate-800/80 shadow-2xl p-4 flex flex-col gap-2 z-50 lg:hidden pointer-events-auto"
+            >
+              <button 
+                onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                className="text-left text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-[15px] transition-colors"
               >
-                <div className="grid grid-cols-2 gap-2">
-                  <button 
-                    onClick={() => {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
-                  >
-                    Home
-                  </button>
-                  <button 
-                    onClick={() => {
-                      document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
-                  >
-                    How it works
-                  </button>
-                  <button 
-                    onClick={() => {
-                      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
-                  >
-                    Features
-                  </button>
-                  <button 
-                    onClick={() => {
-                      document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' });
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
-                  >
-                    Use Cases
-                  </button>
-                  <button 
-                    onClick={() => {
-                      document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center"
-                  >
-                    FAQ
-                  </button>
-                  <button 
-                    onClick={() => {
-                      if (onDocs) onDocs();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-slate-300 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-sm transition-colors flex items-center justify-center gap-2"
-                  >
-                    <FileText className="w-4 h-4" /> Docs
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                Platform
+              </button>
+              <button 
+                onClick={() => { document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                className="text-left text-slate-400 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-[15px] transition-colors"
+              >
+                How it Works
+              </button>
+              <button 
+                onClick={() => { document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                className="text-left text-slate-400 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-[15px] transition-colors"
+              >
+                Features
+              </button>
+              <button 
+                onClick={() => { document.getElementById('use-cases')?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                className="text-left text-slate-400 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-[15px] transition-colors"
+              >
+                Use Cases
+              </button>
+              <button 
+                onClick={() => { document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                className="text-left text-slate-400 hover:text-white hover:bg-slate-800/80 px-4 py-3 rounded-xl font-sans font-medium text-[15px] transition-colors"
+              >
+                FAQ
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
         </nav>
       </div>
 

@@ -49,6 +49,8 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   useEffect(() => {
     if (githubToken) {
       localStorage.setItem('compile_architects_github_token', githubToken);
+    } else {
+      localStorage.removeItem('compile_architects_github_token');
     }
   }, [githubToken]);
 
@@ -68,6 +70,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   const [activeTab, setActiveTab] = useState('engine');
   const [tabs, setTabs] = useState<TabItem[]>([
     { id: 'engine', label: 'Core Workspace', closeable: false },
+    { id: 'metrics', label: 'Topology & Metrics', closeable: false },
     { id: 'history', label: 'History Archive', closeable: false }
   ]);
 
@@ -417,34 +420,32 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   }, [loadedFiles, filters, uncheckedFiles, globalExtensionFilter]);
 
   // dynamic re-packaging matching the filters and custom configurations
-  const compiledMarkdown = useMemo(() => {
-    if (filteredFiles.length === 0) return '';
+  const estimatedChars = useMemo(() => {
+    if (filteredFiles.length === 0) return 0;
+    let chars = 0;
     
     // Group files by unique sources to preserve clear custom layered stacks
     const sources: string[] = Array.from(new Set(filteredFiles.map(f => f.source)));
     
-    let result = '';
     sources.forEach((source, idx) => {
-      if (idx > 0) result += '\n\n---\n\n';
+      if (idx > 0) chars += '\n\n---\n\n'.length;
       
       const sourceFiles = filteredFiles.filter(f => f.source === source);
       const filePaths = sourceFiles.map(f => f.path);
       const treeStr = buildTreeFromManifest(filePaths);
       
-      result += `### SOURCE LAYER: ${source.toUpperCase()}\n\n## Repository Directory Blueprint\n\`\`\`\n${treeStr}\`\`\`\n\n## Code File Manifest\n\n`;
+      chars += `### SOURCE LAYER: ${source.toUpperCase()}\n\n## Repository Directory Blueprint\n\`\`\`\n${treeStr}\`\`\`\n\n## Code File Manifest\n\n`.length;
       
       sourceFiles.forEach(file => {
         const ext = file.path.split('.').pop() || '';
-        const fileContent = filesContentRef.current[`${file.source}:${file.path}`] || '';
-        result += `### File: ${file.path}\n\`\`\`${ext}\n${fileContent}\n\`\`\`\n\n`;
+        const fileContentLength = (filesContentRef.current[`${file.source}:${file.path}`] || '').length;
+        chars += `### File: ${file.path}\n\`\`\`${ext}\n\n\`\`\`\n\n`.length + fileContentLength;
       });
     });
-    
-    return result;
+    return chars;
   }, [filteredFiles]);
 
   const fileCount = filteredFiles.length;
-  const estimatedChars = compiledMarkdown.length;
 
   const estimatedTokens = useMemo(() => {
     let sum = 0;
@@ -494,16 +495,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       setActiveTab('engine');
     }
   };
-
-  // --- Dynamic Framework Context Generator ---
-  const generateFinalContextPayload = useCallback(() => {
-    const presetHeaderText = PROMPT_PRESETS[selectedPreset].text;
-    const bodyText = `${presetHeaderText}${compiledMarkdown}`;
-    if (promptWrapper === 'CHAT') {
-      return `The following text contains a structured repository matrix map and core source code components. Please ingest this layout completely into your active memory context buffer. Do not reply or analyze yet. Simply confirm with 'SYSTEM LAYERS SYNCHRONIZED' if you understand the codebase architecture.\n\n${bodyText}`;
-    }
-    return bodyText;
-  }, [selectedPreset, compiledMarkdown, promptWrapper]);
 
   // --- DISK STORAGE STREAMING DOWNLOADERS ---
   const handleDownloadMarkdown = () => {
@@ -886,7 +877,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     }
   };
 
-  const compileWithWorker = (actionType: 'copy' | 'preview' | 'download_md' | 'download_txt' | 'download_json') => {
+  const compileWithWorker = (actionType: 'copy' | 'preview' | 'download_md' | 'download_txt' | 'download_json', presetOverride?: keyof typeof PROMPT_PRESETS) => {
     if (!workerRef.current) return;
     setIsLoading(true);
     setStatus('> STREAMING COMPOSITIONS TO WEB WORKER BACKEND...');
@@ -913,7 +904,8 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       treeText += `### SOURCE LAYER: ${source.toUpperCase()}\n\n## Repository Directory Blueprint\n\`\`\`\n${treeStr}\`\`\`\n\n## Code File Manifest\n\n`;
     });
 
-    const presetText = PROMPT_PRESETS[selectedPreset].text;
+    const activePreset = presetOverride || selectedPreset;
+    const presetText = PROMPT_PRESETS[activePreset].text;
     const finalPreset = promptWrapper === 'CHAT'
       ? `The following text contains a structured repository matrix map and core source code components. Please ingest this layout completely into your active memory context buffer. Do not reply or analyze yet. Simply confirm with 'SYSTEM LAYERS SYNCHRONIZED' if you understand the codebase architecture.\n\n${presetText}`
       : presetText;
@@ -938,7 +930,17 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
           } else if (actionType === 'preview') {
             setRenderedText(output);
             setIsPreviewVisible(true);
-            setStatus('Preview matrix compiled successfully.');
+            
+            const targetTabId = 'preview-tab';
+            setTabs(prev => {
+              if (!prev.find(t => t.id === targetTabId)) {
+                return [...prev, { id: targetTabId, label: 'Matrix Preview', closeable: true }];
+              }
+              return prev;
+            });
+            setActiveTab(targetTabId);
+
+            setStatus(`Preview matrix compiled successfully with preset: ${PROMPT_PRESETS[activePreset].label}.`);
           } else if (actionType === 'download_md' || actionType === 'download_txt') {
             const ext = actionType === 'download_md' ? 'md' : 'txt';
             const mimeType = actionType === 'download_md' ? 'text/markdown;charset=utf-8' : 'text/plain;charset=utf-8';
@@ -946,7 +948,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            const prefix = selectedPreset !== 'NONE' ? `${selectedPreset.toLowerCase()}_` : '';
+            const prefix = activePreset !== 'NONE' ? `${activePreset.toLowerCase()}_` : '';
             const filename = `${prefix}context_payload_${Date.now()}.${ext}`;
             link.setAttribute('download', filename);
             document.body.appendChild(link);
@@ -958,8 +960,8 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             const jsonStructure = {
               meta: {
                 app: "Workspace",
-                preset: selectedPreset,
-                presetDirective: PROMPT_PRESETS[selectedPreset].text,
+                preset: activePreset,
+                presetDirective: PROMPT_PRESETS[activePreset].text,
                 layersCompacted: activeLayers,
                 fileCount: fileCount,
                 characterCount: output.length,
@@ -1017,6 +1019,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
   const handleForceResync = () => {
     setLoadedFiles([]);
+    filesContentRef.current = {};
     setUncheckedFiles(new Set());
     setGlobalExtensionFilter('');
     setRenderedText('');
@@ -1066,7 +1069,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
     const fileCount = loadedFiles.filter(f => !uncheckedFiles.has(`${f.source}:${f.path}`)).length;
     if (fileCount > 0) {
       // If we are actively previewing matrices, update the preview. Otherwise, copy to clipboard.
-      if (activeTab === 'preview') {
+      if (activeTab === 'preview-tab') {
         compileWithWorker('preview');
       } else {
         copyToClipboard();
@@ -1315,8 +1318,13 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                     <button
                       key={key}
                       onClick={() => {
-                        setSelectedPreset(key as keyof typeof PROMPT_PRESETS);
-                        setIsPreviewVisible(false); // force visual repack safely
+                        const newPreset = key as keyof typeof PROMPT_PRESETS;
+                        setSelectedPreset(newPreset);
+                        if (loadedFiles.length > 0) {
+                          compileWithWorker('preview', newPreset);
+                        } else {
+                          setStatus(`System directive loaded: ${PROMPT_PRESETS[newPreset].label}. Awaiting repository fetch...`);
+                        }
                       }}
                       className={`px-4 py-2 font-medium transition-all border rounded-lg shadow-sm whitespace-nowrap text-xs sm:text-sm flex-1 sm:flex-initial text-center ${
                         isSelected 
@@ -1449,7 +1457,9 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                   <button 
                     onClick={() => {
                       setLoadedFiles([]);
-                      setStatus('Active layers purged safely from state context.');
+                      filesContentRef.current = {};
+                      setUncheckedFiles(new Set());
+                      setStatus('Active layers and file buffers purged safely from state context.');
                     }}
                     className="text-red-400 hover:text-red-300 font-medium transition-colors text-xs"
                   >
@@ -1591,6 +1601,28 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             restoreFromHistoryNode={restoreFromHistoryNode}
             deleteHistoryEntry={deleteHistoryEntry}
           />
+        )}
+
+        {/* Metrics Dashboard Render */}
+        {activeTab === 'metrics' && (
+          <div className="space-y-6 animate-fadeIn">
+            {loadedFiles.length > 0 ? (
+              <MetricsDashboard 
+                loadedFiles={loadedFiles}
+                checklistFilteredFiles={checklistFilteredFiles}
+                activeLayers={activeLayers}
+                githubToken={githubToken}
+              />
+            ) : (
+              <div className="border border-slate-800 bg-slate-900/50 p-8 rounded-xl shadow-sm text-center">
+                <Activity className="w-8 h-8 text-slate-600 mx-auto mb-3" />
+                <h3 className="text-sm font-semibold text-white mb-2">No Workspace Active</h3>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  Fetch a repository in the Core Workspace engine to generate dynamic topology mapping, contributor network, and velocity metrics.
+                </p>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Compile Visual Pre-views Workspace */}

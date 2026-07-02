@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import * as d3 from 'd3';
 import { LoadedFile } from '../types';
 
@@ -53,6 +53,25 @@ export const CodebaseVisualizer: React.FC<CodebaseVisualizerProps> = ({ files })
     return root;
   }, [files]);
 
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setDimensions({
+          width: entry.contentRect.width,
+          height: entry.contentRect.height
+        });
+      }
+    });
+    
+    resizeObserver.observe(wrapperRef.current);
+    
+    return () => resizeObserver.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!svgRef.current || !wrapperRef.current || files.length === 0) return;
 
@@ -67,7 +86,8 @@ export const CodebaseVisualizer: React.FC<CodebaseVisualizerProps> = ({ files })
     const dx = 22; // vertical spacing
     const dy = 180; // horizontal spacing between layers
     const requiredWidth = (root.height + 1) * dy;
-    const width = Math.max(wrapperRef.current.clientWidth, requiredWidth + margin.left + margin.right * 2);
+    const width = Math.max(dimensions.width || wrapperRef.current.clientWidth, requiredWidth + margin.left + margin.right * 2);
+
     
     const height = 400;
     const treeHeight = root.descendants().length * 15;
@@ -135,7 +155,7 @@ export const CodebaseVisualizer: React.FC<CodebaseVisualizerProps> = ({ files })
       .attr("stroke", "none")
       .style("font-weight", d => d.children ? "600" : "400");
 
-  }, [data, files.length]);
+  }, [data, files.length, dimensions.width]);
 
   if (files.length === 0) return null;
 
