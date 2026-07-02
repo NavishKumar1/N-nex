@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Github, FolderSync, Terminal, FileText, Sparkles, Layers, Cpu, Zap, Shield, Activity, Filter, Wand2, Database, Lock, Code2, MoveRight, Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { Helmet } from 'react-helmet-async';
 
 function HowItWorksSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -163,6 +164,13 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col font-sans relative overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-100">
+      <Helmet>
+        <title>N-NEX - Enterprise-Grade Context Compiler for LLMs</title>
+        <meta name="description" content="N-NEX is an advanced developer utility engineered to securely compile complex project directories into highly optimized context payloads for AI models." />
+        <meta property="og:title" content="N-NEX - Enterprise-Grade Context Compiler" />
+        <meta property="og:description" content="Extract repository context securely for large language models." />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] z-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1.5px)', backgroundSize: '40px 40px' }} />
       
       {/* Animated Navbar */}

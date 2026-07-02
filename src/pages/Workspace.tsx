@@ -14,6 +14,7 @@ import {
   AlertCircle, GitBranch, X, FileCode, Terminal, Sparkles, Layers, Clock, LayoutGrid, Download,
   FileText, RefreshCw, FolderSync, Code2, Sun, Moon
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import { getEncoding } from 'js-tiktoken';
 import { LoadedFile, FilterSettings, TabItem, HistoricalLog } from '../types';
@@ -1105,6 +1106,10 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-300 font-sans flex flex-col antialiased selection:bg-sky-400/30 selection:text-white">
+      <Helmet>
+        <title>N-NEX Workspace - Compile Context</title>
+        <meta name="description" content="Compile your GitHub repository or local directory into LLM-optimized context payloads." />
+      </Helmet>
       <QuickStartTour />
       {/* Stark Void Navigation Header */}
       <nav className="border-b border-slate-800/80 bg-slate-950 h-20 sm:h-24 shrink-0 flex items-center justify-between px-3 sm:px-6 z-10 sticky top-0 shadow-sm">

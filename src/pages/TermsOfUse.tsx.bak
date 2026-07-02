@@ -1,15 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Helmet } from "react-helmet-async";
 import { ArrowLeft, Scale, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
 
 export function TermsOfUse({ onBack }: { onBack: () => void }) {
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-sky-500 selection:text-white flex flex-col items-center">
-      <Helmet>
-        <title>Terms of Use - N-NEX</title>
-        <meta name="description" content="Terms of Use for N-NEX." />
-      </Helmet>
       <div className="w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12">
         
         {/* Header */}

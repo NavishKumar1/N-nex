@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Helmet } from "react-helmet-async";
 import { ArrowLeft, BookOpen, Terminal, Shield, Zap, Search, Layers, Layout, Activity, Lock } from 'lucide-react';
 
 export function Docs({ onBack }: { onBack: () => void }) {
@@ -8,10 +7,6 @@ export function Docs({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-sky-500 selection:text-white flex flex-col items-center">
-      <Helmet>
-        <title>N-NEX Documentation</title>
-        <meta name="description" content="Official documentation for N-NEX - Enterprise-Grade Context Compiler." />
-      </Helmet>
       <div className="w-full max-w-5xl mx-auto px-6 py-12 flex flex-col gap-12">
         
         {/* Header */}

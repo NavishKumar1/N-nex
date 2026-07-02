@@ -1,15 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Helmet } from "react-helmet-async";
 import { ArrowLeft, Shield, Lock, EyeOff, ServerOff } from 'lucide-react';
 
 export function PrivacyPolicy({ onBack }: { onBack: () => void }) {
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-sky-500 selection:text-white flex flex-col items-center">
-      <Helmet>
-        <title>Privacy Policy - N-NEX</title>
-        <meta name="description" content="Privacy Policy for N-NEX. We respect your privacy with a zero source code retention architecture." />
-      </Helmet>
       <div className="w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12">
         
         {/* Header */}
