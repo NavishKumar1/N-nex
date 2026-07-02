@@ -580,11 +580,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       };
       saveHistoryToStorage([logRecord, ...history.slice(0, 19)]);
 
-      const targetTabId = 'preview-tab';
-      if (!tabs.some(t => t.id === targetTabId)) {
-        setTabs(prev => [...prev.filter(t => t.id !== targetTabId), { id: targetTabId, label: 'Matrix Preview', closeable: true }]);
-      }
-      setActiveTab(targetTabId);
+      setActiveTab('metrics');
       setStatus(`> ASSEMBLING SYSTEM SYNC FILES: Compiled ${filesData.length} files successfully.`);
     } catch (err: any) {
       console.error(err);
@@ -859,11 +855,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       };
       saveHistoryToStorage([logRecord, ...history.slice(0, 19)]);
 
-      const targetTabId = 'preview-tab';
-      if (!tabs.some(t => t.id === targetTabId)) {
-        setTabs(prev => [...prev.filter(t => t.id !== targetTabId), { id: targetTabId, label: 'Matrix Preview', closeable: true }]);
-      }
-      setActiveTab(targetTabId);
+      setActiveTab('metrics');
       setStatus(`Matrix compilation successfully committed to memory-cache: Compiled ${compiledPayloadObjects.length} files.`);
       setIsLoading(false);
 
@@ -1003,10 +995,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         presetText: finalPreset
       }
     });
-  };
-
-  const handleRevealPreview = () => {
-    compileWithWorker('preview');
   };
 
   const copyToClipboard = () => {
@@ -1642,7 +1630,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             downloadAsTextFile={downloadAsTextFile}
             handleDownloadTXT={handleDownloadTXT}
             handleDownloadJSON={handleDownloadJSON}
-            handleRevealPreview={handleRevealPreview}
           />
         )}
 

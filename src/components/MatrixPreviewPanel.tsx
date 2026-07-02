@@ -23,7 +23,6 @@ interface MatrixPreviewPanelProps {
   downloadAsTextFile: () => void;
   handleDownloadTXT: () => void;
   handleDownloadJSON: () => void;
-  handleRevealPreview: () => void;
 }
 
 export const MatrixPreviewPanel: React.FC<MatrixPreviewPanelProps> = ({
@@ -41,7 +40,6 @@ export const MatrixPreviewPanel: React.FC<MatrixPreviewPanelProps> = ({
   downloadAsTextFile,
   handleDownloadTXT,
   handleDownloadJSON,
-  handleRevealPreview,
 }) => {
   return (
     <div className="space-y-6 animate-fadeIn">
@@ -124,14 +122,7 @@ export const MatrixPreviewPanel: React.FC<MatrixPreviewPanelProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <button 
-          onClick={handleRevealPreview}
-          disabled={fileCount === 0}
-          className="flex-1 py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-white transition-all text-xs font-semibold flex items-center justify-center gap-2 rounded-lg border border-slate-700 disabled:opacity-50"
-        >
-          <RefreshCw size={14} /> RECOMPILE PREVIEW
-        </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <button 
           onClick={downloadAsTextFile}
           disabled={fileCount === 0}
@@ -191,12 +182,12 @@ export const MatrixPreviewPanel: React.FC<MatrixPreviewPanelProps> = ({
               }}
               wrapLines={true}
             >
-              {renderedText ? renderedText : "Click 'RECOMPILE PREVIEW' or execute a payload generation."}
+              {renderedText ? renderedText : "Execute a payload generation to view."}
             </SyntaxHighlighter>
           ) : (
             <div className="prose prose-invert prose-sm max-w-none p-4 font-sans text-slate-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {renderedText ? renderedText : "Click 'RECOMPILE PREVIEW' or execute a payload generation."}
+                {renderedText ? renderedText : "Execute a payload generation to view."}
               </ReactMarkdown>
             </div>
           )}

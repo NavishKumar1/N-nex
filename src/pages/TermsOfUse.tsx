@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, Scale } from 'lucide-react';
+import { ArrowLeft, Scale, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
 
 export function TermsOfUse({ onBack }: { onBack: () => void }) {
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-sky-500 selection:text-white flex flex-col items-center">
       <div className="w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-12">
+        
+        {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800/80 pb-6">
           <button 
             onClick={onBack}
@@ -25,54 +27,73 @@ export function TermsOfUse({ onBack }: { onBack: () => void }) {
         </div>
 
         <motion.div 
-          initial={{ opacity: 0, y: 10 }} 
-          animate={{ opacity: 1, y: 0 }} 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           className="prose prose-invert prose-slate max-w-none pb-20"
         >
           <div className="bg-[#050A15] border border-slate-800/80 rounded-[32px] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none" />
             
-            <div className="relative z-10 space-y-8 text-slate-300 leading-relaxed text-[15px]">
-              <div>
-                <h1 className="text-3xl font-bold mb-2 text-white">Terms of Use</h1>
-                <p className="text-slate-500 font-mono text-sm">Last Updated: June 8, 2026</p>
+            <div className="relative z-10 space-y-12 text-slate-300 leading-relaxed text-[15px]">
+              
+              <div className="border-b border-slate-800/50 pb-8">
+                <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-white tracking-tight">Terms of Use</h1>
+                <p className="text-slate-500 font-mono text-sm">Effective Date: July 2, 2026</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+                <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
+                  <CheckCircle2 className="w-6 h-6 text-purple-400 mb-4" />
+                  <h3 className="text-white font-bold mb-2">Fair Usage</h3>
+                  <p className="text-slate-400 text-sm">Please utilize our tools responsibly without attempting to degrade infrastructure.</p>
+                </div>
+                <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
+                  <FileText className="w-6 h-6 text-purple-400 mb-4" />
+                  <h3 className="text-white font-bold mb-2">Open Access</h3>
+                  <p className="text-slate-400 text-sm">N-NEX is provided to the developer community as an open, stateless pipeline.</p>
+                </div>
+                <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
+                  <AlertTriangle className="w-6 h-6 text-purple-400 mb-4" />
+                  <h3 className="text-white font-bold mb-2">As Is</h3>
+                  <p className="text-slate-400 text-sm">Provided strictly "as-is", with no implicit guarantees of uptime or accuracy.</p>
+                </div>
               </div>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">1. Acceptance of Terms</h2>
+                <h2 className="text-2xl font-semibold text-white tracking-tight">1. Acceptance of Terms</h2>
                 <p>
                   By accessing and using N-NEX ("we", "us", "our"), a service designed to parse, map, and export GitHub repositories into local syntax tree structures, you agree to comply with and be bound by these Terms of Use. If you do not agree with any part of these terms, you must not use our platform.
                 </p>
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">2. Platform Execution and Use</h2>
+                <h2 className="text-2xl font-semibold text-white tracking-tight">2. Platform Execution and Use</h2>
                 <p>
                   N-NEX operates as a strictly stateless pipeline and client-based AST processor. 
                 </p>
-                <ul className="list-disc pl-5 space-y-2">
+                <ul className="list-disc pl-5 space-y-2 mt-4 text-slate-400">
                   <li>
-                    <strong>No Authentication:</strong> We do not require an active account to process source materials.
+                    <strong className="text-slate-300">No Authentication:</strong> We do not require an active account to process source materials.
                   </li>
                   <li>
-                    <strong>Appropriate Use:</strong> You are strictly responsible for the repository data you pass via our execution engine. N-NEX is licensed purely as a transformation tool. You must not use the tool to index or distribute proprietary, malicious, or illicit code.
+                    <strong className="text-slate-300">Appropriate Use:</strong> You are strictly responsible for the repository data you pass via our execution engine. N-NEX is licensed purely as a transformation tool. You must not use the tool to index or distribute proprietary, malicious, or illicit code.
                   </li>
                   <li>
-                    <strong>Public Repositories Only:</strong> Our engine targets public repositories on GitHub. Attempting to exploit or bypass GitHub's API rules utilizing our pipeline is explicitly prohibited.
+                    <strong className="text-slate-300">API Tokens:</strong> If you supply a GitHub Personal Access Token to bypass rate limits, you assume full responsibility for its scope and security. We recommend using strictly read-only tokens.
                   </li>
                 </ul>
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">3. Third-Party Deployment and Tooling</h2>
+                <h2 className="text-2xl font-semibold text-white tracking-tight">3. Third-Party Deployment and Tooling</h2>
                 <p>
-                  Our services run on <strong>Vercel</strong> infrastructure. Your usage of this platform must comply with the <a href="https://vercel.com/legal/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:text-sky-400 underline">Vercel Terms of Service</a> regarding acceptable bandwidth, compute usage, and fair operations behavior. Additionally, any data tracking relies strictly on <strong>Google Analytics</strong> and <strong>Google Fonts</strong>, governed by Google's respective Terms of Service.
+                  Our services run on <strong>Vercel</strong> infrastructure. Your usage of this platform must comply with the Vercel Terms of Service regarding acceptable bandwidth, compute usage, and fair operations behavior. Additionally, any data tracking relies strictly on Google Analytics and Google Fonts, governed by Google's respective Terms of Service.
                 </p>
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">4. No Warranties or Guarantees (AS-IS)</h2>
-                <p className="text-white border-l-2 border-purple-500 pl-4 py-1">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">4. No Warranties or Guarantees (AS-IS)</h2>
+                <p className="text-white border-l-2 border-purple-500 pl-4 py-1 bg-purple-500/10 rounded-r-lg">
                   We provide the N-NEX engine entirely "AS-IS" and "AS AVAILABLE". We disclaim all implied or explicit warranties concerning exact code extraction accuracy, syntax mapping perfection, or service uptime.
                 </p>
                 <p>
@@ -81,18 +102,19 @@ export function TermsOfUse({ onBack }: { onBack: () => void }) {
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">5. Intellectual Property</h2>
+                <h2 className="text-2xl font-semibold text-white tracking-tight">5. Intellectual Property</h2>
                 <p>
-                  You retain all necessary rights and intellectual property associated with the source code fetched through N-NEX. The tool simply processes visual abstractions into localized memory. We lay no claim over any codebase exported through our service.
+                  You retain all necessary rights and intellectual property associated with the source code fetched through N-NEX. The tool simply processes visual abstractions into localized memory. We lay no claim over any codebase exported through our service. The design, branding, and proprietary logic of the N-NEX interface remain the intellectual property of its maintainers.
                 </p>
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">6. Changes to Terms</h2>
+                <h2 className="text-2xl font-semibold text-white tracking-tight">6. Changes to Terms</h2>
                 <p>
                   We reserve the right to revise these Terms of Use at any given moment. By continuing to access the tool following updates to these Terms, you signify agreement with the revised provisions.
                 </p>
               </section>
+              
             </div>
           </div>
         </motion.div>
