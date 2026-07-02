@@ -38,6 +38,13 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
   const [status, setStatus] = useState('Sandbox engine ready for secure context consolidation.');
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   // Exclusions panel toggling
   const [showSettings, setShowSettings] = useState(false);
   const [customExt, setCustomExt] = useState('');
@@ -584,7 +591,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       setActiveTab('metrics');
       setStatus(`> ASSEMBLING SYSTEM SYNC FILES: Compiled ${filesData.length} files successfully.`);
     } catch (err: any) {
-      console.error(err);
       setStatus(`Import process aborted: ${err.message || err}`);
       setError(err.message || 'Fatal error importing local directory structure.');
     } finally {
@@ -649,7 +655,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         requestAnimationFrame(() => {
           setStatus('Pipeline Halted: Format mismatch. Use github.com/owner/repo');
         });
-        throw new Error('Url validation error. Expected pattern structure: github.com/username/repository');
+        throw new Error('Invalid repository URL. Please use the format github.com/username/repository');
       }
 
       const currentLabelIdentity = `${owner}/${repo}`;
@@ -861,7 +867,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
       setIsLoading(false);
 
     } catch (err: any) {
-      console.error(err);
       requestAnimationFrame(() => {
         setStatus(`Pipeline Process Exception: ${err.message || err}`);
       });
@@ -1111,6 +1116,32 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
         <meta name="description" content="Compile your GitHub repository or local directory into LLM-optimized context payloads." />
       </Helmet>
       <QuickStartTour />
+
+      {/* Toast Notification for Errors */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4"
+          >
+            <div className="border border-red-500/30 bg-slate-900/95 backdrop-blur-md p-4 rounded-xl flex gap-3 text-red-200 text-sm shadow-[0_10px_40px_rgba(239,68,68,0.15)] items-start">
+              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-400" />
+              <div className="space-y-1 w-full">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="font-bold tracking-wide text-xs block text-red-300 uppercase">Process Exception</span>
+                  <button onClick={() => setError(null)} className="text-red-400 hover:text-red-300 transition-colors">
+                    <X size={14} />
+                  </button>
+                </div>
+                <p className="leading-relaxed text-sm text-slate-300">{error}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Stark Void Navigation Header */}
       <nav className="border-b border-slate-800/80 bg-slate-950 h-20 sm:h-24 shrink-0 flex items-center justify-between px-3 sm:px-6 z-10 sticky top-0 shadow-sm">
         <div className="flex items-center gap-2 sm:gap-4">
@@ -1467,17 +1498,6 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
                       <span className="text-xs text-slate-500">({loadedFiles.filter(f => f.source === layer).length} files)</span>
                     </div>
                   ))}
-                </div>
-              </div>
-            )}
-
-            {/* Error alerts notification banner (stark design look) */}
-            {error && (
-              <div className="border border-red-500/30 bg-red-500/10 p-4 rounded-xl flex gap-3 text-red-200 text-sm shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-                <AlertCircle size={16} className="shrink-0 mt-0.5 text-red-400 animate-pulse" />
-                <div className="space-y-1">
-                  <span className="font-bold tracking-wide text-xs block text-red-300">Pipeline Process Exception:</span>
-                  <p className="leading-relaxed font-mono text-xs">{error}</p>
                 </div>
               </div>
             )}

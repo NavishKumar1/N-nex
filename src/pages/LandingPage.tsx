@@ -167,9 +167,18 @@ export default function LandingPage({ onEnter, onPrivacy, onTerms }: { onEnter: 
       <Helmet>
         <title>N-NEX - Enterprise-Grade Context Compiler for LLMs</title>
         <meta name="description" content="N-NEX is an advanced developer utility engineered to securely compile complex project directories into highly optimized context payloads for AI models." />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
         <meta property="og:title" content="N-NEX - Enterprise-Grade Context Compiler" />
-        <meta property="og:description" content="Extract repository context securely for large language models." />
+        <meta property="og:description" content="Extract repository context securely for large language models. Make experimentation repeatable, iterate faster, and gain momentum with our memory-accelerated repository compile engine." />
+        <meta property="og:image" content="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=1200&auto=format&fit=crop" />
+
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="N-NEX - Enterprise-Grade Context Compiler" />
+        <meta name="twitter:description" content="Extract repository context securely for large language models. Make experimentation repeatable, iterate faster, and gain momentum." />
+        <meta name="twitter:image" content="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=1200&auto=format&fit=crop" />
       </Helmet>
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] z-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1.5px)', backgroundSize: '40px 40px' }} />
       
