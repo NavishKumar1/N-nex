@@ -40,7 +40,11 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
         <div className="space-y-6">
           {activeLayers.map((layer) => (
             <div key={layer} className="space-y-6">
-              <RepoSummary repoSource={layer} githubToken={githubToken} />
+              <RepoSummary 
+                repoSource={layer} 
+                githubToken={githubToken} 
+                files={loadedFiles.filter(f => f.source === layer)}
+              />
 
               <ContributionGraph 
                 repoSource={layer} 

@@ -940,7 +940,7 @@ export default function Workspace({ onBackToLanding }: { onBackToLanding: () => 
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            const prefix = activePreset !== 'NONE' ? `${activePreset.toLowerCase()}_` : '';
+            const prefix = activePreset !== 'NONE' ? `${String(activePreset).toLowerCase()}_` : '';
             const filename = `${prefix}context_payload_${Date.now()}.${ext}`;
             link.setAttribute('download', filename);
             document.body.appendChild(link);

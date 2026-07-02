@@ -1,16 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Star, GitFork, Eye, Activity } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { BookOpen, Star, GitFork, Eye, Activity, FileCode2 } from 'lucide-react';
 import Markdown from 'react-markdown';
+import { LoadedFile } from '../types';
 
 interface RepoSummaryProps {
   repoSource: string;
   githubToken?: string;
+  files?: LoadedFile[];
 }
 
-export const RepoSummary: React.FC<RepoSummaryProps> = ({ repoSource, githubToken }) => {
+export const RepoSummary: React.FC<RepoSummaryProps> = ({ repoSource, githubToken, files = [] }) => {
   const [repoData, setRepoData] = useState<any>(null);
   const [readme, setReadme] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const totalLinesOfCode = useMemo(() => {
+    return files.reduce((acc, file) => {
+      if (!file.content) return acc;
+      // Simple line count
+      return acc + file.content.split('\n').length;
+    }, 0);
+  }, [files]);
 
   useEffect(() => {
     let mounted = true;
@@ -62,6 +72,24 @@ export const RepoSummary: React.FC<RepoSummaryProps> = ({ repoSource, githubToke
     );
   }
 
+  // Handle local workspace case gracefully
+  if (!repoData && repoSource.includes('local-workspace')) {
+    return (
+      <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 shadow-sm mb-6">
+        <h2 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <BookOpen size={20} className="text-sky-400" />
+          Local Workspace
+        </h2>
+        <div className="flex flex-wrap items-center gap-4 text-xs font-mono font-medium text-slate-300">
+          <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+            <FileCode2 size={14} className="text-emerald-400" />
+            {totalLinesOfCode.toLocaleString()} Lines of Code
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!repoData) return null;
 
   return (
@@ -80,6 +108,10 @@ export const RepoSummary: React.FC<RepoSummaryProps> = ({ repoSource, githubToke
         </div>
 
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono font-medium text-slate-300">
+          <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+            <FileCode2 size={14} className="text-emerald-400" />
+            {totalLinesOfCode.toLocaleString()} Lines of Code
+          </div>
           <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
             <Star size={14} className="text-yellow-400" />
             {repoData.stargazers_count.toLocaleString()} Stars
